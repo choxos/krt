@@ -17,6 +17,7 @@ repository-code: "https://github.com/choxos/krt"
 url: "https://choxos.github.io/krt/"
 license: GPL-3.0-only
 version: 0.1.0
+doi: "10.5281/zenodo.21398444"
 keywords:
   - key resources table
   - KRT

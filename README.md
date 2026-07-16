@@ -1,10 +1,14 @@
 # krt <img src="man/figures/logo.png" align="right" height="139" alt="krt hex logo" />
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/krt)](https://CRAN.R-project.org/package=krt)
 [![R-CMD-check](https://github.com/choxos/krt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/choxos/krt/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/choxos/krt/actions/workflows/pkgdown.yaml/badge.svg)](https://choxos.github.io/krt/)
 [![Codecov test coverage](https://codecov.io/gh/choxos/krt/branch/main/graph/badge.svg)](https://app.codecov.io/gh/choxos/krt)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21398444.svg)](https://doi.org/10.5281/zenodo.21398444)
+[![Archived on Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/choxos/krt/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/choxos/krt)
 <!-- badges: end -->
 
 **krt** is a toolkit for authoring, validating, enriching, rendering, and
