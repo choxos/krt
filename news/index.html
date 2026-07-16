@@ -35,7 +35,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/choxos/krt/blob/v0.1.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/choxos/krt/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
@@ -49,8 +49,9 @@
 </ul></div>
 <div class="section level3">
 <h3 id="validation-0-1-0">Validation<a class="anchor" aria-label="anchor" href="#validation-0-1-0"></a></h3>
-<ul><li>A registry-driven validation engine with structural and semantic layers and conditional packs for cell lines (ICLAC), animals (ARRIVE 2.0 subset), software reproducibility, and human-subject ethics/consent.</li>
-<li>Per-profile severity overrides; duplicate detection.</li>
+<ul><li>A registry-driven validation engine with structural and semantic layers and conditional packs for cell-line authentication and mycoplasma, organism metadata, software reproducibility, and human-subject ethics/consent. These are minimal, honestly scoped checks, not full ICLAC or ARRIVE assessments.</li>
+<li>Per-profile severity overrides and duplicate detection.</li>
+<li>A release-readiness gate ([krt_preflight()]) combining validation, a lossless round-trip, a safe public export, attribution, and projection-loss checks.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="identifiers-0-1-0">Identifiers<a class="anchor" aria-label="anchor" href="#identifiers-0-1-0"></a></h3>
@@ -66,7 +67,7 @@
 <h3 id="sharing-0-1-0">Sharing<a class="anchor" aria-label="anchor" href="#sharing-0-1-0"></a></h3>
 <ul><li>Redaction of ethics and consent metadata by default for public exports, on every export and render path.</li>
 <li>Manuscript extraction (regex and optional LLM) from PDF, JATS, DOCX, and text.</li>
-<li>Provenance recording with W3C PROV-JSON and RO-Crate export.</li>
+<li>Provenance recording with PROV-JSON and RO-Crate 1.1 export.</li>
 <li>Deposit to Zenodo and Figshare; connectors for eLabFTW and protocols.io.</li>
 <li>Merge and diff for multi-author workflows.</li>
 </ul></div>

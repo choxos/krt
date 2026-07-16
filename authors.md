@@ -13,15 +13,16 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/choxos/krt/blob/v0.1.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/choxos/krt/blob/main/inst/CITATION)
 
 Sofi-Mahmudi A (2026). krt: Author, Validate, and Export Key Resources
-Tables. R package version 0.1.0. https://github.com/choxos/krt
+Tables. R package version 0.1.0. https://doi.org/10.5281/zenodo.21398444
 
     @Manual{,
       title = {krt: Author, Validate, and Export Key Resources Tables},
       author = {Ahmad Sofi-Mahmudi},
       year = {2026},
       note = {R package version 0.1.0},
+      doi = {10.5281/zenodo.21398444},
       url = {https://github.com/choxos/krt},
     }

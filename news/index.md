@@ -19,10 +19,14 @@ First release.
 ### Validation
 
 - A registry-driven validation engine with structural and semantic
-  layers and conditional packs for cell lines (ICLAC), animals (ARRIVE
-  2.0 subset), software reproducibility, and human-subject
-  ethics/consent.
-- Per-profile severity overrides; duplicate detection.
+  layers and conditional packs for cell-line authentication and
+  mycoplasma, organism metadata, software reproducibility, and
+  human-subject ethics/consent. These are minimal, honestly scoped
+  checks, not full ICLAC or ARRIVE assessments.
+- Per-profile severity overrides and duplicate detection.
+- A release-readiness gate (\[krt_preflight()\]) combining validation, a
+  lossless round-trip, a safe public export, attribution, and
+  projection-loss checks.
 
 ### Identifiers
 
@@ -45,7 +49,7 @@ First release.
   exports, on every export and render path.
 - Manuscript extraction (regex and optional LLM) from PDF, JATS, DOCX,
   and text.
-- Provenance recording with W3C PROV-JSON and RO-Crate export.
+- Provenance recording with PROV-JSON and RO-Crate 1.1 export.
 - Deposit to Zenodo and Figshare; connectors for eLabFTW and
   protocols.io.
 - Merge and diff for multi-author workflows.
