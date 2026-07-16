@@ -1,0 +1,260 @@
+# Package index
+
+## Create and edit a table
+
+Build a Key Resources Table and its records.
+
+- [`new_krt()`](https://choxos.github.io/krt/reference/new_krt.md)
+  [`krt_new()`](https://choxos.github.io/krt/reference/new_krt.md)
+  [`is_krt()`](https://choxos.github.io/krt/reference/new_krt.md) :
+  Create a Key Resources Table
+- [`add_resource()`](https://choxos.github.io/krt/reference/add_resource.md)
+  [`update_resource()`](https://choxos.github.io/krt/reference/add_resource.md)
+  [`remove_resource()`](https://choxos.github.io/krt/reference/add_resource.md)
+  [`get_resource()`](https://choxos.github.io/krt/reference/add_resource.md)
+  : Add, update, remove, or get a resource in a KRT
+- [`new_resource()`](https://choxos.github.io/krt/reference/new_resource.md)
+  [`is_resource()`](https://choxos.github.io/krt/reference/new_resource.md)
+  : Create a resource record
+- [`new_approval()`](https://choxos.github.io/krt/reference/new_approval.md)
+  [`add_approval()`](https://choxos.github.io/krt/reference/new_approval.md)
+  : Create and add an ethics or governance approval
+- [`new_contributor()`](https://choxos.github.io/krt/reference/new_contributor.md)
+  [`add_contributor()`](https://choxos.github.io/krt/reference/new_contributor.md)
+  : Create and add a contributor
+- [`krt_meta()`](https://choxos.github.io/krt/reference/krt_meta.md)
+  [`` `krt_meta<-`() ``](https://choxos.github.io/krt/reference/krt_meta.md)
+  : Get or set KRT metadata
+- [`krt_example`](https://choxos.github.io/krt/reference/krt_example.md)
+  : An example Key Resources Table
+- [`as.data.frame(`*`<krt_tbl>`*`)`](https://choxos.github.io/krt/reference/as.data.frame.krt_tbl.md)
+  : Coerce a KRT to a data frame (a rectangular view)
+- [`summary(`*`<krt_tbl>`*`)`](https://choxos.github.io/krt/reference/summary.krt_tbl.md)
+  : Summarize a KRT
+
+## Schema and vocabulary
+
+The field registry and controlled vocabularies.
+
+- [`all_fields()`](https://choxos.github.io/krt/reference/field_registry.md)
+  [`field_spec()`](https://choxos.github.io/krt/reference/field_registry.md)
+  [`fields_for_type()`](https://choxos.github.io/krt/reference/field_registry.md)
+  [`field_label()`](https://choxos.github.io/krt/reference/field_registry.md)
+  : Key Resources Table field registry
+- [`coerce_field()`](https://choxos.github.io/krt/reference/coerce_field.md)
+  : Coerce a field value to its declared type.
+- [`krt_vocab()`](https://choxos.github.io/krt/reference/krt_vocab.md) :
+  Access a KRT controlled vocabulary
+- [`krt_resource_types()`](https://choxos.github.io/krt/reference/krt_vocabularies.md)
+  [`krt_new_or_reuse()`](https://choxos.github.io/krt/reference/krt_vocabularies.md)
+  [`krt_statuses()`](https://choxos.github.io/krt/reference/krt_vocabularies.md)
+  [`krt_approval_types()`](https://choxos.github.io/krt/reference/krt_vocabularies.md)
+  [`krt_roles()`](https://choxos.github.io/krt/reference/krt_vocabularies.md)
+  [`krt_redaction_levels()`](https://choxos.github.io/krt/reference/krt_vocabularies.md)
+  : KRT controlled vocabularies
+- [`vocab_match()`](https://choxos.github.io/krt/reference/vocab_match.md)
+  : Match a value against a controlled vocabulary
+
+## Validation
+
+- [`validate_krt()`](https://choxos.github.io/krt/reference/validate_krt.md)
+  : Validate a Key Resources Table
+- [`register_validator()`](https://choxos.github.io/krt/reference/register_validator.md)
+  : Register a validation rule
+- [`list_validators()`](https://choxos.github.io/krt/reference/list_validators.md)
+  : List registered validation rules
+- [`krt_validation_report`](https://choxos.github.io/krt/reference/krt_validation_report.md)
+  : The validation report object
+- [`as.data.frame(`*`<krt_validation_report>`*`)`](https://choxos.github.io/krt/reference/as.data.frame.krt_validation_report.md)
+  : Convert a validation report to a data frame
+- [`summary(`*`<krt_validation_report>`*`)`](https://choxos.github.io/krt/reference/summary.krt_validation_report.md)
+  : Summarize a validation report
+- [`resource_signature()`](https://choxos.github.io/krt/reference/resource_signature.md)
+  : Normalized signature of a resource
+- [`find_duplicates()`](https://choxos.github.io/krt/reference/find_duplicates.md)
+  : Find duplicate resources in a KRT
+
+## Identifiers and resolvers
+
+- [`id_parse()`](https://choxos.github.io/krt/reference/id_parse.md) :
+  Parse and classify an identifier string
+- [`rrid_type()`](https://choxos.github.io/krt/reference/rrid_type.md) :
+  Resource type implied by an RRID
+- [`parse_compound_identifier()`](https://choxos.github.io/krt/reference/parse_compound_identifier.md)
+  : Parse a compound identifier string into typed fields
+- [`compose_identifier()`](https://choxos.github.io/krt/reference/compose_identifier.md)
+  : Compose a compound identifier string from a resource's typed fields
+- [`is_pending_identifier()`](https://choxos.github.io/krt/reference/is_pending_identifier.md)
+  : Is a value the ASAP "identifier pending" placeholder?
+- [`normalize_ids()`](https://choxos.github.io/krt/reference/normalize_ids.md)
+  : Normalize identifiers to canonical forms
+- [`resolve_rrid()`](https://choxos.github.io/krt/reference/resolvers.md)
+  [`resolve_doi()`](https://choxos.github.io/krt/reference/resolvers.md)
+  [`resolve_orcid()`](https://choxos.github.io/krt/reference/resolvers.md)
+  [`resolve_pubmed()`](https://choxos.github.io/krt/reference/resolvers.md)
+  [`resolve_ror()`](https://choxos.github.io/krt/reference/resolvers.md)
+  [`resolve_cellosaurus()`](https://choxos.github.io/krt/reference/resolvers.md)
+  : Resolve identifiers against public registries
+- [`resolve_id()`](https://choxos.github.io/krt/reference/resolve_id.md)
+  : Resolve any identifier by detecting its scheme
+- [`register_resolver()`](https://choxos.github.io/krt/reference/register_resolver.md)
+  : Register an identifier resolver
+- [`list_resolvers()`](https://choxos.github.io/krt/reference/list_resolvers.md)
+  : List registered resolver schemes
+- [`krt_suggest()`](https://choxos.github.io/krt/reference/krt_suggest.md)
+  : Suggest canonical names and identifiers from public authorities
+- [`register_suggest_source()`](https://choxos.github.io/krt/reference/register_suggest_source.md)
+  : Register an autocomplete source
+- [`list_suggest_sources()`](https://choxos.github.io/krt/reference/list_suggest_sources.md)
+  : List autocomplete sources
+
+## Import
+
+- [`import_krt()`](https://choxos.github.io/krt/reference/import_krt.md)
+  : Import a Key Resources Table from a file or string
+- [`read_krt_json()`](https://choxos.github.io/krt/reference/read_krt_json.md)
+  : Read a KRT from canonical JSON
+- [`read_krt_yaml()`](https://choxos.github.io/krt/reference/read_krt_yaml.md)
+  : Read a KRT from canonical YAML
+- [`import_asap()`](https://choxos.github.io/krt/reference/import_asap.md)
+  : Import an ASAP or Cell Press Key Resources Table
+- [`import_tabular()`](https://choxos.github.io/krt/reference/import_tabular.md)
+  : Import a generic tabular Key Resources Table
+
+## Export and render
+
+- [`export_krt()`](https://choxos.github.io/krt/reference/export_krt.md)
+  [`krt_write()`](https://choxos.github.io/krt/reference/export_krt.md)
+  : Export a Key Resources Table
+- [`write_krt_json()`](https://choxos.github.io/krt/reference/write_krt_json.md)
+  : Write a KRT to canonical JSON
+- [`write_krt_yaml()`](https://choxos.github.io/krt/reference/write_krt_yaml.md)
+  : Write a KRT to canonical YAML
+- [`export_asap()`](https://choxos.github.io/krt/reference/export_asap.md)
+  : Export a KRT in the ASAP six-column format
+- [`export_tabular()`](https://choxos.github.io/krt/reference/export_tabular.md)
+  : Export a KRT as a delimited table or spreadsheet
+- [`export_citation()`](https://choxos.github.io/krt/reference/export_citation.md)
+  : Export citable resources as RIS or BibTeX
+- [`render_krt()`](https://choxos.github.io/krt/reference/render_krt.md)
+  : Render a KRT as a formatted table
+
+## Profiles and licensing
+
+- [`krt_profiles()`](https://choxos.github.io/krt/reference/krt_profiles.md)
+  : List available profiles
+- [`get_profile()`](https://choxos.github.io/krt/reference/get_profile.md)
+  : Retrieve a registered profile
+- [`load_profile()`](https://choxos.github.io/krt/reference/load_profile.md)
+  [`is_profile()`](https://choxos.github.io/krt/reference/load_profile.md)
+  : Load a profile from a directory
+- [`krt_profile_info()`](https://choxos.github.io/krt/reference/krt_profile_info.md)
+  : Describe a profile
+- [`apply_mapping()`](https://choxos.github.io/krt/reference/apply_mapping.md)
+  : Map one resource to a profile's columns
+- [`project_profile()`](https://choxos.github.io/krt/reference/project_profile.md)
+  : Project a KRT onto a profile as a data frame
+- [`mapping_lossy_fields()`](https://choxos.github.io/krt/reference/mapping_lossy_fields.md)
+  : Fields lost or folded when projecting to a profile
+- [`krt_profile_license()`](https://choxos.github.io/krt/reference/krt_profile_license.md)
+  [`krt_profile_sources()`](https://choxos.github.io/krt/reference/krt_profile_license.md)
+  [`krt_profile_attribution()`](https://choxos.github.io/krt/reference/krt_profile_license.md)
+  : Licensing of a profile
+- [`krt_attribution()`](https://choxos.github.io/krt/reference/krt_attribution.md)
+  : Attribution text for a table's profile
+- [`krt_write_attribution()`](https://choxos.github.io/krt/reference/krt_write_attribution.md)
+  : Write attribution to a file
+- [`krt_audit_licenses()`](https://choxos.github.io/krt/reference/krt_audit_licenses.md)
+  : Audit the licenses of the package and its bundled assets
+
+## Redaction and provenance
+
+- [`redact_krt()`](https://choxos.github.io/krt/reference/redact_krt.md)
+  : Redact sensitive fields for public sharing
+- [`redaction_policy()`](https://choxos.github.io/krt/reference/redaction_policy.md)
+  : The default redaction policy
+- [`redaction_default()`](https://choxos.github.io/krt/reference/redaction_default.md)
+  : Default redaction strength for a profile's public exports
+- [`append_provenance()`](https://choxos.github.io/krt/reference/append_provenance.md)
+  : Append a provenance entry to a KRT
+- [`krt_provenance()`](https://choxos.github.io/krt/reference/krt_provenance.md)
+  : Provenance of a KRT
+- [`as_prov_json()`](https://choxos.github.io/krt/reference/as_prov_json.md)
+  : Export the provenance graph as PROV-JSON
+- [`as_rocrate()`](https://choxos.github.io/krt/reference/as_rocrate.md)
+  : Export a KRT as an RO-Crate 1.1 metadata document
+- [`as_rdf()`](https://choxos.github.io/krt/reference/as_rdf.md) :
+  Export a KRT as RDF (JSON-LD or Turtle)
+
+## Manuscript extraction
+
+- [`extract_krt()`](https://choxos.github.io/krt/reference/extract_krt.md)
+  : Extract a Key Resources Table from a manuscript
+- [`scan_identifiers()`](https://choxos.github.io/krt/reference/scan_identifiers.md)
+  : Scan free text for research identifiers
+- [`extract_candidates()`](https://choxos.github.io/krt/reference/extract_candidates.md)
+  : Extract candidate resources from text (regex engine)
+- [`read_input_text()`](https://choxos.github.io/krt/reference/read_input_text.md)
+  : Read manuscript text and tables from an input
+- [`detect_existing_krt()`](https://choxos.github.io/krt/reference/detect_existing_krt.md)
+  : Detect and parse a Key Resources Table embedded in a document
+- [`extract_llm()`](https://choxos.github.io/krt/reference/extract_llm.md)
+  : Extract resources from text with an LLM
+- [`krt_llm()`](https://choxos.github.io/krt/reference/krt_llm.md) :
+  Configure an LLM for extraction
+- [`register_llm_provider()`](https://choxos.github.io/krt/reference/register_llm_provider.md)
+  : Register an LLM provider
+- [`list_llm_providers()`](https://choxos.github.io/krt/reference/list_llm_providers.md)
+  : List registered LLM providers
+- [`fetch_fulltext()`](https://choxos.github.io/krt/reference/fetch_fulltext.md)
+  : Fetch manuscript full text
+
+## Merge, deposit, and connect
+
+- [`krt_merge()`](https://choxos.github.io/krt/reference/krt_merge.md) :
+  Merge Key Resources Tables
+- [`krt_diff()`](https://choxos.github.io/krt/reference/krt_diff.md) :
+  Diff two Key Resources Tables
+- [`krt_deposit_zenodo()`](https://choxos.github.io/krt/reference/krt_deposit_zenodo.md)
+  : Deposit a KRT to Zenodo
+- [`krt_deposit_figshare()`](https://choxos.github.io/krt/reference/krt_deposit_figshare.md)
+  : Deposit a KRT to Figshare
+- [`krt_import_elabftw()`](https://choxos.github.io/krt/reference/krt_import_elabftw.md)
+  : Import resources from an eLabFTW experiment
+- [`krt_import_protocolsio()`](https://choxos.github.io/krt/reference/krt_import_protocolsio.md)
+  : Import a protocol from protocols.io
+
+## Interfaces and extension
+
+- [`krt_cli()`](https://choxos.github.io/krt/reference/krt_cli.md) : Run
+  the krt command-line interface
+- [`launch_krt()`](https://choxos.github.io/krt/reference/launch_krt.md)
+  : Launch the interactive KRT editor
+- [`register_profile()`](https://choxos.github.io/krt/reference/register_profile.md)
+  : Register an output profile
+- [`krt_plugins`](https://choxos.github.io/krt/reference/krt_plugins.md)
+  : Extend krt with plugins
+- [`krt_plugin_api()`](https://choxos.github.io/krt/reference/krt_plugin_api.md)
+  : The krt plugin API
+- [`validate_plugin_contract()`](https://choxos.github.io/krt/reference/validate_plugin_contract.md)
+  : Check that an object satisfies a plugin contract
+
+## Bioconductor
+
+- [`KRT-class`](https://choxos.github.io/krt/reference/KRT-class.md) :
+
+  The `KRT` S4 class
+
+- [`as_krt()`](https://choxos.github.io/krt/reference/as_krt.md)
+  [`as_KRT()`](https://choxos.github.io/krt/reference/as_krt.md) :
+
+  Coerce to and from the S4 `KRT` class
+
+- [`krt_as_dataframe()`](https://choxos.github.io/krt/reference/krt_as_dataframe.md)
+  : Coerce a KRT's resources to a DataFrame (Bioconductor)
+
+## Package
+
+- [`krt`](https://choxos.github.io/krt/reference/krt-package.md)
+  [`krt-package`](https://choxos.github.io/krt/reference/krt-package.md)
+  : krt: Author, Validate, and Export Key Resources Tables

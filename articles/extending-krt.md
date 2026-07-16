@@ -1,0 +1,90 @@
+# Extending krt with plugins
+
+``` r
+
+library(krt)
+#> krt 0.1.0: author, validate, and export Key Resources Tables.
+#>   Start with new_krt(); see https://choxos.github.io/krt/
+```
+
+`krt` is built on five registries, and each is a public extension point.
+An institution can add profiles, validators, resolvers, LLM providers,
+and autocomplete sources without forking the package.
+
+``` r
+
+krt_plugin_api()
+#>             kind                register
+#> 1        profile        register_profile
+#> 2      validator      register_validator
+#> 3       resolver       register_resolver
+#> 4   llm_provider   register_llm_provider
+#> 5 suggest_source register_suggest_source
+#>                                                                       contract
+#> 1          a directory with schema.yml + mappings.yml, or a krt_profile object
+#> 2                                  function(x, ctx) returning a list of issues
+#> 3         function(id, resolve = TRUE, ...) returning a normalized result list
+#> 4                      function(prompt, llm) returning the model's text output
+#> 5 function(query, n) returning a data frame (label, id, authority, score, uri)
+```
+
+Check an object against its contract before registering it:
+
+``` r
+
+validate_plugin_contract("validator", function(x, ctx) list())
+```
+
+## A custom validator
+
+A validator is `function(x, ctx)` returning a list of issues. Here is
+one that flags datasets lacking a license.
+
+``` r
+
+license_rule <- function(x, ctx) {
+  out <- list()
+  for (r in x$resources) {
+    if (identical(r$resource_type, "Dataset") && is.null(r$license)) {
+      out <- c(out, list(list(message = "Dataset has no license.",
+                              resource_id = r$resource_id, field = "license")))
+    }
+  }
+  out
+}
+register_validator("inst-dataset-license", license_rule,
+                   layer = "semantic", severity = "warning")
+
+k <- add_resource(new_krt("Demo"), "Dataset", "D",
+                  doi = "10.5281/zenodo.1", new_or_reuse = "new")
+"inst-dataset-license" %in% as.data.frame(validate_krt(k))$rule_id
+#> [1] TRUE
+```
+
+## A custom institutional profile
+
+A profile is a directory with `schema.yml` and `mappings.yml`. Register
+it by path:
+
+``` r
+
+register_profile(name = "my-institute", path = "path/to/profile/dir")
+export_krt(k, "out.csv", profile = "my-institute")
+```
+
+## A custom resolver or suggest source
+
+``` r
+
+register_resolver("myscheme", function(id, resolve = TRUE, ...) {
+  list(input = id, normalized = id, resolved = FALSE, source = "mine")
+})
+
+register_suggest_source("mysource", function(query, n) {
+  data.frame(label = query, id = "X:1", authority = "mine",
+             score = 1, uri = NA_character_, stringsAsFactors = FALSE)
+})
+```
+
+Registered plugins run inside the same error isolation as the built-ins,
+so a faulty plugin cannot corrupt a core operation.
