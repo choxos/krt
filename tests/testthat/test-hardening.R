@@ -53,3 +53,31 @@ test_that("registration rejects silent overwrite of an existing rule", {
   expect_error(register_validator(existing, function(x, ctx) list()),
                "already registered")
 })
+
+test_that("bare RRID authority tokens are parsed as RRIDs", {
+  expect_identical(id_parse("AB_390204")$field, "rrid")
+  expect_identical(id_parse("AB_390204")$value, "RRID:AB_390204")
+  expect_identical(id_parse("SCR_002285")$field, "rrid")
+  # Cellosaurus keeps its own field.
+  expect_identical(id_parse("CVCL_0030")$field, "cellosaurus_id")
+})
+
+test_that("a Cellosaurus-only cell line composes a non-empty ASAP IDENTIFIER", {
+  expect_identical(compose_identifier(list(cellosaurus_id = "CVCL_0030")),
+                   "RRID:CVCL_0030")
+  # No doubled prefix from a lowercased input.
+  expect_identical(compose_identifier(list(rrid = "rrid:AB_1")), "RRID:AB_1")
+})
+
+test_that("multiple accessions round-trip through compose and parse", {
+  s <- compose_identifier(list(accession = c("SAMN1", "SAMN2")))
+  expect_setequal(parse_compound_identifier(s)$accession, c("SAMN1", "SAMN2"))
+})
+
+test_that("contributor identifiers in a compound string are kept, not dropped", {
+  p <- parse_compound_identifier(
+    "RRID:AB_1; https://orcid.org/0000-0001-6829-0823")
+  expect_identical(p$rrid, "RRID:AB_1")
+  expect_true(any(grepl("orcid", unlist(p$other))))
+  expect_null(p$orcid)
+})
