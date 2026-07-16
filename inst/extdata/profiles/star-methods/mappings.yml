@@ -11,4 +11,39 @@ mappings:
     field: [source_name, vendor]
   IDENTIFIER:
     type: composed
-    compose: [catalog_number, rrid, doi, accession, pmid, pmcid, url]
+    compose: [catalog_number, rrid, cellosaurus_id, doi, accession, pmid, pmcid, url]
+
+# The Cell Press STAR Methods Key Resources Table groups rows under twelve fixed
+# category headers in this order. `order` is the rendered section order; `map`
+# projects each of the fourteen core resource types onto its STAR category
+# (bacterial strains and viral vectors share one category; protocols, which STAR
+# has no category for, fall under "Other").
+sections:
+  order:
+    - Antibodies
+    - Bacterial and virus strains
+    - Biological samples
+    - Chemicals, peptides, and recombinant proteins
+    - Critical commercial assays
+    - Deposited data
+    - "Experimental models: Cell lines"
+    - "Experimental models: Organisms/strains"
+    - Oligonucleotides
+    - Recombinant DNA
+    - Software and algorithms
+    - Other
+  map:
+    Antibody: Antibodies
+    Bacterial strain: Bacterial and virus strains
+    Viral vector: Bacterial and virus strains
+    Biological sample: Biological samples
+    "Chemical, peptide, or recombinant protein": Chemicals, peptides, and recombinant proteins
+    Critical commercial assay: Critical commercial assays
+    Dataset: Deposited data
+    "Experimental model: Cell line": "Experimental models: Cell lines"
+    "Experimental model: Organism/strain": "Experimental models: Organisms/strains"
+    Oligonucleotide: Oligonucleotides
+    Recombinant DNA: Recombinant DNA
+    Software/code: Software and algorithms
+    Protocol: Other
+    Other: Other

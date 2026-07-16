@@ -34,6 +34,7 @@ load_profile <- function(path) {
       passthrough = isTRUE(schema$passthrough) || isTRUE(mappings$passthrough),
       columns     = mappings$columns %||% schema$columns,
       mappings    = mappings$mappings,
+      sections    = mappings$sections,
       validation_overrides = val$overrides %||% list(),
       template_path = if (file.exists(template)) template else NULL,
       attribution = attribution,
