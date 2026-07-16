@@ -10,9 +10,11 @@ bibentry(
                     comment = c(ORCID = "0000-0001-6829-0823")),
   year     = "2026",
   note     = paste("R package version", ver),
+  doi      = "10.5281/zenodo.21398444",
   url      = "https://github.com/choxos/krt",
   textVersion = paste0(
     "Sofi-Mahmudi A (2026). krt: Author, Validate, and Export Key Resources ",
-    "Tables. R package version ", ver, ". https://github.com/choxos/krt"
+    "Tables. R package version ", ver,
+    ". https://doi.org/10.5281/zenodo.21398444"
   )
 )

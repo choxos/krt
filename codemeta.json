@@ -10,6 +10,7 @@
   "license": "https://spdx.org/licenses/GPL-3.0-only.html",
   "version": "0.1.0",
   "softwareVersion": "0.1.0",
+  "identifier": "https://doi.org/10.5281/zenodo.21398444",
   "programmingLanguage": "R",
   "runtimePlatform": "R >= 4.1",
   "operatingSystem": "OS Independent",
