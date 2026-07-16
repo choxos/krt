@@ -4,7 +4,13 @@
 \alias{export_citation}
 \title{Export citable resources as RIS or BibTeX}
 \usage{
-export_citation(x, path = NULL, format = c("ris", "bibtex"))
+export_citation(
+  x,
+  path = NULL,
+  format = c("ris", "bibtex"),
+  audience = c("author", "public"),
+  redact = NULL
+)
 }
 \arguments{
 \item{x}{A \link{krt_tbl}.}
@@ -12,6 +18,11 @@ export_citation(x, path = NULL, format = c("ris", "bibtex"))
 \item{path}{Output path, or \code{NULL} to return the text.}
 
 \item{format}{\code{"ris"} or \code{"bibtex"}.}
+
+\item{audience}{\code{"author"} (full) or \code{"public"} (redacted).}
+
+\item{redact}{Redaction strength (\code{"basic"}/\code{"strict"}) for public output, or
+\code{FALSE} to disable; \code{NULL} uses the profile default.}
 }
 \value{
 The path (invisibly) when written, or the citation text.

@@ -73,13 +73,21 @@ export_tabular <- function(x, path = NULL, format = c("csv", "tsv", "xlsx"),
 #' @param x A [krt_tbl].
 #' @param path Output path, or `NULL` to return the text.
 #' @param format `"ris"` or `"bibtex"`.
+#' @param audience `"author"` (full) or `"public"` (redacted).
+#' @param redact Redaction strength (`"basic"`/`"strict"`) for public output, or
+#'   `FALSE` to disable; `NULL` uses the profile default.
 #' @return The path (invisibly) when written, or the citation text.
 #' @export
 #' @examples
 #' cat(export_citation(krt_example, format = "bibtex"))
-export_citation <- function(x, path = NULL, format = c("ris", "bibtex")) {
+export_citation <- function(x, path = NULL, format = c("ris", "bibtex"),
+                            audience = c("author", "public"), redact = NULL) {
   stopifnot(is_krt(x))
   format <- match.arg(format)
+  audience <- match.arg(audience)
+  # Defense in depth: a direct public export redacts too, not only via
+  # export_krt() (which already redacts before dispatching here).
+  x <- .maybe_redact(x, audience, redact)
   citable <- Filter(function(r) {
     (r$resource_type %in% c("Dataset", "Software/code", "Protocol")) || !is.null(r$doi)
   }, x$resources)

@@ -57,9 +57,30 @@ redact_krt <- function(x, level = c("basic", "strict"), policy = NULL) {
 
   appr_rules <- active[active$scope == "approval", , drop = FALSE]
   res_rules  <- active[active$scope == "resource", , drop = FALSE]
+
+  # Allowlists close the gap a denylist leaves open: any field not known to the
+  # schema or named by the redaction policy is treated as potentially sensitive
+  # and removed from a public export, so a custom or free-text field cannot
+  # smuggle protected information past redaction.
+  safe_appr <- unique(c("approval_id", "approval_type",
+                        pol$field[pol$scope == "approval"]))
+  safe_res  <- names(all_fields())
+  safe_ctb  <- c("contributor_id", "name", "orcid", "role", "credit_role",
+                 "affiliation_ror")
+  keep_only <- function(rec, fields, cls) {
+    structure(compact(rec[intersect(names(rec), fields)]), class = cls)
+  }
+
   x$approvals <- lapply(x$approvals, function(a)
-    structure(compact(.apply_redaction(a, appr_rules)), class = "krt_approval"))
+    keep_only(.apply_redaction(a, appr_rules), safe_appr, "krt_approval"))
   x$resources <- lapply(x$resources, function(r)
-    structure(compact(.apply_redaction(r, res_rules)), class = "krt_resource"))
-  .touch(x, "redact", params = list(level = level))
+    keep_only(.apply_redaction(r, res_rules), safe_res, "krt_resource"))
+  x$contributors <- lapply(x$contributors, function(ct)
+    keep_only(ct, safe_ctb, "krt_contributor"))
+  x <- .touch(x, "redact", params = list(level = level))
+  # Provenance parameters can echo sensitive input values; drop them for public
+  # output (after recording the redaction step) while keeping the activity and
+  # timestamp history.
+  x$provenance <- lapply(x$provenance, function(e) { e$params <- NULL; e })
+  x
 }

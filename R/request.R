@@ -93,6 +93,17 @@ http_put_bytes <- function(url, data, type = "application/octet-stream",
            error = function(e) NULL)
 }
 
+#' May a credential be sent to this URL? Only over HTTPS, or to a loopback
+#' address (for local model or ELN servers). Prevents leaking an API token, and
+#' the payload it accompanies, over an unencrypted link.
+#' @noRd
+.credential_url_ok <- function(url, has_credential) {
+  if (!isTRUE(has_credential)) return(TRUE)
+  if (grepl("^https://", url, ignore.case = TRUE)) return(TRUE)
+  grepl("^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])([:/]|$)", url,
+        ignore.case = TRUE)
+}
+
 #' Is a host reachable? Used to skip live tests offline.
 #' @noRd
 is_online <- function(host = "https://doi.org") {

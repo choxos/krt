@@ -24,6 +24,10 @@ krt_import_elabftw <- function(base_url, experiment_id,
     stop("An eLabFTW token is required (set ELABFTW_TOKEN or pass token=).", call. = FALSE)
   }
   url <- sprintf("%s/api/v2/experiments/%s", sub("/$", "", base_url), experiment_id)
+  if (!.credential_url_ok(url, TRUE)) {
+    stop("Refusing to send an eLabFTW token to a non-HTTPS, non-loopback URL.",
+         call. = FALSE)
+  }
   j <- .resp_json(http_get(url, headers = list(Authorization = token), timeout = timeout))
   if (is.null(j)) { warning("eLabFTW experiment could not be fetched.", call. = FALSE)
     return(new_krt(profile = "generic")) }

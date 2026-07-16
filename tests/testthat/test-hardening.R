@@ -128,3 +128,19 @@ test_that("PROV-JSON links activities with prov:informed/prov:informant", {
   expect_false(is.null(rel$`prov:informed`))
   expect_false(is.null(rel$`prov:informant`))
 })
+
+test_that("public redaction drops unknown sensitive fields and provenance params", {
+  k <- add_approval(new_krt("D"), "IRB", protocol_number = "P1",
+                    patient_id = "MRN-777")
+  red <- redact_krt(k)
+  expect_null(red$approvals[[1]]$patient_id)      # unknown field dropped by allowlist
+  expect_null(red$approvals[[1]]$protocol_number) # known sensitive field dropped
+  expect_true(all(vapply(red$provenance, function(e) is.null(e$params), logical(1))))
+})
+
+test_that("credentials are refused over non-HTTPS, non-loopback URLs", {
+  expect_false(krt:::.credential_url_ok("http://remote.example.org/api", TRUE))
+  expect_true(krt:::.credential_url_ok("https://remote.example.org/api", TRUE))
+  expect_true(krt:::.credential_url_ok("http://localhost:11434/v1", TRUE))
+  expect_true(krt:::.credential_url_ok("http://remote.example.org/api", FALSE))
+})

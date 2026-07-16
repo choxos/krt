@@ -53,11 +53,17 @@ llm_gemini <- function(prompt, llm) {
 llm_openai_compat <- function(prompt, llm) {
   base <- llm$base_url %||% ""
   if (!nzchar(base)) return(NULL)
-  resp <- http_post_json(
-    paste0(sub("/$", "", base), "/v1/chat/completions"),
+  url <- paste0(sub("/$", "", base), "/v1/chat/completions")
+  key <- if (nzchar(llm$api_key %||% "")) llm$api_key else NULL
+  if (!.credential_url_ok(url, !is.null(key))) {
+    warning("Refusing to send an API key to a non-HTTPS, non-loopback URL.",
+            call. = FALSE)
+    return(NULL)
+  }
+  resp <- http_post_json(url,
     body = list(model = llm$model, temperature = llm$temperature,
                 messages = list(list(role = "user", content = .llm_content(prompt)))),
-    token = if (nzchar(llm$api_key %||% "")) llm$api_key else NULL)
+    token = key)
   j <- .resp_json(resp)
   .dig(j, "choices", 1L, "message", "content")
 }
