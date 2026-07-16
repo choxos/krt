@@ -37,7 +37,8 @@ methods::setAs("krt_tbl", "KRT", function(from) {
     resources = from$resources, approvals = from$approvals,
     contributors = from$contributors, provenance = from$provenance,
     metadata = list(study_type = from$study_type, locale = from$locale,
-                    created_at = from$created_at, updated_at = from$updated_at))
+                    created_at = from$created_at, updated_at = from$updated_at,
+                    validation = from$validation))
 })
 
 methods::setAs("KRT", "krt_tbl", function(from) {
@@ -54,10 +55,18 @@ methods::setAs("KRT", "krt_tbl", function(from) {
   k$locale <- m$locale
   k$created_at <- m$created_at %||% k$created_at
   k$updated_at <- m$updated_at %||% k$updated_at
+  k$validation <- m$validation %||% list()
   k
 })
 
 #' Coerce to and from the S4 `KRT` class
+#'
+#' These are inverse coercions named after their target class. `as_krt()`
+#' returns the S3 [krt_tbl] (the package's primary object): pass it a `krt_tbl`
+#' and it is returned unchanged, or an S4 `KRT` and it is converted down. It is
+#' the helper to call when a function should accept either representation.
+#' `as_KRT()` is the opposite direction, a thin idempotent wrapper over
+#' `methods::as(x, "KRT")` for Bioconductor workflows.
 #'
 #' @param x A [krt_tbl] or `KRT` object.
 #' @return `as_krt()` returns a `krt_tbl`; `as_KRT()` returns an S4 `KRT`.

@@ -33,6 +33,7 @@ reference:
 - title: Validation
   contents:
   - validate_krt
+  - krt_preflight
   - register_validator
   - list_validators
   - krt_validation_report

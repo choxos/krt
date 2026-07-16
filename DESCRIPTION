@@ -42,8 +42,6 @@ Suggests:
     bslib,
     covr,
     DT,
-    httptest2,
-    keyring,
     knitr,
     officer,
     openxlsx,

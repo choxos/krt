@@ -40,8 +40,22 @@ export_tabular <- function(x, path = NULL, format = c("csv", "tsv", "xlsx"),
 }
 
 #' @noRd
+# RIS is line-oriented, so a value must not contain a line break.
+#' @noRd
+.ris_val <- function(v) gsub("[\r\n]+", " ", as.character(v))
+
+# BibTeX values: collapse line breaks, neutralize backslashes, and escape the
+# structural braces so a name or note cannot break the entry.
+#' @noRd
+.bib_val <- function(v) {
+  v <- gsub("[\r\n]+", " ", as.character(v))
+  v <- gsub("\\\\", "/", v)
+  gsub("([{}])", "\\\\\\1", v)
+}
+
+#' @noRd
 .citation_entry <- function(r, format, i) {
-  key <- r$resource_id %||% sprintf("res%d", i)
+  key <- gsub("[^A-Za-z0-9_:-]", "_", r$resource_id %||% sprintf("res%d", i))
   title <- r$display_name %||% r$canonical_name %||% key
   doi <- r$doi
   url <- r$url
@@ -49,16 +63,16 @@ export_tabular <- function(x, path = NULL, format = c("csv", "tsv", "xlsx"),
   if (identical(format, "ris")) {
     ty <- switch(r$resource_type %||% "",
                  "Dataset" = "DATA", "Software/code" = "COMP", "GEN")
-    lines <- c(sprintf("TY  - %s", ty), sprintf("TI  - %s", title))
-    if (!is.null(doi)) lines <- c(lines, sprintf("DO  - %s", doi))
-    if (!is.null(url)) lines <- c(lines, sprintf("UR  - %s", url))
-    if (!is.null(year)) lines <- c(lines, sprintf("PY  - %s", year))
+    lines <- c(sprintf("TY  - %s", ty), sprintf("TI  - %s", .ris_val(title)))
+    if (!is.null(doi)) lines <- c(lines, sprintf("DO  - %s", .ris_val(doi)))
+    if (!is.null(url)) lines <- c(lines, sprintf("UR  - %s", .ris_val(url)))
+    if (!is.null(year)) lines <- c(lines, sprintf("PY  - %s", .ris_val(year)))
     c(lines, "ER  - ")
   } else {
-    lines <- c(sprintf("@misc{%s,", key), sprintf("  title = {%s},", title))
-    if (!is.null(doi)) lines <- c(lines, sprintf("  doi = {%s},", doi))
-    if (!is.null(url)) lines <- c(lines, sprintf("  url = {%s},", url))
-    if (!is.null(year)) lines <- c(lines, sprintf("  year = {%s},", year))
+    lines <- c(sprintf("@misc{%s,", key), sprintf("  title = {%s},", .bib_val(title)))
+    if (!is.null(doi)) lines <- c(lines, sprintf("  doi = {%s},", .bib_val(doi)))
+    if (!is.null(url)) lines <- c(lines, sprintf("  url = {%s},", .bib_val(url)))
+    if (!is.null(year)) lines <- c(lines, sprintf("  year = {%s},", .bib_val(year)))
     c(lines, "}")
   }
 }

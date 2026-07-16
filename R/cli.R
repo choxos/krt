@@ -28,6 +28,7 @@
     "  new           Create an empty KRT           [--title T --out FILE]",
     "  import        Import to canonical JSON       FILE [--out FILE --profile P]",
     "  validate      Validate a KRT                 FILE [--profile P --layers L]",
+    "  preflight     Release-readiness check        FILE [--profile P]",
     "  normalize     Normalize identifiers          FILE [--out FILE]",
     "  export        Export to a format             FILE --out FILE [--format F --audience A]",
     "  render        Render a table                 FILE --out FILE [--format md|html|docx --audience A]",
@@ -90,6 +91,12 @@ krt_cli <- function(args = commandArgs(trailingOnly = TRUE)) {
                                      else c("structural", "semantic"))
         print(rep)
         status <<- if (isTRUE(rep$valid)) 0L else 1L
+      },
+      "preflight" = {
+        k <- import_krt(infile)
+        pf <- krt_preflight(k, profile = if (is.character(f$profile)) f$profile else NULL)
+        print(pf)
+        status <<- if (isTRUE(pf$ok)) 0L else 1L
       },
       "export" = {
         k <- import_krt(infile)

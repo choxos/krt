@@ -11,7 +11,7 @@
     ext <- tolower(tools::file_ext(input))
     if (ext == "json") return("json")
     if (ext %in% c("yaml", "yml")) return("yaml")
-    if (ext %in% c("csv", "tsv", "xlsx", "xls")) {
+    if (ext %in% c("csv", "tsv", "xlsx")) {
       hdrs <- tryCatch(.canon_asap_headers(names(.read_table_any(input))),
                        error = function(e) character(0))
       if (any(c("RESOURCE_TYPE", "REAGENT_OR_RESOURCE") %in% hdrs)) return("asap")

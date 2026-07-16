@@ -109,10 +109,13 @@
 
 #' @noRd
 .vs_field_applicability <- function(x, ctx) {
+  # Compute the field registry and type list once, not per resource.
+  field_names <- names(all_fields())
+  types <- krt_resource_types()
   .for_resources(x, function(r, id) {
-    if (!(r$resource_type %in% krt_resource_types())) return(NULL)
+    if (!(r$resource_type %in% types)) return(NULL)
     allowed <- fields_for_type(r$resource_type)
-    present <- intersect(names(r), names(all_fields()))
+    present <- intersect(names(r), field_names)
     off <- setdiff(present, c(allowed, "resource_id"))
     if (length(off)) {
       list(.issue(sprintf("Field(s) not typical for %s: %s.",

@@ -16,7 +16,12 @@ as_KRT(x)
 \code{as_krt()} returns a \code{krt_tbl}; \code{as_KRT()} returns an S4 \code{KRT}.
 }
 \description{
-Coerce to and from the S4 \code{KRT} class
+These are inverse coercions named after their target class. \code{as_krt()}
+returns the S3 \link{krt_tbl} (the package's primary object): pass it a \code{krt_tbl}
+and it is returned unchanged, or an S4 \code{KRT} and it is converted down. It is
+the helper to call when a function should accept either representation.
+\code{as_KRT()} is the opposite direction, a thin idempotent wrapper over
+\code{methods::as(x, "KRT")} for Bioconductor workflows.
 }
 \examples{
 k4 <- as_KRT(krt_example)

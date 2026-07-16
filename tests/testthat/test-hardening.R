@@ -171,3 +171,34 @@ test_that("the ROR name parser reads v2 names[] and v1 name", {
   expect_identical(krt:::.ror_display_name(list(name = "Legacy Name")), "Legacy Name")
   expect_null(krt:::.ror_display_name(NULL))
 })
+
+test_that("krt_preflight passes a clean table and fails an invalid one", {
+  pf <- krt_preflight(krt_example)
+  expect_true(pf$ok)
+  expect_true(all(c("validation", "round_trip", "redaction_safety") %in%
+                    as.data.frame(pf)$check))
+  bad <- new_krt("Bad")
+  bad$resources <- list(structure(list(resource_id = "r1", resource_type = "Dataset"),
+                                  class = "krt_resource"))
+  expect_false(krt_preflight(bad)$ok)
+})
+
+test_that("BibTeX export escapes braces and newlines", {
+  k <- add_resource(new_krt("D"), "Dataset", "Weird {title}\nsecond line",
+                    doi = "10.5281/zenodo.1", new_or_reuse = "new")
+  bib <- export_citation(k, format = "bibtex")
+  expect_false(grepl("\n[^@}]* line", bib))          # no raw newline inside a field
+  expect_true(grepl("\\\\\\{title\\\\\\}", bib))      # braces escaped
+})
+
+test_that("legacy .xls import is rejected with a clear message", {
+  f <- tempfile(fileext = ".xls"); writeLines("x", f)
+  expect_error(import_asap(f), "\\.xls")
+})
+
+test_that("S4 coercion round-trip preserves the validation slot", {
+  kk <- krt_example
+  kk$validation <- list(list(rule_id = "demo"))
+  back <- as_krt(as_KRT(kk))
+  expect_identical(back$validation, kk$validation)
+})
