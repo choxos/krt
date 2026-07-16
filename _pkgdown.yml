@@ -18,6 +18,8 @@ reference:
   - new_contributor
   - krt_meta
   - krt_example
+  - as.data.frame.krt_tbl
+  - summary.krt_tbl
 
 - title: Schema and vocabulary
   desc: The field registry and controlled vocabularies.
@@ -34,6 +36,8 @@ reference:
   - register_validator
   - list_validators
   - krt_validation_report
+  - as.data.frame.krt_validation_report
+  - summary.krt_validation_report
   - resource_signature
   - find_duplicates
 

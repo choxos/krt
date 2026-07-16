@@ -1,4 +1,4 @@
-# krt <img src="man/figures/logo.png" align="right" height="120" alt="" />
+# krt
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/choxos/krt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/choxos/krt/actions/workflows/R-CMD-check.yaml)
