@@ -107,3 +107,24 @@ test_that("cell-line pack rejects meaningless authentication and flags mycoplasm
   expect_true(any(grepl("meaningful authentication", msgs)))
   expect_true(any(grepl("mycoplasma-positive", msgs)))
 })
+
+test_that("RO-Crate has datePublished, an author, and a CreateAction", {
+  k <- add_contributor(krt_example, "Ada Researcher")
+  g <- jsonlite::fromJSON(as_rocrate(k), simplifyVector = FALSE)$`@graph`
+  types <- vapply(g, function(e) e$`@type` %||% "", character(1))
+  root <- Filter(function(e) identical(e$`@id`, "./"), g)[[1]]
+  expect_false(is.null(root$datePublished))
+  expect_false(is.null(root$author))
+  expect_true("CreateAction" %in% types)
+  expect_true("Person" %in% types)
+})
+
+test_that("PROV-JSON links activities with prov:informed/prov:informant", {
+  k <- normalize_ids(add_resource(new_krt("M"), "Antibody", "A",
+                                  rrid = "RRID:AB_1", new_or_reuse = "reuse"))
+  d <- jsonlite::fromJSON(as_prov_json(k), simplifyVector = FALSE)
+  expect_true(length(d$wasInformedBy) >= 1L)
+  rel <- d$wasInformedBy[[1]]
+  expect_false(is.null(rel$`prov:informed`))
+  expect_false(is.null(rel$`prov:informant`))
+})

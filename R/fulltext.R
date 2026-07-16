@@ -19,7 +19,8 @@
 #' @return A character string of the full text or abstract, or `NULL`.
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
+#' # Contacts Europe PMC / bioRxiv; not run on CRAN.
 #' txt <- fetch_fulltext("PMC5334499")
 #' }
 fetch_fulltext <- function(id, source = c("auto", "europepmc", "biorxiv"),

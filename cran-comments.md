@@ -15,10 +15,12 @@
   repositories (RRID/SciCrunch, Crossref, ORCID, NCBI, ROR, Cellosaurus,
   Zenodo, Figshare, eLabFTW, protocols.io, Europe PMC, bioRxiv) and, optionally,
   an LLM provider. All of them degrade gracefully: on any error or non-success
-  status they return `NULL`/`NA` or an unresolved result and never abort. No
-  example, test, or vignette contacts the network; live-network tests are
-  guarded with `skip_on_cran()` and `skip_if_offline()`, and identifier
-  resolution defaults to `resolve = FALSE`.
+  status they return `NULL`/`NA` or an unresolved result and never abort.
+  Identifier resolution only contacts the network when called with
+  `resolve = TRUE`; every runnable example uses `resolve = FALSE` or offline
+  data, and the two examples that would contact a registry are wrapped in
+  `\dontrun{}`. No test or vignette contacts the network; live-network tests are
+  guarded with `skip_on_cran()` and `skip_if_offline()`.
 
 - **Credentials.** API tokens are read from environment variables or passed
   explicitly; none are bundled, and the package never transmits a user's table

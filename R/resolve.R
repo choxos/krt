@@ -35,9 +35,12 @@
 #'   `type`, and `url`.
 #' @name resolvers
 #' @examples
+#' # Offline: normalize only (no network).
 #' resolve_rrid("RRID:AB_390204", resolve = FALSE)
-#' \donttest{
-#' resolve_doi("10.1038/sdata.2016.18")
+#' resolve_doi("10.1038/sdata.2016.18", resolve = FALSE)$normalized
+#' \dontrun{
+#' # Live lookup (contacts the registry; requires resolve = TRUE).
+#' resolve_doi("10.1038/sdata.2016.18", resolve = TRUE)
 #' }
 NULL
 
