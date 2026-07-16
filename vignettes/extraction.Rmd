@@ -1,0 +1,70 @@
+---
+title: "Extracting a KRT from a manuscript"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extracting a KRT from a manuscript}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{r setup}
+library(krt)
+```
+
+`krt` can extract candidate resources from a manuscript with a deterministic
+regex engine (the default, fully offline) or an optional LLM.
+
+## Scan text for identifiers
+
+```{r}
+txt <- "We stained with anti-TH (RRID:AB_390204) from Millipore (Cat# AB152)
+        and analyzed images in Fiji (RRID:SCR_002285). Data: GEO GSE12345."
+scan_identifiers(txt)
+```
+
+## Extract a table
+
+```{r}
+res <- extract_krt(txt)
+as.data.frame(res$krt)[, c("resource_type", "display_name", "rrid")]
+```
+
+The result is a normalized, validated `krt_tbl` plus a validation report; every
+extraction is provenance-stamped with the engine used.
+
+## Read structured documents
+
+`read_input_text()` handles PDF, JATS/NISO XML, DOCX, and plain text, and
+`detect_existing_krt()` parses a Key Resources Table already present in the
+document.
+
+```{r}
+jats <- system.file("extdata", "examples", "sample.jats.xml", package = "krt")
+res <- extract_krt(jats)
+res$existing_krt
+```
+
+## LLM extraction (optional)
+
+The LLM engine is opt-in and requires a provider and API key. It is
+non-deterministic, so it is never the default, and its output is funneled
+through the same normalize + validate pipeline as every other import path.
+
+```{r, eval = FALSE}
+cfg <- krt_llm("openai", model = "gpt-4o-mini")   # reads OPENAI_API_KEY
+res <- extract_krt("path/to/manuscript.pdf", engine = "llm", llm = cfg)
+```
+
+You can register a custom or local provider:
+
+```{r, eval = FALSE}
+register_llm_provider("local", function(prompt, llm) {
+  # call your local server, return the model's text output
+})
+extract_krt(txt, engine = "llm",
+            llm = structure(list(provider = "local"), class = "krt_llm"))
+```

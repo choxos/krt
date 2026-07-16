@@ -1,0 +1,42 @@
+Licensing of the krt package and its bundled materials
+======================================================
+
+The R source code and original software components of the krt package are
+Copyright (C) 2026 Ahmad Sofi-Mahmudi and are licensed under the GNU General
+Public License version 3 (GPL-3; see the License field in DESCRIPTION and the
+full text in LICENSE.md).
+
+The package additionally bundles separately licensed materials. Each is
+redistributed under its own license, recorded below and, per component, in
+inst/COPYRIGHTS.
+
+--------------------------------------------------------------------------------
+1. ASAP Key Resources Table resources (bundled ASAP profile)
+   Source:  Aligning Science Across Parkinson's,
+            "Key Resource Table" Guide, FAQ, and Template, version 8
+   DOI:     https://doi.org/10.5281/zenodo.17917979
+   Holder:  Aligning Science Across Parkinson's (ASAP)
+   License: CC-BY-4.0 (full text in inst/licenses/CC-BY-4.0.txt)
+   Use:     the machine-readable ASAP profile assets under
+            inst/extdata/profiles/asap/ (schema, validation rules, column
+            mappings, and an adapted template), derived from the source above.
+
+   Changes made for inclusion in this package are described in
+   inst/extdata/profiles/asap/ATTRIBUTION.md and provenance.json. Those
+   materials remain subject to CC-BY-4.0. No affiliation with or endorsement by
+   ASAP is implied.
+
+--------------------------------------------------------------------------------
+2. STAR Methods / Cell Press compatibility profile
+   The STAR Methods interoperability profile under
+   inst/extdata/profiles/star-methods/ contains only independently written
+   mapping and validation rules (GPL-3, as part of this package). No Cell Press
+   or STAR Methods workbook, template, logo, or branded text is bundled. Users
+   who wish to fill an official STAR template must supply their own copy.
+
+--------------------------------------------------------------------------------
+The full text of the CC-BY-4.0 license is included in
+inst/licenses/CC-BY-4.0.txt and is also available from
+https://spdx.org/licenses/CC-BY-4.0.html. No upstream copyright notice has been
+removed; this file records provenance and licensing for the bundled components
+as required for redistribution.

@@ -1,0 +1,6 @@
+# ASAP requires RESOURCE TYPE, RESOURCE NAME, IDENTIFIER, and NEW/REUSE in
+# every row, so these become errors under the ASAP profile.
+overrides:
+  struct-missing-name: error
+  struct-missing-new-reuse: error
+  struct-missing-identifier: error

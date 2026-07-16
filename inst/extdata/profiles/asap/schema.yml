@@ -1,0 +1,31 @@
+name: asap
+version: "8"
+title: ASAP Key Resources Table profile
+description: >-
+  A machine-readable profile derived from the Aligning Science Across
+  Parkinson's (ASAP) Key Resource Table resources. Projects a table to the
+  six-column ASAP layout. This package is independently developed and is not an
+  official ASAP product; no endorsement by ASAP is implied.
+license: CC-BY-4.0
+official: false
+source:
+  creator: Aligning Science Across Parkinson's
+  title: Key Resource Table resources
+  doi: 10.5281/zenodo.17917979
+  version: "8"
+  url: https://doi.org/10.5281/zenodo.17917979
+resource_types:
+  - Antibody
+  - Bacterial strain
+  - Biological sample
+  - Chemical, peptide, or recombinant protein
+  - Critical commercial assay
+  - Dataset
+  - "Experimental model: Cell line"
+  - "Experimental model: Organism/strain"
+  - Oligonucleotide
+  - Other
+  - Protocol
+  - Recombinant DNA
+  - Software/code
+  - Viral vector

@@ -1,0 +1,91 @@
+---
+title: "Getting started with krt"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with krt}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{r setup}
+library(krt)
+```
+
+A **Key Resources Table** (KRT) lists the resources a study used and generated,
+each paired with a persistent identifier. `krt` models resources around a
+neutral, typed core schema and lets you validate, enrich, render, and export
+them.
+
+## Build a table
+
+```{r}
+k <- new_krt("Dopaminergic neuron study", study_type = "wet-lab")
+
+k <- add_resource(k, "Antibody", "Rabbit Anti-TH",
+                  vendor = "Millipore", catalog_number = "AB152",
+                  rrid = "RRID:AB_390204", new_or_reuse = "reuse",
+                  notes = "Dilution 1:500")
+
+k <- add_resource(k, "Software/code", "Fiji", version = "2.14.0",
+                  rrid = "RRID:SCR_002285", new_or_reuse = "reuse")
+
+k <- add_resource(k, "Dataset", "Processed counts",
+                  doi = "10.5281/zenodo.11111111", new_or_reuse = "new")
+k
+```
+
+Identifiers are stored in their own typed fields (`catalog_number`, `rrid`,
+`doi`, ...); they are only combined into a compound string at export time. The
+author-facing table is a *view* of the underlying records:
+
+```{r}
+as.data.frame(k)[, c("resource_type", "display_name", "rrid", "doi")]
+```
+
+## Validate
+
+Validation runs structural and semantic rules, with conditional packs that fire
+only for the relevant resource types. Severity depends on the profile.
+
+```{r}
+validate_krt(k, profile = "generic")
+```
+
+Under the stricter ASAP profile, a missing identifier becomes an error:
+
+```{r}
+summary(validate_krt(k, profile = "asap"))
+```
+
+## Normalize and export
+
+```{r}
+k <- normalize_ids(k)
+
+# Lossless canonical formats
+cat(substr(write_krt_json(k), 1, 120))
+```
+
+Tabular and profile exports are lossy views and warn about it:
+
+```{r}
+cat(suppressWarnings(export_krt(k, format = "asap")))
+```
+
+## Render for a manuscript
+
+```{r}
+cat(render_krt(k, format = "md", profile = "star-methods"))
+```
+
+## Provenance
+
+Every step is recorded:
+
+```{r}
+as.data.frame(krt_provenance(k))[, c("activity", "software")]
+```

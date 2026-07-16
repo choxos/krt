@@ -1,0 +1,34 @@
+{
+  "title": "krt: Author, Validate, and Export Key Resources Tables",
+  "description": "An R toolkit for authoring, validating, enriching, rendering, and depositing Key Resources Tables (KRTs), built around a neutral typed core schema and a registry of output profiles (generic, ASAP, STAR Methods), with identifier normalization and resolution, manuscript extraction, provenance, and FAIR outputs.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "GPL-3.0-only",
+  "creators": [
+    {
+      "name": "Sofi-Mahmudi, Ahmad",
+      "orcid": "0000-0001-6829-0823"
+    }
+  ],
+  "keywords": [
+    "key resources table",
+    "KRT",
+    "RRID",
+    "reproducibility",
+    "FAIR",
+    "research resources",
+    "R"
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/choxos/krt",
+      "scheme": "url"
+    },
+    {
+      "relation": "isDerivedFrom",
+      "identifier": "10.5281/zenodo.17917979",
+      "scheme": "doi"
+    }
+  ]
+}

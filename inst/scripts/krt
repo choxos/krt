@@ -1,0 +1,6 @@
+#!/usr/bin/env Rscript
+# Command-line entry point for the krt package. Install the package, then either
+# call this script directly or symlink it onto your PATH.
+status <- tryCatch(krt::krt_cli(commandArgs(trailingOnly = TRUE)),
+                   error = function(e) { message("krt: ", conditionMessage(e)); 1L })
+quit(status = if (is.numeric(status)) as.integer(status) else 0L, save = "no")

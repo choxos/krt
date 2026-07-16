@@ -1,0 +1,10 @@
+name: generic
+version: "1.0.0"
+title: Generic FAIR profile
+description: >-
+  The neutral default profile. Its view is the full set of core fields, so no
+  structured information is folded or dropped. Use it for lossless working
+  copies and as the base for custom profiles.
+license: GPL-3.0-only
+official: false
+passthrough: true

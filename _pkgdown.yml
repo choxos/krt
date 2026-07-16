@@ -1,0 +1,138 @@
+url: https://choxos.github.io/krt/
+
+template:
+  bootstrap: 5
+  bslib:
+    primary: "#118AB2"
+
+reference:
+- title: Create and edit a table
+  desc: Build a Key Resources Table and its records.
+  contents:
+  - new_krt
+  - add_resource
+  - new_resource
+  - add_approval
+  - new_approval
+  - add_contributor
+  - new_contributor
+  - krt_meta
+  - krt_example
+
+- title: Schema and vocabulary
+  desc: The field registry and controlled vocabularies.
+  contents:
+  - field_registry
+  - coerce_field
+  - krt_vocab
+  - krt_vocabularies
+  - vocab_match
+
+- title: Validation
+  contents:
+  - validate_krt
+  - register_validator
+  - list_validators
+  - krt_validation_report
+  - resource_signature
+  - find_duplicates
+
+- title: Identifiers and resolvers
+  contents:
+  - id_parse
+  - rrid_type
+  - parse_compound_identifier
+  - compose_identifier
+  - is_pending_identifier
+  - normalize_ids
+  - resolvers
+  - resolve_id
+  - register_resolver
+  - list_resolvers
+  - krt_suggest
+  - register_suggest_source
+  - list_suggest_sources
+
+- title: Import
+  contents:
+  - import_krt
+  - read_krt_json
+  - read_krt_yaml
+  - import_asap
+  - import_tabular
+
+- title: Export and render
+  contents:
+  - export_krt
+  - write_krt_json
+  - write_krt_yaml
+  - export_asap
+  - export_tabular
+  - export_citation
+  - render_krt
+
+- title: Profiles and licensing
+  contents:
+  - krt_profiles
+  - get_profile
+  - load_profile
+  - krt_profile_info
+  - apply_mapping
+  - project_profile
+  - mapping_lossy_fields
+  - krt_profile_license
+  - krt_attribution
+  - krt_write_attribution
+  - krt_audit_licenses
+
+- title: Redaction and provenance
+  contents:
+  - redact_krt
+  - redaction_policy
+  - redaction_default
+  - append_provenance
+  - krt_provenance
+  - as_prov_json
+  - as_rocrate
+  - as_rdf
+
+- title: Manuscript extraction
+  contents:
+  - extract_krt
+  - scan_identifiers
+  - extract_candidates
+  - read_input_text
+  - detect_existing_krt
+  - extract_llm
+  - krt_llm
+  - register_llm_provider
+  - list_llm_providers
+  - fetch_fulltext
+
+- title: Merge, deposit, and connect
+  contents:
+  - krt_merge
+  - krt_diff
+  - krt_deposit_zenodo
+  - krt_deposit_figshare
+  - krt_import_elabftw
+  - krt_import_protocolsio
+
+- title: Interfaces and extension
+  contents:
+  - krt_cli
+  - launch_krt
+  - register_profile
+  - krt_plugins
+  - krt_plugin_api
+  - validate_plugin_contract
+
+- title: Bioconductor
+  contents:
+  - KRT-class
+  - as_krt
+  - krt_as_dataframe
+
+- title: Package
+  contents:
+  - krt-package

@@ -1,0 +1,11 @@
+{
+  "title": "ASAP Key Resource Table resources",
+  "creator": "Aligning Science Across Parkinson's",
+  "source_doi": "10.5281/zenodo.17917979",
+  "source_version": "8",
+  "license": "CC-BY-4.0",
+  "modified": true,
+  "modification_description": "Converted the ASAP Key Resource Table Guide, FAQ, and template into a machine-readable krt profile: a column schema, a core-to-ASAP column mapping, and validation severity overrides. Column names and the controlled resource-type vocabulary follow the ASAP specification. Any bundled template is independently generated to the ASAP column structure, not copied from the source workbook.",
+  "official": false,
+  "endorsement": "No affiliation with or endorsement by ASAP is implied."
+}

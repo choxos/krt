@@ -1,0 +1,39 @@
+# Resource-type cue lexicon for manuscript extraction. Terms near an identifier
+# reinforce the resource-type inference made from the identifier authority.
+Antibody:
+  - antibody
+  - anti-
+  - monoclonal
+  - polyclonal
+  - immunostain
+"Experimental model: Cell line":
+  - cell line
+  - ATCC
+  - Cellosaurus
+  - passage
+"Experimental model: Organism/strain":
+  - mouse
+  - mice
+  - strain
+  - Jackson Laboratory
+  - transgenic
+Software/code:
+  - software
+  - algorithm
+  - package
+  - pipeline
+  - version
+Dataset:
+  - deposited
+  - accession
+  - Gene Expression Omnibus
+  - GEO
+  - dataset
+Protocol:
+  - protocol
+  - protocols.io
+  - procedure
+Recombinant DNA:
+  - plasmid
+  - Addgene
+  - vector construct

@@ -1,0 +1,89 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "@id": "https://github.com/choxos/krt",
+  "name": "krt",
+  "description": "An R toolkit for authoring, validating, enriching, rendering, and depositing Key Resources Tables (KRTs), built around a neutral typed core schema and a registry of output profiles (generic, ASAP, STAR Methods), with identifier normalization and resolution, manuscript extraction, provenance, and FAIR outputs.",
+  "codeRepository": "https://github.com/choxos/krt",
+  "url": "https://choxos.github.io/krt/",
+  "issueTracker": "https://github.com/choxos/krt/issues",
+  "license": "https://spdx.org/licenses/GPL-3.0-only.html",
+  "version": "0.1.0",
+  "softwareVersion": "0.1.0",
+  "programmingLanguage": "R",
+  "runtimePlatform": "R >= 4.1",
+  "operatingSystem": "OS Independent",
+  "applicationCategory": "Research data management",
+  "developmentStatus": "active",
+  "keywords": [
+    "key resources table",
+    "KRT",
+    "RRID",
+    "reproducibility",
+    "FAIR",
+    "research resources",
+    "STAR Methods",
+    "ASAP",
+    "metadata",
+    "R"
+  ],
+  "softwareRequirements": [
+    "R >= 4.1",
+    "digest",
+    "httr2",
+    "jsonlite",
+    "methods",
+    "xml2",
+    "yaml"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Ahmad",
+      "familyName": "Sofi-Mahmudi",
+      "email": "a.sofimahmudi@gmail.com",
+      "@id": "https://orcid.org/0000-0001-6829-0823"
+    }
+  ],
+  "copyrightHolder": [
+    {
+      "@type": "Person",
+      "givenName": "Ahmad",
+      "familyName": "Sofi-Mahmudi",
+      "@id": "https://orcid.org/0000-0001-6829-0823"
+    },
+    {
+      "@type": "Organization",
+      "name": "Aligning Science Across Parkinson's",
+      "description": "Copyright holder of the ASAP Key Resource Table schema (CC BY 4.0) from which the bundled ASAP profile is derived. ASAP does not endorse this package."
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Role",
+      "roleName": [
+        "Conceptualization",
+        "Data curation",
+        "Formal analysis",
+        "Methodology",
+        "Software",
+        "Validation",
+        "Visualization",
+        "Writing - original draft",
+        "Writing - review & editing",
+        "Project administration"
+      ],
+      "url": "https://credit.niso.org/",
+      "description": "krt has a single author; all CRediT contributor roles are attributed to Ahmad Sofi-Mahmudi.",
+      "schema:author": {
+        "@id": "https://orcid.org/0000-0001-6829-0823",
+        "name": "Ahmad Sofi-Mahmudi"
+      }
+    }
+  ],
+  "isBasedOn": [
+    "https://doi.org/10.5281/zenodo.17917979"
+  ],
+  "readme": "https://github.com/choxos/krt/blob/main/README.md",
+  "contIntegration": "https://github.com/choxos/krt/actions"
+}

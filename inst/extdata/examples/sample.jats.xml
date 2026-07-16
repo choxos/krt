@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article article-type="research-article">
+  <front>
+    <article-meta>
+      <title-group>
+        <article-title>A sample manuscript for KRT extraction</article-title>
+      </title-group>
+    </article-meta>
+  </front>
+  <body>
+    <sec>
+      <title>Materials and Methods</title>
+      <p>We stained sections with a rabbit anti-tyrosine hydroxylase antibody
+      (RRID:AB_390204) from Millipore (Cat# AB152) and quantified images in FIJI
+      (RRID:SCR_002285). Cells used were HEK293T (RRID:CVCL_0063). Sequencing
+      data are deposited in the Gene Expression Omnibus (GSE12345).</p>
+    </sec>
+    <sec>
+      <title>Key Resources Table</title>
+      <table-wrap id="krt">
+        <table>
+          <thead>
+            <tr>
+              <th>RESOURCE TYPE</th>
+              <th>RESOURCE NAME</th>
+              <th>SOURCE</th>
+              <th>IDENTIFIER</th>
+              <th>NEW/REUSE</th>
+              <th>ADDITIONAL INFORMATION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Antibody</td>
+              <td>Rabbit Anti-TH</td>
+              <td>Millipore</td>
+              <td>Cat# AB152; RRID:AB_390204</td>
+              <td>reuse</td>
+              <td>Dilution 1:500</td>
+            </tr>
+            <tr>
+              <td>Software/code</td>
+              <td>FIJI</td>
+              <td>NIH</td>
+              <td>RRID:SCR_002285</td>
+              <td>reuse</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </table-wrap>
+    </sec>
+  </body>
+</article>
