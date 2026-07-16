@@ -10,8 +10,10 @@ scan_identifiers(text)
 \item{text}{A character vector of text.}
 }
 \value{
-A data frame with columns \code{value}, \code{field}, and \code{type} (an inferred
-resource type, or \code{NA}).
+A data frame with columns \code{value}, \code{field}, \code{type} (an inferred
+resource type, or \code{NA}), and \code{confidence} (\code{"high"} for precisely anchored
+schemes such as RRID/DOI/accession/PMID, \code{"medium"} for looser catalog-number
+matches) so the results can be triaged before acceptance.
 }
 \description{
 Finds RRIDs, DOIs, catalog numbers, database accessions, ORCIDs, and PMIDs in
