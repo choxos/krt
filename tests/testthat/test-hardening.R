@@ -163,6 +163,17 @@ test_that("the Shiny app source parses", {
   expect_silent(parse(app))
 })
 
+test_that("a Cell Press 'Bacterial and virus strains' section imports correctly", {
+  expect_identical(krt:::.cellpress_section_type("Bacterial and virus strains"),
+                   "Bacterial strain")
+  csv <- paste("REAGENT or RESOURCE,SOURCE,IDENTIFIER",
+               "Bacterial and virus strains,,",
+               "E. coli DH5a,NEB,Cat#C2987", sep = "\n")
+  f <- tempfile(fileext = ".csv"); writeLines(csv, f)
+  k <- import_krt(f)
+  expect_identical(k$resources[[1]]$resource_type, "Bacterial strain")
+})
+
 test_that("the ROR name parser reads v2 names[] and v1 name", {
   v2 <- list(names = list(
     list(value = "University X", types = list("ror_display", "label")),

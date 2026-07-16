@@ -35,19 +35,21 @@
 
 #' @noRd
 .cellpress_section_type <- function(name) {
+  # Order matters: the STAR category "Bacterial and virus strains" contains the
+  # word "strain", so it must be matched before the generic organism/strain
+  # branch, and "Experimental models: Cell lines" before it as well.
   n <- tolower(name)
   if (grepl("antibod", n)) return("Antibody")
-  if (grepl("cell line", n)) return("Experimental model: Cell line")
-  if (grepl("organism|strain|mouse|animal", n)) return("Experimental model: Organism/strain")
-  if (grepl("software|algorithm|code", n)) return("Software/code")
-  if (grepl("bacter", n)) return("Bacterial strain")
-  if (grepl("virus|viral", n)) return("Viral vector")
+  if (grepl("bacter|virus|viral|phage", n)) return("Bacterial strain")
+  if (grepl("biological sample|specimen", n)) return("Biological sample")
   if (grepl("chemical|peptide|protein|reagent", n)) return("Chemical, peptide, or recombinant protein")
+  if (grepl("critical|assay|kit", n)) return("Critical commercial assay")
+  if (grepl("deposited|dataset|\\bdata\\b", n)) return("Dataset")
+  if (grepl("cell line", n)) return("Experimental model: Cell line")
+  if (grepl("organism|strain|mouse|animal|model", n)) return("Experimental model: Organism/strain")
   if (grepl("oligo", n)) return("Oligonucleotide")
   if (grepl("recombinant dna|plasmid", n)) return("Recombinant DNA")
-  if (grepl("deposited|dataset|data", n)) return("Dataset")
-  if (grepl("critical|assay|kit", n)) return("Critical commercial assay")
-  if (grepl("biological sample|specimen", n)) return("Biological sample")
+  if (grepl("software|algorithm|code", n)) return("Software/code")
   "Other"
 }
 
