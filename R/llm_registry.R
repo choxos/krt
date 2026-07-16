@@ -12,13 +12,20 @@
 #'   text output, or `NULL` on failure.
 #' @param parse_fn Optional custom parser `function(text)`; defaults to JSON
 #'   array extraction.
+#' @param replace Overwrite an existing provider named `name`? Defaults to
+#'   `FALSE` so a plugin cannot silently replace a built-in provider.
 #' @return Invisibly `NULL`.
 #' @export
 #' @examples
-#' register_llm_provider("echo", function(prompt, llm) "[]")
+#' register_llm_provider("echo", function(prompt, llm) "[]", replace = TRUE)
 #' "echo" %in% list_llm_providers()
-register_llm_provider <- function(name, request_fn, parse_fn = NULL) {
+register_llm_provider <- function(name, request_fn, parse_fn = NULL,
+                                  replace = FALSE) {
   if (!is.function(request_fn)) stop("`request_fn` must be a function.", call. = FALSE)
+  if (!isTRUE(replace) && !is.null(.llm_registry[[name]])) {
+    stop(sprintf("An LLM provider '%s' is already registered; pass replace = TRUE to override.",
+                 name), call. = FALSE)
+  }
   .llm_registry[[name]] <- list(request = request_fn, parse = parse_fn)
   invisible(NULL)
 }
@@ -55,8 +62,8 @@ krt_llm <- function(provider = c("openai", "anthropic", "gemini", "openai_compat
     gemini = { g <- Sys.getenv("GEMINI_API_KEY"); if (nzchar(g)) g else Sys.getenv("GOOGLE_API_KEY") },
     openai_compat = Sys.getenv("KRT_LLM_API_KEY"))
   model <- model %||% switch(provider,
-    openai = "gpt-4o-mini", anthropic = "claude-3-5-sonnet-latest",
-    gemini = "gemini-1.5-flash",
+    openai = "gpt-4o-mini", anthropic = "claude-sonnet-5",
+    gemini = "gemini-2.5-flash",
     openai_compat = { m <- Sys.getenv("KRT_LLM_MODEL"); if (nzchar(m)) m else "local-model" })
   base_url <- base_url %||% if (identical(provider, "openai_compat")) Sys.getenv("KRT_LLM_BASE_URL") else NULL
   structure(list(provider = provider, model = model, base_url = base_url,

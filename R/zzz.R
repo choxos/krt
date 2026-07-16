@@ -1,27 +1,31 @@
 # Package load hooks.
 #
-# `.onLoad` populates the package registries (profiles, validators, resolvers,
-# extractors, LLM providers, suggest sources) once all functions are defined.
-# Registration helpers are added as each subsystem lands; the dispatcher below
-# calls whichever registrars exist so partially built states still load.
+# `.onLoad` populates the package's five registries (profiles, validators,
+# resolvers, LLM providers, suggest sources) once all functions are defined.
+# A missing or failing built-in registrar is surfaced as a warning.
 
 .onLoad <- function(libname, pkgname) {
   registrars <- c(
     ".register_builtin_profiles",
     ".register_builtin_validators",
     ".register_builtin_resolvers",
-    ".register_builtin_extractors",
     ".register_builtin_llm_providers",
     ".register_builtin_suggest_sources"
   )
   ns <- asNamespace(pkgname)
   for (fn in registrars) {
-    if (exists(fn, envir = ns, mode = "function", inherits = FALSE)) {
-      # Registrars that are not yet defined are skipped above; a defined
-      # registrar that errors is a bug surfaced by the test suite, so we do not
-      # emit output from .onLoad here.
-      try(get(fn, envir = ns)(), silent = TRUE)
+    f <- tryCatch(get(fn, envir = ns, mode = "function", inherits = FALSE),
+                  error = function(e) NULL)
+    # A missing or failing built-in registrar leaves the package with an empty
+    # or partial registry; surface it as a warning rather than loading a
+    # silently broken package.
+    if (is.null(f)) {
+      warning(sprintf("krt: built-in registrar '%s' is missing.", fn), call. = FALSE)
+      next
     }
+    tryCatch(f(), error = function(e) warning(sprintf(
+      "krt: built-in registrar '%s' failed: %s", fn, conditionMessage(e)),
+      call. = FALSE))
   }
   # Register the optional tibble method only when tibble is installed, so tibble
   # stays a Suggest.

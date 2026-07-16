@@ -37,6 +37,6 @@ test_that("report summary and as.data.frame are well-formed", {
 
 test_that("list_validators exposes the registered rules", {
   lv <- list_validators()
-  expect_true(all(c("struct-missing-name", "sem-rrid-type", "cond-arrive")
+  expect_true(all(c("struct-missing-name", "sem-rrid-type", "cond-organism")
                   %in% lv$rule_id))
 })

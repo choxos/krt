@@ -4,7 +4,7 @@
 \alias{register_llm_provider}
 \title{Register an LLM provider}
 \usage{
-register_llm_provider(name, request_fn, parse_fn = NULL)
+register_llm_provider(name, request_fn, parse_fn = NULL, replace = FALSE)
 }
 \arguments{
 \item{name}{Provider name (e.g. \code{"openai"}, \code{"anthropic"}, a local endpoint).}
@@ -14,6 +14,9 @@ text output, or \code{NULL} on failure.}
 
 \item{parse_fn}{Optional custom parser \verb{function(text)}; defaults to JSON
 array extraction.}
+
+\item{replace}{Overwrite an existing provider named \code{name}? Defaults to
+\code{FALSE} so a plugin cannot silently replace a built-in provider.}
 }
 \value{
 Invisibly \code{NULL}.
@@ -22,6 +25,6 @@ Invisibly \code{NULL}.
 Register an LLM provider
 }
 \examples{
-register_llm_provider("echo", function(prompt, llm) "[]")
+register_llm_provider("echo", function(prompt, llm) "[]", replace = TRUE)
 "echo" \%in\% list_llm_providers()
 }

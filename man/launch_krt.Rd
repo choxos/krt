@@ -13,9 +13,9 @@ launch_krt(...)
 Called for its side effect (runs the app).
 }
 \description{
-Starts a Shiny application for importing, editing, validating, enriching, and
-exporting a Key Resources Table. Requires the \code{shiny}, \code{bslib}, and \code{DT}
-packages.
+Starts a Shiny application for importing, editing (in the generic view),
+validating, normalizing identifiers, and exporting a Key Resources Table.
+Requires the \code{shiny}, \code{bslib}, and \code{DT} packages.
 }
 \examples{
 if (interactive()) launch_krt()

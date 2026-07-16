@@ -35,9 +35,12 @@
 #'   `type`, and `url`.
 #' @name resolvers
 #' @examples
+#' # Offline: normalize only (no network).
 #' resolve_rrid("RRID:AB_390204", resolve = FALSE)
-#' \donttest{
-#' resolve_doi("10.1038/sdata.2016.18")
+#' resolve_doi("10.1038/sdata.2016.18", resolve = FALSE)$normalized
+#' \dontrun{
+#' # Live lookup (contacts the registry; requires resolve = TRUE).
+#' resolve_doi("10.1038/sdata.2016.18", resolve = TRUE)
 #' }
 NULL
 
@@ -60,16 +63,32 @@ resolve_rrid <- function(rrid, resolve = TRUE, timeout = 15) {
 resolve_doi <- function(doi, resolve = TRUE, timeout = 15) {
   norm <- norm_doi(doi)
   if (!isTRUE(resolve)) return(.rr(doi, norm, FALSE, "crossref"))
+  enc <- utils::URLencode(norm, reserved = TRUE)
+  # Crossref first; then DataCite, since many research-object DOIs (e.g. Zenodo,
+  # Figshare, Dryad) register through DataCite and are absent from Crossref.
   mailto <- Sys.getenv("CROSSREF_MAILTO")
-  j <- .resp_json(http_get(paste0(endpoint("crossref"), utils::URLencode(norm, reserved = TRUE)),
+  j <- .resp_json(http_get(paste0(endpoint("crossref"), enc),
                            query = if (nzchar(mailto)) list(mailto = mailto) else NULL,
                            timeout = timeout))
   msg <- .dig(j, "message")
-  if (is.null(msg)) return(.rr(doi, norm, FALSE, "crossref"))
-  name <- .dig(msg, "title", 1L)
-  .rr(doi, norm, TRUE, "crossref", name = as.character(name %||% NA_character_),
-      type = as.character(.dig(msg, "type") %||% NA_character_),
-      url = paste0("https://doi.org/", norm))
+  if (!is.null(msg)) {
+    name <- .dig(msg, "title", 1L)
+    return(.rr(doi, norm, TRUE, "crossref", name = as.character(name %||% NA_character_),
+               type = as.character(.dig(msg, "type") %||% NA_character_),
+               url = paste0("https://doi.org/", norm)))
+  }
+  dc <- tryCatch(endpoint("datacite"), error = function(e) NULL)
+  if (!is.null(dc)) {
+    j2 <- .resp_json(http_get(paste0(dc, enc), timeout = timeout))
+    at <- .dig(j2, "data", "attributes")
+    if (!is.null(at)) {
+      title <- .dig(at, "titles", 1L, "title")
+      return(.rr(doi, norm, TRUE, "datacite", name = as.character(title %||% NA_character_),
+                 type = as.character(.dig(at, "types", "resourceTypeGeneral") %||% NA_character_),
+                 url = paste0("https://doi.org/", norm)))
+    }
+  }
+  .rr(doi, norm, FALSE, "crossref")
 }
 
 #' @rdname resolvers
@@ -102,13 +121,31 @@ resolve_pubmed <- function(pmid, resolve = TRUE, timeout = 15) {
 
 #' @rdname resolvers
 #' @export
+# The ROR display name: v2 responses carry names in names[] (the entry tagged
+# "ror_display"); v1 responses use a top-level `name`. Handle both.
+#' @noRd
+.ror_display_name <- function(j) {
+  if (is.null(j)) return(NULL)
+  nl <- .dig(j, "names")
+  if (is.list(nl) && length(nl)) {
+    for (n in nl) {
+      if ("ror_display" %in% unlist(n$types)) return(as.character(n$value))
+    }
+    return(as.character(nl[[1]]$value))
+  }
+  v1 <- .dig(j, "name")
+  if (!is.null(v1)) as.character(v1) else NULL
+}
+
+#' @rdname resolvers
+#' @export
 resolve_ror <- function(ror, resolve = TRUE, timeout = 15) {
   norm <- norm_ror(ror)
   if (!isTRUE(resolve)) return(.rr(ror, norm, FALSE, "ror"))
   j <- .resp_json(http_get(paste0(endpoint("ror"), norm), timeout = timeout))
-  name <- .dig(j, "name")
-  if (is.null(name)) return(.rr(ror, norm, FALSE, "ror"))
-  .rr(ror, norm, TRUE, "ror", name = as.character(name), type = "organization",
+  name <- .ror_display_name(j)
+  if (is.null(name) || !nzchar(name)) return(.rr(ror, norm, FALSE, "ror"))
+  .rr(ror, norm, TRUE, "ror", name = name, type = "organization",
       url = paste0("https://ror.org/", norm))
 }
 

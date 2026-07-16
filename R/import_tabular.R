@@ -10,7 +10,7 @@
                   vendor = "vendor", source = "source_name",
                   catalog = "catalog_number", catalognumber = "catalog_number",
                   cat = "catalog_number", rrid = "rrid", doi = "doi",
-                  identifier = "rrid", version = "version", notes = "notes",
+                  identifier = "__identifier__", version = "version", notes = "notes",
                   newreuse = "new_or_reuse", organism = "organism")
   map <- list()
   for (h in hdrs) {
@@ -50,7 +50,18 @@ import_tabular <- function(path, mapping = NULL, sheet = 1, profile = "generic",
     for (h in names(mapping)) {
       val <- as.character(row[[h]])
       if (is.na(val) || !nzchar(val)) next
-      args[[mapping[[h]]]] <- val
+      target <- mapping[[h]]
+      if (identical(target, "__identifier__")) {
+        # A generic identifier column may hold a DOI, accession, RRID, or a
+        # compound string; route it through the typed parser rather than
+        # forcing everything into `rrid`.
+        parsed <- parse_compound_identifier(val)
+        other <- parsed$other; parsed$other <- NULL
+        for (fn in names(parsed)) args[[fn]] <- parsed[[fn]]
+        if (length(other)) args$notes <- paste(c(args$notes, other), collapse = "; ")
+      } else {
+        args[[target]] <- val
+      }
     }
     rt <- args$resource_type %||% "Other"
     m <- vocab_match(rt, "resource_type", fuzzy = TRUE)

@@ -64,6 +64,15 @@ id_parse <- function(idstring) {
       return(list(scheme = nm, value = x, field = tests[[nm]]))
     }
   }
+  # A bare RRID authority token without the "RRID:" prefix (e.g. "AB_390204",
+  # "SCR_002285"), common in manuscripts and spreadsheets. Cellosaurus CVCL_ is
+  # already handled above as `cellosaurus_id`.
+  if (grepl("^[A-Za-z]+[_:][-.:A-Za-z0-9]+$", x)) {
+    token <- sub("[_:].*$", "", x)
+    if (token %in% ref_data("rrid_prefix_map")$token) {
+      return(list(scheme = "rrid", value = paste0("RRID:", x), field = "rrid"))
+    }
+  }
   if (grepl(p$url, x, perl = TRUE)) {
     return(list(scheme = "url", value = x, field = "url"))
   }
@@ -123,18 +132,22 @@ parse_compound_identifier <- function(str) {
   parts <- parts[nzchar(parts)]
   out <- list()
   other <- character(0)
+  # A compound IDENTIFIER lives on a resource, so only fields that exist on a
+  # resource record are stored; contributor-level tokens (ORCID, ROR) are kept
+  # verbatim in `other` rather than dropped into a phantom field.
+  res_fields <- names(all_fields())
   for (part in parts) {
     pr <- id_parse(part)
-    if (!is.na(pr$field)) {
+    if (!is.na(pr$field) && pr$field %in% res_fields) {
       out[[pr$field]] <- c(out[[pr$field]], pr$value)
       next
     }
     # "Label: value" form (e.g. "GEO Accession #: GSE12345"): parse the value.
-    if (grepl(":", part)) {
+    if (is.na(pr$field) && grepl(":", part)) {
       val <- trimws(sub("^[^:]*:\\s*", "", part))
       if (nzchar(val) && !identical(val, part)) {
         pr2 <- id_parse(val)
-        if (!is.na(pr2$field)) {
+        if (!is.na(pr2$field) && pr2$field %in% res_fields) {
           out[[pr2$field]] <- c(out[[pr2$field]], pr2$value)
           next
         }
@@ -162,17 +175,23 @@ parse_compound_identifier <- function(str) {
 #'                   rrid = "RRID:AB_390204", new_or_reuse = "reuse")
 #' compose_identifier(r)
 compose_identifier <- function(resource, order = NULL) {
+  as_rrid <- function(v) paste0("RRID:", sub("^\\s*RRID:\\s*", "", v, ignore.case = TRUE))
   fmt <- list(
     catalog_number = function(v) paste0("Cat# ", v),
-    rrid           = function(v) if (grepl("^RRID:", v)) v else paste0("RRID:", v),
+    rrid           = as_rrid,
+    # A Cellosaurus id is a cell-line RRID; render it so a CVCL-only cell line
+    # still produces a non-empty ASAP IDENTIFIER.
+    cellosaurus_id = as_rrid,
     doi            = function(v) paste0("https://doi.org/", .strip_doi(v)),
-    accession      = function(v) paste(v, collapse = ", "),
+    # Join with "; " (what parse_compound_identifier splits on) so multiple
+    # accessions round-trip back to separate values.
+    accession      = function(v) paste(v, collapse = "; "),
     pmid           = function(v) paste0("PMID: ", v),
     pmcid          = function(v) v,
     url            = function(v) v
   )
-  ord <- order %||% c("catalog_number", "rrid", "doi", "accession", "pmid",
-                      "pmcid", "url")
+  ord <- order %||% c("catalog_number", "rrid", "cellosaurus_id", "doi",
+                      "accession", "pmid", "pmcid", "url")
   parts <- character(0)
   for (nm in ord) {
     v <- resource[[nm]]
@@ -180,7 +199,9 @@ compose_identifier <- function(resource, order = NULL) {
     f <- fmt[[nm]] %||% function(v) as.character(v)
     parts <- c(parts, f(v))
   }
-  paste(parts, collapse = "; ")
+  # Drop duplicates so a resource carrying the same CVCL in both `rrid` and
+  # `cellosaurus_id` yields a single RRID entry.
+  paste(unique(parts), collapse = "; ")
 }
 
 #' Is a value the ASAP "identifier pending" placeholder?

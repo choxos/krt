@@ -24,12 +24,14 @@ test_that("resolve_id dispatches by detected scheme", {
   expect_null(resolve_id("some free text that is not an id", resolve = FALSE))
 })
 
-test_that("a custom resolver overrides a built-in", {
+test_that("a custom resolver overrides a built-in only with replace = TRUE", {
   old <- get_resolver("rrid")
-  on.exit(register_resolver("rrid", old), add = TRUE)
+  on.exit(register_resolver("rrid", old, replace = TRUE), add = TRUE)
+  # Overriding a built-in without opting in is rejected.
+  expect_error(register_resolver("rrid", function(id, ...) NULL), "already registered")
   register_resolver("rrid", function(id, resolve = TRUE, ...)
     list(input = id, normalized = "RRID:MOCK", resolved = TRUE, source = "mock",
-         name = "Mock", type = "Antibody", url = "x"))
+         name = "Mock", type = "Antibody", url = "x"), replace = TRUE)
   expect_identical(resolve_id("RRID:AB_1")$name, "Mock")
 })
 

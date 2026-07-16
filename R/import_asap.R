@@ -4,7 +4,11 @@
 #' @noRd
 .read_table_any <- function(path, sheet = 1) {
   ext <- tolower(tools::file_ext(path))
-  if (ext %in% c("xlsx", "xls")) {
+  if (ext == "xls") {
+    stop("Legacy binary .xls is not supported; save the file as .xlsx or .csv.",
+         call. = FALSE)
+  }
+  if (ext == "xlsx") {
     need_pkg("openxlsx", "reading xlsx")
     df <- openxlsx::read.xlsx(path, sheet = sheet, colNames = TRUE)
   } else {
@@ -25,7 +29,8 @@
              IDENTIFIER = "IDENTIFIER", IDENTIFIERS = "IDENTIFIER",
              NEWREUSE = "NEW_REUSE", ADDITIONALINFORMATION = "ADDITIONAL_INFORMATION",
              ADDITIONALINFO = "ADDITIONAL_INFORMATION", NOTES = "ADDITIONAL_INFORMATION")
-  vapply(hdrs, function(h) { v <- known[[norm(h)]]; if (is.null(v)) h else v }, character(1))
+  vapply(hdrs, function(h) { key <- norm(h)
+    if (key %in% names(known)) known[[key]] else h }, character(1))
 }
 
 #' @noRd

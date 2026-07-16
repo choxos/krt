@@ -10,7 +10,8 @@ register_validator(
   layer = c("structural", "semantic"),
   severity = c("error", "warning", "note", "info"),
   applies = function(x) TRUE,
-  standard = NA_character_
+  standard = NA_character_,
+  replace = FALSE
 )
 }
 \arguments{
@@ -27,7 +28,11 @@ register_validator(
 \code{TRUE} (used by conditional rule packs).}
 
 \item{standard}{Optional reporting standard the rule enforces (e.g.
-\code{"ARRIVE-2.0"}).}
+\code{"cell-line-auth-minimum"}).}
+
+\item{replace}{Overwrite an existing rule with the same \code{rule_id}? Defaults to
+\code{FALSE}, so a plugin cannot silently replace a built-in rule; pass \code{TRUE} to
+deliberately override one.}
 }
 \value{
 Invisibly \code{NULL}; called for its side effect.

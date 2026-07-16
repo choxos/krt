@@ -20,18 +20,22 @@
 #' available on its own.
 #'
 #' @param text A character vector of text.
-#' @return A data frame with columns `value`, `field`, and `type` (an inferred
-#'   resource type, or `NA`).
+#' @return A data frame with columns `value`, `field`, `type` (an inferred
+#'   resource type, or `NA`), and `confidence` (`"high"` for precisely anchored
+#'   schemes such as RRID/DOI/accession/PMID, `"medium"` for looser catalog-number
+#'   matches) so the results can be triaged before acceptance.
 #' @export
 #' @examples
 #' scan_identifiers("We used anti-TH (RRID:AB_390204) and FIJI (RRID:SCR_002285).")
 scan_identifiers <- function(text) {
   rows <- list()
   add <- function(values, field, type = NA_character_) {
+    conf <- if (field == "catalog_number") "medium" else "high"
     for (v in unique(values)) {
       ty <- if (field == "rrid") { t <- rrid_type(v); if (is.na(t)) type else t } else type
       rows[[length(rows) + 1L]] <<- data.frame(value = v, field = field,
                                                type = ty %||% NA_character_,
+                                               confidence = conf,
                                                stringsAsFactors = FALSE)
     }
   }
@@ -47,7 +51,8 @@ scan_identifiers <- function(text) {
   add(.scan(text, "PMID:?\\s*([0-9]{1,9})", group = 1L), "pmid", "Other")
   if (!length(rows)) {
     return(data.frame(value = character(0), field = character(0),
-                      type = character(0), stringsAsFactors = FALSE))
+                      type = character(0), confidence = character(0),
+                      stringsAsFactors = FALSE))
   }
   df <- do.call(rbind, rows)
   df[!duplicated(paste(df$field, df$value)), , drop = FALSE]

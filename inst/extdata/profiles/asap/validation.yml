@@ -1,6 +1,10 @@
 # ASAP requires RESOURCE TYPE, RESOURCE NAME, IDENTIFIER, and NEW/REUSE in
-# every row, so these become errors under the ASAP profile.
+# every row, so these become errors under the ASAP profile. A known-impossible
+# RRID prefix/type pairing and an out-of-vocabulary enum are also errors, since
+# an ASAP table must be internally consistent.
 overrides:
   struct-missing-name: error
   struct-missing-new-reuse: error
   struct-missing-identifier: error
+  struct-enum-vocab: error
+  sem-rrid-type: error

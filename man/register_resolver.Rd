@@ -4,13 +4,16 @@
 \alias{register_resolver}
 \title{Register an identifier resolver}
 \usage{
-register_resolver(scheme, fn)
+register_resolver(scheme, fn, replace = FALSE)
 }
 \arguments{
 \item{scheme}{The identifier scheme (e.g. \code{"rrid"}, \code{"doi"}, \code{"orcid"}).}
 
 \item{fn}{A function \verb{function(id, resolve = TRUE, ...)} returning a
 normalized result list with at least \code{input}, \code{normalized}, and \code{resolved}.}
+
+\item{replace}{Overwrite an existing resolver for \code{scheme}? Defaults to
+\code{FALSE} so a plugin cannot silently replace a built-in resolver.}
 }
 \value{
 Invisibly \code{NULL}.
