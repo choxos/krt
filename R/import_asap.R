@@ -25,7 +25,8 @@
              IDENTIFIER = "IDENTIFIER", IDENTIFIERS = "IDENTIFIER",
              NEWREUSE = "NEW_REUSE", ADDITIONALINFORMATION = "ADDITIONAL_INFORMATION",
              ADDITIONALINFO = "ADDITIONAL_INFORMATION", NOTES = "ADDITIONAL_INFORMATION")
-  vapply(hdrs, function(h) { v <- known[[norm(h)]]; if (is.null(v)) h else v }, character(1))
+  vapply(hdrs, function(h) { key <- norm(h)
+    if (key %in% names(known)) known[[key]] else h }, character(1))
 }
 
 #' @noRd

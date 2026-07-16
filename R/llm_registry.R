@@ -12,13 +12,20 @@
 #'   text output, or `NULL` on failure.
 #' @param parse_fn Optional custom parser `function(text)`; defaults to JSON
 #'   array extraction.
+#' @param replace Overwrite an existing provider named `name`? Defaults to
+#'   `FALSE` so a plugin cannot silently replace a built-in provider.
 #' @return Invisibly `NULL`.
 #' @export
 #' @examples
-#' register_llm_provider("echo", function(prompt, llm) "[]")
+#' register_llm_provider("echo", function(prompt, llm) "[]", replace = TRUE)
 #' "echo" %in% list_llm_providers()
-register_llm_provider <- function(name, request_fn, parse_fn = NULL) {
+register_llm_provider <- function(name, request_fn, parse_fn = NULL,
+                                  replace = FALSE) {
   if (!is.function(request_fn)) stop("`request_fn` must be a function.", call. = FALSE)
+  if (!isTRUE(replace) && !is.null(.llm_registry[[name]])) {
+    stop(sprintf("An LLM provider '%s' is already registered; pass replace = TRUE to override.",
+                 name), call. = FALSE)
+  }
   .llm_registry[[name]] <- list(request = request_fn, parse = parse_fn)
   invisible(NULL)
 }

@@ -8,12 +8,18 @@
 #' @param name Source name (e.g. `"taxonomy"`, `"ror"`).
 #' @param fn A function `function(query, n)` returning a data frame with columns
 #'   `label`, `id`, `authority`, `score`, `uri`.
+#' @param replace Overwrite an existing source named `name`? Defaults to `FALSE`
+#'   so a plugin cannot silently replace a built-in source.
 #' @return Invisibly `NULL`.
 #' @export
 #' @examples
 #' "ror" %in% list_suggest_sources()
-register_suggest_source <- function(name, fn) {
+register_suggest_source <- function(name, fn, replace = FALSE) {
   if (!is.function(fn)) stop("`fn` must be a function.", call. = FALSE)
+  if (!isTRUE(replace) && !is.null(.suggest_registry[[name]])) {
+    stop(sprintf("A suggest source '%s' is already registered; pass replace = TRUE to override.",
+                 name), call. = FALSE)
+  }
   .suggest_registry[[name]] <- fn
   invisible(NULL)
 }

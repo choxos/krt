@@ -5,6 +5,17 @@
 #' @noRd
 .krt_user_agent <- function() "krt R package (+https://github.com/choxos/krt)"
 
+# Perform a request that never throws on HTTP status (req_error is disabled by
+# the callers), then enforce this layer's contract: a non-success (>= 400)
+# status returns NULL, so a caller testing `is.null()` cannot mistake a failed
+# request for a successful one.
+#' @noRd
+.perform <- function(req) {
+  resp <- httr2::req_perform(req)
+  if (httr2::resp_status(resp) >= 400L) return(NULL)
+  resp
+}
+
 #' @noRd
 http_get <- function(url, accept = "application/json", timeout = 15,
                      headers = list(), token = NULL, query = NULL) {
@@ -17,7 +28,7 @@ http_get <- function(url, accept = "application/json", timeout = 15,
     if (!is.null(token)) req <- httr2::req_auth_bearer_token(req, token)
     if (!is.null(query)) req <- do.call(httr2::req_url_query, c(list(req), query))
     req <- httr2::req_error(req, is_error = function(resp) FALSE)
-    httr2::req_perform(req)
+    .perform(req)
   }, error = function(e) NULL)
 }
 
@@ -33,7 +44,7 @@ http_post_json <- function(url, body, headers = list(), token = NULL,
     if (!is.null(token)) req <- httr2::req_auth_bearer_token(req, token)
     if (!is.null(query)) req <- do.call(httr2::req_url_query, c(list(req), query))
     req <- httr2::req_error(req, is_error = function(resp) FALSE)
-    httr2::req_perform(req)
+    .perform(req)
   }, error = function(e) NULL)
 }
 
@@ -50,7 +61,7 @@ http_put_json <- function(url, body, headers = list(), token = NULL,
     if (!is.null(token)) req <- httr2::req_auth_bearer_token(req, token)
     if (!is.null(query)) req <- do.call(httr2::req_url_query, c(list(req), query))
     req <- httr2::req_error(req, is_error = function(resp) FALSE)
-    httr2::req_perform(req)
+    .perform(req)
   }, error = function(e) NULL)
 }
 
@@ -63,12 +74,13 @@ http_put_bytes <- function(url, data, type = "application/octet-stream",
     req <- httr2::req_user_agent(req, .krt_user_agent())
     req <- httr2::req_timeout(req, timeout)
     req <- httr2::req_method(req, "PUT")
-    req <- httr2::req_body_raw(req, charToRaw(data), type = type)
+    raw <- if (is.raw(data)) data else charToRaw(data)
+    req <- httr2::req_body_raw(req, raw, type = type)
     if (length(headers)) req <- do.call(httr2::req_headers, c(list(req), headers))
     if (!is.null(token)) req <- httr2::req_auth_bearer_token(req, token)
     if (!is.null(query)) req <- do.call(httr2::req_url_query, c(list(req), query))
     req <- httr2::req_error(req, is_error = function(resp) FALSE)
-    httr2::req_perform(req)
+    .perform(req)
   }, error = function(e) NULL)
 }
 

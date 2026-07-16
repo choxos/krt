@@ -18,7 +18,9 @@
       conflicts[[length(conflicts) + 1L]] <- list(
         resource_id = grp[[1]]$resource_id %||% NA_character_, field = f,
         values = unique(unlist(lapply(present, function(v) paste(v, collapse = "; ")))))
-      record[[f]] <- if (identical(strategy, "prefer_y")) grp[[length(grp)]][[f]] else grp[[1]][[f]]
+      # Pick the last (prefer_y) or first present value for this field, not the
+      # last/first whole record, so a record missing the field cannot null it out.
+      record[[f]] <- if (identical(strategy, "prefer_y")) present[[length(present)]] else present[[1]]
     }
   }
   record$resource_id <- grp[[1]]$resource_id
@@ -49,16 +51,28 @@
 krt_merge <- function(x, y, ..., strategy = c("union", "prefer_x", "prefer_y",
                                               "manual"),
                       by = resource_signature) {
-  stopifnot(is_krt(x), is_krt(y))
   strategy <- match.arg(strategy)
   others <- c(list(y), list(...))
-  all_res <- c(x$resources, unlist(lapply(others, function(k) k$resources),
-                                   recursive = FALSE))
-  if (!length(all_res)) return(x)
-  sigs <- vapply(all_res, by, character(1))
+  if (!is_krt(x) || !all(vapply(others, is_krt, logical(1)))) {
+    stop("All inputs to krt_merge() must be krt_tbl objects.", call. = FALSE)
+  }
+  tables <- c(list(x), others)
+  all_res <- unlist(lapply(tables, function(k) k$resources), recursive = FALSE)
+  # Grouping key: resources that carry a distinguishing identifier merge by their
+  # identity signature; a resource with none is merged only when an explicit
+  # shared resource_id links two records, and a truly anonymous resource keeps a
+  # unique key so distinct identity-less resources are never silently collapsed.
+  keyf <- function(r, i) {
+    if (.has_identity(r)) paste0("sig:", by(r))
+    else if (nzchar(r$resource_id %||% "")) paste0("rid:", r$resource_id)
+    else paste0("uniq:", i)
+  }
+  keys <- if (length(all_res)) {
+    vapply(seq_along(all_res), function(i) keyf(all_res[[i]], i), character(1))
+  } else character(0)
   merged <- list(); conflicts <- list()
-  for (s in unique(sigs)) {
-    grp <- all_res[sigs == s]
+  for (k in unique(keys)) {
+    grp <- all_res[keys == k]
     if (length(grp) == 1L) {
       merged <- c(merged, grp)
     } else {
@@ -67,22 +81,22 @@ krt_merge <- function(x, y, ..., strategy = c("union", "prefer_x", "prefer_y",
       conflicts <- c(conflicts, m$conflicts)
     }
   }
-  dedupe_by <- function(records, key) {
+  # Union approvals/contributors across every table by exact content, so
+  # identical records collapse but conflicting ones are all kept (never dropped).
+  union_records <- function(records) {
     seen <- character(0); keep <- list()
     for (r in records) {
-      id <- r[[key]] %||% ""
-      if (!nzchar(id) || !(id %in% seen)) { seen <- c(seen, id); keep <- c(keep, list(r)) }
+      key <- digest::digest(r)
+      if (!(key %in% seen)) { seen <- c(seen, key); keep <- c(keep, list(r)) }
     }
     keep
   }
   out <- x
   out$resources <- merged
-  out$approvals <- dedupe_by(
-    c(x$approvals, unlist(lapply(others, function(k) k$approvals), recursive = FALSE)),
-    "approval_id")
-  out$contributors <- dedupe_by(
-    c(x$contributors, unlist(lapply(others, function(k) k$contributors), recursive = FALSE)),
-    "contributor_id")
+  out$approvals <- union_records(
+    unlist(lapply(tables, function(k) k$approvals), recursive = FALSE))
+  out$contributors <- union_records(
+    unlist(lapply(tables, function(k) k$contributors), recursive = FALSE))
   out <- .touch(out, "merge", params = list(strategy = strategy,
                                             resources = length(merged),
                                             conflicts = length(conflicts)))

@@ -4,13 +4,16 @@
 \alias{register_suggest_source}
 \title{Register an autocomplete source}
 \usage{
-register_suggest_source(name, fn)
+register_suggest_source(name, fn, replace = FALSE)
 }
 \arguments{
 \item{name}{Source name (e.g. \code{"taxonomy"}, \code{"ror"}).}
 
 \item{fn}{A function \verb{function(query, n)} returning a data frame with columns
 \code{label}, \code{id}, \code{authority}, \code{score}, \code{uri}.}
+
+\item{replace}{Overwrite an existing source named \code{name}? Defaults to \code{FALSE}
+so a plugin cannot silently replace a built-in source.}
 }
 \value{
 Invisibly \code{NULL}.

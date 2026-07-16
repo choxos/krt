@@ -39,7 +39,13 @@ new_krt <- function(title = NULL, profile = "generic", study_type = NULL,
     list(
       schema_version = ref_data("schema_version") %||% "1.0.0",
       profile        = profile %||% "generic",
-      table_id       = new_id("krt", title %||% "", now),
+      # Seed the id with a session-unique token plus a high-resolution
+      # timestamp so two same-titled tables created in the same second do not
+      # collide (tempfile() yields a within-session-unique name and consumes no
+      # RNG state, so table creation stays reproducible).
+      table_id       = new_id("krt", title %||% "", now,
+                              basename(tempfile("")),
+                              sprintf("%.6f", as.numeric(Sys.time()))),
       title          = title,
       study_type     = as_chr(study_type),
       locale         = locale,

@@ -18,7 +18,9 @@
 #' @noRd
 .has_value <- function(r, field) {
   v <- r[[field]]
-  !is.null(v) && length(v) && any(nzchar(as.character(v)))
+  if (is.null(v) || !length(v)) return(FALSE)
+  v <- trimws(as.character(v))
+  any(!is.na(v) & nzchar(v))
 }
 
 #' @noRd

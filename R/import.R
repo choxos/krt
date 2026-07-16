@@ -2,7 +2,11 @@
 
 #' @noRd
 .detect_import_format <- function(input) {
-  if (is.data.frame(input)) return("asap")
+  if (is.data.frame(input)) {
+    hdrs <- tryCatch(.canon_asap_headers(names(input)), error = function(e) character(0))
+    if (any(c("RESOURCE_TYPE", "REAGENT_OR_RESOURCE") %in% hdrs)) return("asap")
+    return("tabular")
+  }
   if (length(input) == 1L && file.exists(input)) {
     ext <- tolower(tools::file_ext(input))
     if (ext == "json") return("json")

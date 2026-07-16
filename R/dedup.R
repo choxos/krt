@@ -21,7 +21,10 @@ resource_signature <- function(resource) {
     if (is.null(v) || !length(v)) return("")
     tolower(trimws(paste(as.character(v), collapse = "|")))
   }, character(1))
-  paste(vals, collapse = "")
+  # Join with a unit-separator delimiter (never present in identifiers) so field
+  # boundaries are unambiguous: "ab" + "c" no longer collides with "a" + "bc".
+  sep <- intToUtf8(31L)  # unit separator: unambiguous field boundary
+  paste(paste0(keys, sep, vals), collapse = sep)
 }
 
 # A resource has "identity" if it carries a distinguishing field beyond its
