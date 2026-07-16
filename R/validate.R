@@ -34,8 +34,9 @@
 #' Runs the registered validation rules over a table and returns a
 #' [krt_validation_report]. Structural rules check schema conformance offline;
 #' semantic rules check cross-field consistency and, when `resolve = TRUE`,
-#' identifier existence. Conditional packs (ICLAC cell-line, ARRIVE 2.0 animal,
-#' ethics/consent) apply only when the relevant resource types are present.
+#' identifier existence. Conditional packs (cell-line authentication, organism
+#' metadata, ethics/consent) apply only when the relevant resource types are
+#' present; they are minimal checks, not full ICLAC or ARRIVE assessments.
 #'
 #' Each finding's severity is resolved from the rule default, then any
 #' profile override, then any per-rule value in `severity`. A severity of

@@ -22,13 +22,23 @@ test_that("software pack requires a reproducible pointer", {
   expect_false(fires(validate_krt(good), "cond-software"))
 })
 
-test_that("ARRIVE pack fires for animal models without ethics approval", {
+test_that("organism pack fires for animal models without ethics approval", {
   k <- add_resource(new_krt("Demo"), "Experimental model: Organism/strain",
                     "C57BL/6J", organism = "Mus musculus", strain = "C57BL/6J",
                     rrid = "RRID:IMSR_JAX:000664", new_or_reuse = "reuse")
-  expect_true(fires(validate_krt(k), "cond-arrive"))
+  expect_true(fires(validate_krt(k), "cond-organism"))
   k2 <- add_approval(k, "IACUC", protocol_number = "X-1")
-  expect_false(fires(validate_krt(k2), "cond-arrive"))
+  expect_false(fires(validate_krt(k2), "cond-organism"))
+})
+
+test_that("a non-animal organism model does not demand animal ethics approval", {
+  k <- add_resource(new_krt("Demo"), "Experimental model: Organism/strain",
+                    "Arabidopsis", organism = "Arabidopsis thaliana",
+                    taxon_id = "3702", new_or_reuse = "new")
+  # The organism-metadata check is satisfied; no animal-ethics finding is added.
+  msgs <- as.data.frame(validate_krt(k))
+  animal <- grepl("animal ethics", msgs$message)
+  expect_false(any(animal))
 })
 
 test_that("ethics pack fires for human material without valid consent", {
@@ -52,7 +62,7 @@ test_that("a non-human biological sample does not trigger the ethics pack", {
 
 test_that("the complete example triggers no conditional findings", {
   r <- validate_krt(krt_example)
-  expect_false(fires(r, "cond-arrive"))
+  expect_false(fires(r, "cond-organism"))
   expect_false(fires(r, "cond-ethics"))
   expect_false(fires(r, "cond-cellline"))
   expect_false(fires(r, "cond-software"))

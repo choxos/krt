@@ -81,3 +81,29 @@ test_that("contributor identifiers in a compound string are kept, not dropped", 
   expect_true(any(grepl("orcid", unlist(p$other))))
   expect_null(p$orcid)
 })
+
+test_that("humanized animal models are not treated as human material", {
+  hz <- list(organism = "Humanized NSG mouse")
+  expect_false(krt:::.is_human_resource(hz))
+  expect_true(krt:::.is_human_resource(list(taxon_id = "NCBI:txid9606")))
+  expect_true(krt:::.is_human_resource(list(organism = "Homo sapiens")))
+})
+
+test_that("a bare consent scope no longer satisfies the ethics rule", {
+  k <- add_resource(new_krt("D"), "Biological sample", "Serum",
+                    organism = "Homo sapiens", taxon_id = "9606",
+                    new_or_reuse = "new", accession = "SAMN1")
+  k1 <- add_approval(k, "IRB", consent_scope = "broad")
+  expect_true("cond-ethics" %in% as.data.frame(validate_krt(k1))$rule_id)
+  k2 <- add_approval(k, "IRB", consent_obtained = TRUE)
+  expect_false("cond-ethics" %in% as.data.frame(validate_krt(k2))$rule_id)
+})
+
+test_that("cell-line pack rejects meaningless authentication and flags mycoplasma", {
+  k <- add_resource(new_krt("D"), "Experimental model: Cell line", "X",
+                    rrid = "RRID:CVCL_0030", new_or_reuse = "reuse",
+                    authentication_method = "none", mycoplasma_status = "positive")
+  msgs <- as.data.frame(validate_krt(k))$message
+  expect_true(any(grepl("meaningful authentication", msgs)))
+  expect_true(any(grepl("mycoplasma-positive", msgs)))
+})

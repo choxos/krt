@@ -123,11 +123,35 @@
 }
 
 #' @noRd
+.vs_enum <- function(x, ctx) {
+  # Enforce every declared enum field against its controlled vocabulary. The
+  # resource_type and new_or_reuse enums have dedicated error-level rules, so
+  # they are skipped here to avoid duplicate findings.
+  covered <- c("resource_type", "new_or_reuse")
+  enum_fields <- Filter(function(d) !is.null(d$enum) && !(d$name %in% covered),
+                        all_fields())
+  .for_resources(x, function(r, id) {
+    issues <- list()
+    for (d in enum_fields) {
+      if (!.has_value(r, d$name)) next
+      val <- as.character(r[[d$name]])
+      if (!isTRUE(vocab_match(val, d$enum, fuzzy = FALSE)$ok)) {
+        issues <- c(issues, list(.issue(sprintf(
+          "Field '%s' value '%s' is not an allowed %s value.", d$name, val, d$enum),
+          id, d$name)))
+      }
+    }
+    issues
+  })
+}
+
+#' @noRd
 .register_structural_validators <- function() {
   register_validator("struct-missing-name", .vs_missing_name, "structural", "error")
   register_validator("struct-missing-new-reuse", .vs_missing_new_reuse, "structural", "error")
   register_validator("struct-new-reuse-vocab", .vs_new_reuse_vocab, "structural", "error")
   register_validator("struct-resource-type-vocab", .vs_resource_type_vocab, "structural", "error")
+  register_validator("struct-enum-vocab", .vs_enum, "structural", "warning")
   register_validator("struct-missing-identifier", .vs_missing_identifier, "structural", "warning")
   register_validator("struct-id-syntax", .vs_id_syntax, "structural", "warning")
   register_validator("struct-unknown-field", .vs_unknown_field, "structural", "note")

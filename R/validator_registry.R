@@ -18,7 +18,7 @@
 #' @param applies A predicate `function(x)`; the rule runs only when it returns
 #'   `TRUE` (used by conditional rule packs).
 #' @param standard Optional reporting standard the rule enforces (e.g.
-#'   `"ARRIVE-2.0"`).
+#'   `"cell-line-auth-minimum"`).
 #' @param replace Overwrite an existing rule with the same `rule_id`? Defaults to
 #'   `FALSE`, so a plugin cannot silently replace a built-in rule; pass `TRUE` to
 #'   deliberately override one.

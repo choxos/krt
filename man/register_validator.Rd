@@ -28,7 +28,7 @@ register_validator(
 \code{TRUE} (used by conditional rule packs).}
 
 \item{standard}{Optional reporting standard the rule enforces (e.g.
-\code{"ARRIVE-2.0"}).}
+\code{"cell-line-auth-minimum"}).}
 
 \item{replace}{Overwrite an existing rule with the same \code{rule_id}? Defaults to
 \code{FALSE}, so a plugin cannot silently replace a built-in rule; pass \code{TRUE} to
