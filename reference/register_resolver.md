@@ -5,7 +5,7 @@ Register an identifier resolver
 ## Usage
 
 ``` r
-register_resolver(scheme, fn)
+register_resolver(scheme, fn, replace = FALSE)
 ```
 
 ## Arguments
@@ -18,6 +18,11 @@ register_resolver(scheme, fn)
 
   A function `function(id, resolve = TRUE, ...)` returning a normalized
   result list with at least `input`, `normalized`, and `resolved`.
+
+- replace:
+
+  Overwrite an existing resolver for `scheme`? Defaults to `FALSE` so a
+  plugin cannot silently replace a built-in resolver.
 
 ## Value
 

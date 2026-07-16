@@ -83,7 +83,7 @@ cat(substr(write_krt_json(k), 1, 120))
 #> {
 #>   "schema_version": "1.0.0",
 #>   "profile": "generic",
-#>   "table_id": "krt-42ab74b887",
+#>   "table_id": "krt-fb987b5438",
 #>   "title": "Dopaminergic neuron s
 ```
 

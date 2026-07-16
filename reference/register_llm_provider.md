@@ -5,7 +5,7 @@ Register an LLM provider
 ## Usage
 
 ``` r
-register_llm_provider(name, request_fn, parse_fn = NULL)
+register_llm_provider(name, request_fn, parse_fn = NULL, replace = FALSE)
 ```
 
 ## Arguments
@@ -24,6 +24,11 @@ register_llm_provider(name, request_fn, parse_fn = NULL)
   Optional custom parser `function(text)`; defaults to JSON array
   extraction.
 
+- replace:
+
+  Overwrite an existing provider named `name`? Defaults to `FALSE` so a
+  plugin cannot silently replace a built-in provider.
+
 ## Value
 
 Invisibly `NULL`.
@@ -31,7 +36,7 @@ Invisibly `NULL`.
 ## Examples
 
 ``` r
-register_llm_provider("echo", function(prompt, llm) "[]")
+register_llm_provider("echo", function(prompt, llm) "[]", replace = TRUE)
 "echo" %in% list_llm_providers()
 #> [1] TRUE
 ```

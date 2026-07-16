@@ -61,7 +61,7 @@
 <!-- badges: start -->
 
 <p><strong>krt</strong> is a toolkit for authoring, validating, enriching, rendering, and depositing <strong>Key Resources Tables (KRTs)</strong>: structured tables that list the resources a study used and generated (antibodies, cell lines, organisms, chemicals, software, datasets, protocols, and more), each paired with a persistent identifier so that every resource is unambiguously identifiable and machine-actionable.</p>
-<p>KRTs began in Cell Press STAR Methods and are now required by funders such as ASAP (Aligning Science Across Parkinson’s). Once journals began requesting them, the fraction of antibodies a reader could unambiguously identify rose from about 25% to nearly 100%.</p>
+<p>KRTs began in Cell Press STAR Methods and are now required by funders such as ASAP (Aligning Science Across Parkinson’s). Once journals began requesting structured resource identifiers, reported analyses of RRID adoption found the fraction of antibodies a reader could unambiguously identify rose sharply, from roughly a quarter to nearly all.</p>
 <p>krt is a <em>standards orchestrator, not a template copier</em>: it models resources around a neutral, typed core schema and maps them to journal or funder output profiles. The author-facing table is a <em>view</em>; the underlying record set stays structured, typed, and losslessly round-trippable through JSON and YAML.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -90,7 +90,7 @@
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/normalize_ids.html">normalize_ids</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/export_krt.html">export_krt</a></span><span class="op">(</span><span class="va">k</span>, <span class="st">"resources.csv"</span>, format <span class="op">=</span> <span class="st">"asap"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Or render a STAR Methods-style table for a manuscript</span></span>
+<span><span class="co"># Or render a Markdown resource table for a manuscript</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="reference/render_krt.html">render_krt</a></span><span class="op">(</span><span class="va">k</span>, format <span class="op">=</span> <span class="st">"md"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -100,7 +100,7 @@
 <li>
 <strong>Author</strong> typed resource records with a neutral core schema (14 ASAP resource types; identifiers stored by type, never conflated).</li>
 <li>
-<strong>Validate</strong> structurally and semantically, with conditional packs for cell lines (ICLAC), animals (ARRIVE 2.0 subset), software reproducibility, and human-subject ethics/consent. Severity is tunable per profile.</li>
+<strong>Validate</strong> structurally and semantically, with conditional packs for cell lines (authentication and mycoplasma), organism metadata, software reproducibility, and human-subject ethics/consent. These are minimal, honestly scoped checks, not full ICLAC or ARRIVE assessments. Severity is tunable per profile.</li>
 <li>
 <strong>Normalize and resolve</strong> identifiers (RRID, DOI, ORCID, PubMed, ROR, Cellosaurus), offline-first and degrading gracefully.</li>
 <li>
@@ -116,7 +116,7 @@
 <li>
 <strong>Deposit</strong> to Zenodo or Figshare, and connect to eLabFTW and protocols.io.</li>
 <li>
-<strong>Provenance</strong>: every step is recorded and exportable as W3C PROV-JSON and RO-Crate.</li>
+<strong>Provenance</strong>: each editing step is recorded and exportable as PROV-JSON and RO-Crate 1.1.</li>
 <li>
 <strong>Interfaces</strong>: an R API, a command-line tool, a Shiny editor (<code><a href="reference/launch_krt.html">launch_krt()</a></code>), and an RStudio addin.</li>
 <li>

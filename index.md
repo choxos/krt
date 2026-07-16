@@ -9,8 +9,9 @@ unambiguously identifiable and machine-actionable.
 
 KRTs began in Cell Press STAR Methods and are now required by funders
 such as ASAP (Aligning Science Across Parkinson’s). Once journals began
-requesting them, the fraction of antibodies a reader could unambiguously
-identify rose from about 25% to nearly 100%.
+requesting structured resource identifiers, reported analyses of RRID
+adoption found the fraction of antibodies a reader could unambiguously
+identify rose sharply, from roughly a quarter to nearly all.
 
 krt is a *standards orchestrator, not a template copier*: it models
 resources around a neutral, typed core schema and maps them to journal
@@ -46,7 +47,7 @@ validate_krt(k, profile = "asap")
 k <- normalize_ids(k)
 export_krt(k, "resources.csv", format = "asap")
 
-# Or render a STAR Methods-style table for a manuscript
+# Or render a Markdown resource table for a manuscript
 cat(render_krt(k, format = "md"))
 ```
 
@@ -55,9 +56,10 @@ cat(render_krt(k, format = "md"))
 - **Author** typed resource records with a neutral core schema (14 ASAP
   resource types; identifiers stored by type, never conflated).
 - **Validate** structurally and semantically, with conditional packs for
-  cell lines (ICLAC), animals (ARRIVE 2.0 subset), software
-  reproducibility, and human-subject ethics/consent. Severity is tunable
-  per profile.
+  cell lines (authentication and mycoplasma), organism metadata,
+  software reproducibility, and human-subject ethics/consent. These are
+  minimal, honestly scoped checks, not full ICLAC or ARRIVE assessments.
+  Severity is tunable per profile.
 - **Normalize and resolve** identifiers (RRID, DOI, ORCID, PubMed, ROR,
   Cellosaurus), offline-first and degrading gracefully.
 - **Import** from CSV, TSV, Excel, JSON, YAML, the ASAP six-column
@@ -75,8 +77,8 @@ cat(render_krt(k, format = "md"))
   deterministic regex engine or an optional LLM.
 - **Deposit** to Zenodo or Figshare, and connect to eLabFTW and
   protocols.io.
-- **Provenance**: every step is recorded and exportable as W3C PROV-JSON
-  and RO-Crate.
+- **Provenance**: each editing step is recorded and exportable as
+  PROV-JSON and RO-Crate 1.1.
 - **Interfaces**: an R API, a command-line tool, a Shiny editor
   ([`launch_krt()`](https://choxos.github.io/krt/reference/launch_krt.md)),
   and an RStudio addin.

@@ -18,11 +18,11 @@ LLM.
 txt <- "We stained with anti-TH (RRID:AB_390204) from Millipore (Cat# AB152)
         and analyzed images in Fiji (RRID:SCR_002285). Data: GEO GSE12345."
 scan_identifiers(txt)
-#>        value          field          type
-#> 1  AB_390204           rrid      Antibody
-#> 2 SCR_002285           rrid Software/code
-#> 3      AB152 catalog_number          <NA>
-#> 4   GSE12345      accession       Dataset
+#>        value          field          type confidence
+#> 1  AB_390204           rrid      Antibody       high
+#> 2 SCR_002285           rrid Software/code       high
+#> 3      AB152 catalog_number          <NA>     medium
+#> 4   GSE12345      accession       Dataset       high
 ```
 
 ## Extract a table

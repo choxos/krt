@@ -61,7 +61,8 @@ resolved severity.</p>
 <span>  layer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"structural"</span>, <span class="st">"semantic"</span><span class="op">)</span>,</span>
 <span>  severity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"error"</span>, <span class="st">"warning"</span>, <span class="st">"note"</span>, <span class="st">"info"</span><span class="op">)</span>,</span>
 <span>  applies <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="cn">TRUE</span>,</span>
-<span>  standard <span class="op">=</span> <span class="cn">NA_character_</span></span>
+<span>  standard <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  replace <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -93,7 +94,13 @@ resolved severity.</p>
 
 <dt id="arg-standard">standard<a class="anchor" aria-label="anchor" href="#arg-standard"></a></dt>
 <dd><p>Optional reporting standard the rule enforces (e.g.
-<code>"ARRIVE-2.0"</code>).</p></dd>
+<code>"cell-line-auth-minimum"</code>).</p></dd>
+
+
+<dt id="arg-replace">replace<a class="anchor" aria-label="anchor" href="#arg-replace"></a></dt>
+<dd><p>Overwrite an existing rule with the same <code>rule_id</code>? Defaults to
+<code>FALSE</code>, so a plugin cannot silently replace a built-in rule; pass <code>TRUE</code> to
+deliberately override one.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -107,10 +114,10 @@ resolved severity.</p>
 <span class="r-in"><span><span class="va">long_name_rule</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">ctx</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># register_validator("demo-long-name", long_name_rule, severity = "note")</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="list_validators.html">list_validators</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     rule_id    layer severity            standard</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cond-arrive     cond-arrive semantic  warning ARRIVE-2.0 (subset)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cond-cellline cond-cellline semantic  warning               ICLAC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cond-ethics     cond-ethics semantic  warning              ethics</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                     rule_id    layer severity                  standard</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cond-cellline cond-cellline semantic  warning    cell-line-auth-minimum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cond-ethics     cond-ethics semantic  warning                    ethics</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cond-organism cond-organism semantic  warning minimal-organism-metadata</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

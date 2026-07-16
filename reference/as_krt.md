@@ -1,6 +1,13 @@
 # Coerce to and from the S4 `KRT` class
 
-Coerce to and from the S4 `KRT` class
+These are inverse coercions named after their target class. `as_krt()`
+returns the S3
+[krt_tbl](https://choxos.github.io/krt/reference/new_krt.md) (the
+package's primary object): pass it a `krt_tbl` and it is returned
+unchanged, or an S4 `KRT` and it is converted down. It is the helper to
+call when a function should accept either representation. `as_KRT()` is
+the opposite direction, a thin idempotent wrapper over
+`methods::as(x, "KRT")` for Bioconductor workflows.
 
 ## Usage
 

@@ -8,7 +8,13 @@ reference managers, not as an archival copy.
 ## Usage
 
 ``` r
-export_citation(x, path = NULL, format = c("ris", "bibtex"))
+export_citation(
+  x,
+  path = NULL,
+  format = c("ris", "bibtex"),
+  audience = c("author", "public"),
+  redact = NULL
+)
 ```
 
 ## Arguments
@@ -24,6 +30,15 @@ export_citation(x, path = NULL, format = c("ris", "bibtex"))
 - format:
 
   `"ris"` or `"bibtex"`.
+
+- audience:
+
+  `"author"` (full) or `"public"` (redacted).
+
+- redact:
+
+  Redaction strength (`"basic"`/`"strict"`) for public output, or
+  `FALSE` to disable; `NULL` uses the profile default.
 
 ## Value
 

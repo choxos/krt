@@ -59,6 +59,8 @@ The field registry and controlled vocabularies.
 
 - [`validate_krt()`](https://choxos.github.io/krt/reference/validate_krt.md)
   : Validate a Key Resources Table
+- [`krt_preflight()`](https://choxos.github.io/krt/reference/krt_preflight.md)
+  : Pre-flight release readiness check for a Key Resources Table
 - [`register_validator()`](https://choxos.github.io/krt/reference/register_validator.md)
   : Register a validation rule
 - [`list_validators()`](https://choxos.github.io/krt/reference/list_validators.md)

@@ -26,5 +26,5 @@ A single signature string.
 r <- new_resource("Antibody", "Anti-TH", vendor = "Millipore",
                   catalog_number = "AB152", new_or_reuse = "reuse")
 resource_signature(r)
-#> [1] "antibodymilliporeab152"
+#> [1] "resource_type\037antibody\037vendor\037millipore\037catalog_number\037ab152\037lot_number\037\037rrid\037\037doi\037\037accession\037"
 ```

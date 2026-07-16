@@ -82,11 +82,11 @@ optional LLM.</p>
 <code class="sourceCode R"><span><span class="va">txt</span> <span class="op">&lt;-</span> <span class="st">"We stained with anti-TH (RRID:AB_390204) from Millipore (Cat# AB152)</span></span>
 <span><span class="st">        and analyzed images in Fiji (RRID:SCR_002285). Data: GEO GSE12345."</span></span>
 <span><span class="fu"><a href="../reference/scan_identifiers.html">scan_identifiers</a></span><span class="op">(</span><span class="va">txt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        value          field          type</span></span>
-<span><span class="co">#&gt; 1  AB_390204           rrid      Antibody</span></span>
-<span><span class="co">#&gt; 2 SCR_002285           rrid Software/code</span></span>
-<span><span class="co">#&gt; 3      AB152 catalog_number          &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 4   GSE12345      accession       Dataset</span></span></code></pre></div>
+<span><span class="co">#&gt;        value          field          type confidence</span></span>
+<span><span class="co">#&gt; 1  AB_390204           rrid      Antibody       high</span></span>
+<span><span class="co">#&gt; 2 SCR_002285           rrid Software/code       high</span></span>
+<span><span class="co">#&gt; 3      AB152 catalog_number          &lt;NA&gt;     medium</span></span>
+<span><span class="co">#&gt; 4   GSE12345      accession       Dataset       high</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="extract-a-table">Extract a table<a class="anchor" aria-label="anchor" href="#extract-a-table"></a>

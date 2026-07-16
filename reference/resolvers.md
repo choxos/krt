@@ -43,6 +43,7 @@ and `url`.
 ## Examples
 
 ``` r
+# Offline: normalize only (no network).
 resolve_rrid("RRID:AB_390204", resolve = FALSE)
 #> $input
 #> [1] "RRID:AB_390204"
@@ -65,28 +66,10 @@ resolve_rrid("RRID:AB_390204", resolve = FALSE)
 #> $url
 #> [1] NA
 #> 
-# \donttest{
-resolve_doi("10.1038/sdata.2016.18")
-#> $input
+resolve_doi("10.1038/sdata.2016.18", resolve = FALSE)$normalized
 #> [1] "10.1038/sdata.2016.18"
-#> 
-#> $normalized
-#> [1] "10.1038/sdata.2016.18"
-#> 
-#> $resolved
-#> [1] TRUE
-#> 
-#> $source
-#> [1] "crossref"
-#> 
-#> $name
-#> [1] "The FAIR Guiding Principles for scientific data management and stewardship"
-#> 
-#> $type
-#> [1] "journal-article"
-#> 
-#> $url
-#> [1] "https://doi.org/10.1038/sdata.2016.18"
-#> 
-# }
+if (FALSE) { # \dontrun{
+# Live lookup (contacts the registry; requires resolve = TRUE).
+resolve_doi("10.1038/sdata.2016.18", resolve = TRUE)
+} # }
 ```

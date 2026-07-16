@@ -4,8 +4,10 @@ Runs the registered validation rules over a table and returns a
 [krt_validation_report](https://choxos.github.io/krt/reference/krt_validation_report.md).
 Structural rules check schema conformance offline; semantic rules check
 cross-field consistency and, when `resolve = TRUE`, identifier
-existence. Conditional packs (ICLAC cell-line, ARRIVE 2.0 animal,
-ethics/consent) apply only when the relevant resource types are present.
+existence. Conditional packs (cell-line authentication, organism
+metadata, ethics/consent) apply only when the relevant resource types
+are present; they are minimal checks, not full ICLAC or ARRIVE
+assessments.
 
 ## Usage
 

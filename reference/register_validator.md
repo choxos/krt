@@ -15,7 +15,8 @@ register_validator(
   layer = c("structural", "semantic"),
   severity = c("error", "warning", "note", "info"),
   applies = function(x) TRUE,
-  standard = NA_character_
+  standard = NA_character_,
+  replace = FALSE
 )
 ```
 
@@ -44,7 +45,14 @@ register_validator(
 
 - standard:
 
-  Optional reporting standard the rule enforces (e.g. `"ARRIVE-2.0"`).
+  Optional reporting standard the rule enforces (e.g.
+  `"cell-line-auth-minimum"`).
+
+- replace:
+
+  Overwrite an existing rule with the same `rule_id`? Defaults to
+  `FALSE`, so a plugin cannot silently replace a built-in rule; pass
+  `TRUE` to deliberately override one.
 
 ## Value
 
@@ -57,8 +65,8 @@ Invisibly `NULL`; called for its side effect.
 long_name_rule <- function(x, ctx) list()
 # register_validator("demo-long-name", long_name_rule, severity = "note")
 head(list_validators(), 3)
-#>                     rule_id    layer severity            standard
-#> cond-arrive     cond-arrive semantic  warning ARRIVE-2.0 (subset)
-#> cond-cellline cond-cellline semantic  warning               ICLAC
-#> cond-ethics     cond-ethics semantic  warning              ethics
+#>                     rule_id    layer severity                  standard
+#> cond-cellline cond-cellline semantic  warning    cell-line-auth-minimum
+#> cond-ethics     cond-ethics semantic  warning                    ethics
+#> cond-organism cond-organism semantic  warning minimal-organism-metadata
 ```

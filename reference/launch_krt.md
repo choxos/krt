@@ -1,8 +1,8 @@
 # Launch the interactive KRT editor
 
-Starts a Shiny application for importing, editing, validating,
-enriching, and exporting a Key Resources Table. Requires the `shiny`,
-`bslib`, and `DT` packages.
+Starts a Shiny application for importing, editing (in the generic view),
+validating, normalizing identifiers, and exporting a Key Resources
+Table. Requires the `shiny`, `bslib`, and `DT` packages.
 
 ## Usage
 

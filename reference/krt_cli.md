@@ -18,7 +18,9 @@ krt_cli(args = commandArgs(trailingOnly = TRUE))
 
 ## Value
 
-Invisibly an integer status code (0 success, 1 validation failure).
+Invisibly an integer status code (0 success, 1 validation failure or
+runtime error, 2 usage error such as an unknown command or a missing
+required `--out`).
 
 ## Examples
 
