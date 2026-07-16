@@ -162,3 +162,12 @@ test_that("the Shiny app source parses", {
   app <- system.file("shiny-apps", "krt", "app.R", package = "krt")
   expect_silent(parse(app))
 })
+
+test_that("the ROR name parser reads v2 names[] and v1 name", {
+  v2 <- list(names = list(
+    list(value = "University X", types = list("ror_display", "label")),
+    list(value = "UX", types = list("alias"))))
+  expect_identical(krt:::.ror_display_name(v2), "University X")
+  expect_identical(krt:::.ror_display_name(list(name = "Legacy Name")), "Legacy Name")
+  expect_null(krt:::.ror_display_name(NULL))
+})

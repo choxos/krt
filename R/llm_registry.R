@@ -62,8 +62,8 @@ krt_llm <- function(provider = c("openai", "anthropic", "gemini", "openai_compat
     gemini = { g <- Sys.getenv("GEMINI_API_KEY"); if (nzchar(g)) g else Sys.getenv("GOOGLE_API_KEY") },
     openai_compat = Sys.getenv("KRT_LLM_API_KEY"))
   model <- model %||% switch(provider,
-    openai = "gpt-4o-mini", anthropic = "claude-3-5-sonnet-latest",
-    gemini = "gemini-1.5-flash",
+    openai = "gpt-4o-mini", anthropic = "claude-sonnet-5",
+    gemini = "gemini-2.5-flash",
     openai_compat = { m <- Sys.getenv("KRT_LLM_MODEL"); if (nzchar(m)) m else "local-model" })
   base_url <- base_url %||% if (identical(provider, "openai_compat")) Sys.getenv("KRT_LLM_BASE_URL") else NULL
   structure(list(provider = provider, model = model, base_url = base_url,
