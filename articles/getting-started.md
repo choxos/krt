@@ -83,7 +83,7 @@ cat(substr(write_krt_json(k), 1, 120))
 #> {
 #>   "schema_version": "1.0.0",
 #>   "profile": "generic",
-#>   "table_id": "krt-fb987b5438",
+#>   "table_id": "krt-74b20d6a02",
 #>   "title": "Dopaminergic neuron s
 ```
 
@@ -107,12 +107,12 @@ cat(render_krt(k, format = "md", profile = "star-methods"))
 #> 
 #> | REAGENT or RESOURCE | SOURCE | IDENTIFIER |
 #> | --- | --- | --- |
-#> | **Antibody** |  |  |
+#> | **Antibodies** |  |  |
 #> | Rabbit Anti-TH | Millipore | Cat# AB152; RRID:AB_390204 |
-#> | **Software/code** |  |  |
-#> | Fiji |  | RRID:SCR_002285 |
-#> | **Dataset** |  |  |
+#> | **Deposited data** |  |  |
 #> | Processed counts |  | https://doi.org/10.5281/zenodo.11111111 |
+#> | **Software and algorithms** |  |  |
+#> | Fiji |  | RRID:SCR_002285 |
 ```
 
 ## Provenance

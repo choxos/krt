@@ -1,8 +1,10 @@
 # Render a KRT as a formatted table
 
-Produces a STAR Methods-style table for human review. The
-`"star-methods"` profile groups resources under type headers; other
-profiles render the ASAP six-column layout.
+Produces a human-readable Key Resources Table. The `"star-methods"`
+profile projects the table to the three Cell Press columns (REAGENT or
+RESOURCE, SOURCE, IDENTIFIER) and groups resources under the twelve
+standard STAR Methods category headers, in the order the template uses;
+other profiles render the ASAP six-column layout.
 
 ## Usage
 
@@ -55,8 +57,8 @@ The rendered text (md/html), or the path (invisibly) for docx.
 ## Examples
 
 ``` r
-cat(substr(render_krt(krt_example, format = "md"), 1, 80))
+cat(substr(render_krt(krt_example, profile = "star-methods"), 1, 80))
 #> ## Example dopaminergic neuron study
 #> 
-#> | RESOURCE TYPE | RESOURCE NAME | SOURCE |
+#> | REAGENT or RESOURCE | SOURCE | IDENTIFIE
 ```
