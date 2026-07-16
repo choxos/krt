@@ -1,0 +1,34 @@
+Component-level copyright and licensing for the krt package
+===========================================================
+
+See LICENSE.note for a narrative summary and DESCRIPTION for the top-level
+License field.
+
+Component: R source code (R/), tests, vignettes, and generated documentation
+  Copyright: (C) 2026 Ahmad Sofi-Mahmudi
+  License:   GPL-3
+
+Component: Internal reference tables (R/sysdata.rda)
+  Copyright: (C) 2026 Ahmad Sofi-Mahmudi
+  License:   GPL-3
+  Note:      Encodes public standards facts (KRT vocabularies, RRID authority
+             prefixes, identifier syntax, registry endpoints, SPDX identifiers).
+
+Component: Bundled ASAP profile (inst/extdata/profiles/asap/)
+  Source:    Aligning Science Across Parkinson's, Key Resource Table resources
+             v8, https://doi.org/10.5281/zenodo.17917979
+  Copyright: (C) Aligning Science Across Parkinson's
+  License:   CC-BY-4.0
+  Note:      Adapted into machine-readable profile assets; see that directory's
+             ATTRIBUTION.md and provenance.json. No endorsement implied.
+
+Component: Generic and STAR Methods profiles
+           (inst/extdata/profiles/generic/, inst/extdata/profiles/star-methods/)
+  Copyright: (C) 2026 Ahmad Sofi-Mahmudi
+  License:   GPL-3
+  Note:      Independently authored; no third-party template bundled.
+
+Component: Bundled license text (inst/licenses/CC-BY-4.0.txt)
+  Source:    SPDX License List, https://spdx.org/licenses/CC-BY-4.0.html
+  License:   CC-BY-4.0 is itself a Creative Commons license document; reproduced
+             verbatim for attribution of the bundled ASAP assets.

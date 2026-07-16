@@ -1,0 +1,14 @@
+columns:
+  - REAGENT or RESOURCE
+  - SOURCE
+  - IDENTIFIER
+mappings:
+  REAGENT or RESOURCE:
+    type: direct
+    field: [display_name, canonical_name]
+  SOURCE:
+    type: direct
+    field: [source_name, vendor]
+  IDENTIFIER:
+    type: composed
+    compose: [catalog_number, rrid, doi, accession, pmid, pmcid, url]

@@ -1,0 +1,72 @@
+---
+title: "ASAP and STAR Methods profiles"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ASAP and STAR Methods profiles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+```{r setup}
+library(krt)
+```
+
+`krt` is a *standards orchestrator*: a neutral core schema plus a registry of
+output profiles. Exports are projections of the core, not the source of truth.
+
+## Available profiles
+
+```{r}
+krt_profiles()
+```
+
+- `generic`: the full core view (lossless working copy).
+- `asap`: the six-column ASAP layout (assets under CC BY 4.0).
+- `star-methods`: a three-column STAR Methods-style layout (interoperability
+  rules only; no publisher template is bundled).
+
+## Project to the ASAP layout
+
+```{r}
+project_profile(krt_example, "asap")[, c("RESOURCE TYPE", "IDENTIFIER", "NEW/REUSE")]
+```
+
+The compound `IDENTIFIER` is composed from the typed identifier fields, and
+`import_asap()` parses it back into those fields on the way in.
+
+## Lossy fields
+
+Exporting to a profile that folds structured fields into free text is reported:
+
+```{r}
+mapping_lossy_fields(krt_example, "asap")
+```
+
+## Licensing and attribution
+
+Profiles expose their licensing programmatically, and the ASAP profile carries
+the required CC BY 4.0 attribution.
+
+```{r}
+krt_profile_info("asap")
+krt_audit_licenses()[, c("component", "license", "redistributable")]
+```
+
+```{r}
+cat(substr(krt_attribution("asap"), 1, 200))
+```
+
+This package is independently developed and is **not** an official ASAP product.
+
+## Round-trip through the ASAP format
+
+```{r}
+f <- tempfile(fileext = ".csv")
+export_asap(krt_example, f)
+k <- import_krt(f)
+identical(length(k$resources), length(krt_example$resources))
+```

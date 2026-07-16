@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use krt, please cite it as below."
+title: "krt: Author, Validate, and Export Key Resources Tables"
+abstract: >-
+  An R toolkit for authoring, validating, enriching, rendering, and depositing
+  Key Resources Tables (KRTs), built around a neutral typed core schema and a
+  registry of output profiles (generic, ASAP, STAR Methods), with identifier
+  normalization and resolution, manuscript extraction, provenance, and FAIR
+  outputs.
+type: software
+authors:
+  - given-names: Ahmad
+    family-names: Sofi-Mahmudi
+    email: a.sofimahmudi@gmail.com
+    orcid: "https://orcid.org/0000-0001-6829-0823"
+repository-code: "https://github.com/choxos/krt"
+url: "https://choxos.github.io/krt/"
+license: GPL-3.0-only
+version: 0.1.0
+keywords:
+  - key resources table
+  - KRT
+  - RRID
+  - reproducibility
+  - FAIR
+  - research resources
+  - R
+references:
+  - type: data
+    title: "Key Resource Table resources"
+    authors:
+      - name: "Aligning Science Across Parkinson's"
+    doi: "10.5281/zenodo.17917979"
+    version: "8"
+    license: CC-BY-4.0
+    notes: >-
+      Source of the bundled ASAP profile assets. Adapted into machine-readable
+      form; no endorsement by ASAP is implied.

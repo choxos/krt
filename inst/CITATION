@@ -1,0 +1,18 @@
+citHeader("To cite krt in publications, use:")
+
+ver <- meta$Version
+if (is.null(ver)) ver <- "0.1.0"
+
+bibentry(
+  bibtype  = "Manual",
+  title    = "krt: Author, Validate, and Export Key Resources Tables",
+  author   = person("Ahmad", "Sofi-Mahmudi",
+                    comment = c(ORCID = "0000-0001-6829-0823")),
+  year     = "2026",
+  note     = paste("R package version", ver),
+  url      = "https://github.com/choxos/krt",
+  textVersion = paste0(
+    "Sofi-Mahmudi A (2026). krt: Author, Validate, and Export Key Resources ",
+    "Tables. R package version ", ver, ". https://github.com/choxos/krt"
+  )
+)

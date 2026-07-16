@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/choxos/krt/discussions
+    about: Ask usage questions and discuss ideas here.

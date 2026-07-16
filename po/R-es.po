@@ -1,0 +1,163 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: krt 0.1.0\n"
+"POT-Creation-Date: 2026-07-15 21:16\n"
+"PO-Revision-Date: 2026-07-15 21:16\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "All approval fields must be named."
+msgstr ""
+
+msgid "`name` must be a non-empty string."
+msgstr ""
+
+msgid "All contributor fields must be named."
+msgstr ""
+
+msgid "Cannot coerce object of class"
+msgstr ""
+
+msgid "/"
+msgstr ""
+
+msgid "to krt_tbl."
+msgstr ""
+
+msgid "to KRT."
+msgstr ""
+
+msgid "An eLabFTW token is required (set ELABFTW_TOKEN or pass token=)."
+msgstr ""
+
+msgid "eLabFTW experiment could not be fetched."
+msgstr ""
+
+msgid "protocols.io protocol could not be fetched."
+msgstr ""
+
+msgid "A Zenodo token is required (set ZENODO_TOKEN or pass token=)."
+msgstr ""
+
+msgid "Zenodo deposition could not be created."
+msgstr ""
+
+msgid "A Figshare token is required (set FIGSHARE_TOKEN or pass token=)."
+msgstr ""
+
+msgid "Figshare article could not be created."
+msgstr ""
+
+msgid "Public output without redaction; sensitive fields are not removed."
+msgstr ""
+
+msgid "xlsx export requires a `path`."
+msgstr ""
+
+msgid "Unknown LLM provider '%s'."
+msgstr "Proveedor LLM desconocido: %s."
+
+msgid "Unknown import format '%s'."
+msgstr ""
+
+msgid "`title` must be a single string or NULL."
+msgstr ""
+
+msgid ""
+"`resources` must be a list of krt_resource objects (see new_resource())."
+msgstr ""
+
+msgid "View '%s' requires the profile system; use view = 'wide'."
+msgstr ""
+
+msgid "Shiny app not found; reinstall krt."
+msgstr ""
+
+msgid "`request_fn` must be a function."
+msgstr ""
+
+msgid "normalize_ids() supports krt_tbl, krt_resource, and character inputs."
+msgstr ""
+
+msgid "Object does not satisfy the '%s' plugin contract; see krt_plugin_api()."
+msgstr ""
+
+msgid "Profile directory not found: %s"
+msgstr ""
+
+msgid "Provide either `path` or `profile`."
+msgstr ""
+
+msgid "Unknown profile '%s'. See krt_profiles()."
+msgstr ""
+
+msgid "`activity` must be a non-empty string."
+msgstr ""
+
+msgid "docx rendering requires a `path`."
+msgstr ""
+
+msgid "Unknown endpoint '%s'."
+msgstr ""
+
+msgid "`fn` must be a function."
+msgstr ""
+
+msgid "`resource_type` must be a single non-empty string."
+msgstr ""
+
+msgid "Unknown resource_type '%s'.%s See krt_resource_types()."
+msgstr ""
+
+msgid "All resource fields passed through `...` must be named."
+msgstr ""
+
+msgid "Dropping unknown resource field(s): %s."
+msgstr ""
+
+msgid ","
+msgstr ""
+
+msgid "No resource with id '%s'."
+msgstr ""
+
+msgid "All updates must be named."
+msgstr ""
+
+msgid "Unknown resource_type '%s'.%s"
+msgstr ""
+
+msgid "Ignoring unknown field '%s'."
+msgstr ""
+
+msgid "Unknown authority '%s'. Options: %s."
+msgstr ""
+
+msgid "krt reference data '%s' not found; reinstall the package."
+msgstr ""
+
+msgid "Package '%s' is required%s. Install it with install.packages('%s')."
+msgstr ""
+
+msgid "for"
+msgstr ""
+
+msgid "`applies` must be a function."
+msgstr ""
+
+msgid "Unknown vocabulary '%s'."
+msgstr ""
+
+msgid "`value` must be length one."
+msgstr ""
+
+msgid "krt %s: author, validate, and export Key Resources Tables."
+msgstr ""
+
+msgid "Start with new_krt(); see https://choxos.github.io/krt/"
+msgstr ""

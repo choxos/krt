@@ -1,0 +1,64 @@
+Package: krt
+Title: Author, Validate, and Export Key Resources Tables
+Version: 0.1.0
+Authors@R: c(
+    person("Ahmad", "Sofi-Mahmudi", email = "a.sofimahmudi@gmail.com",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0001-6829-0823")),
+    person("Aligning Science Across Parkinson's", role = "cph",
+           comment = "Copyright holder of the ASAP Key Resources Table schema
+                      (CC BY 4.0; Zenodo doi:10.5281/zenodo.17917979) from which
+                      the bundled ASAP profile is derived. ASAP does not endorse
+                      this package."))
+Description: A toolkit for creating, importing, validating, enriching,
+    rendering, and depositing Key Resources Tables (KRTs). A KRT lists the
+    resources used and generated in a study (antibodies, cell lines, organisms,
+    chemicals, software, datasets, protocols, and more), each paired with a
+    persistent identifier such as a Research Resource Identifier (RRID), 'DOI',
+    accession, or catalog number, so that resources are unambiguously
+    identifiable and machine-actionable. The package models resources as typed,
+    validated records around a neutral core schema and maps them to
+    journal or funder output profiles, following the FAIR principles of
+    Wilkinson et al. (2016) <doi:10.1038/sdata.2016.18>. It normalizes and
+    optionally resolves identifiers against public registries, extracts
+    resources from manuscripts, and renders tables in the STAR Methods and ASAP
+    styles, with an emphasis on transparency, reproducibility, and correct
+    per-component licensing.
+License: GPL-3
+URL: https://github.com/choxos/krt, https://choxos.github.io/krt/
+BugReports: https://github.com/choxos/krt/issues
+Depends:
+    R (>= 4.1)
+Imports:
+    digest,
+    httr2,
+    jsonlite,
+    methods,
+    stats,
+    tools,
+    utils,
+    xml2,
+    yaml
+Suggests:
+    bslib,
+    covr,
+    DT,
+    httptest2,
+    keyring,
+    knitr,
+    officer,
+    openxlsx,
+    pdftools,
+    rdflib,
+    rmarkdown,
+    S4Vectors,
+    shiny,
+    spelling,
+    testthat (>= 3.0.0),
+    tibble
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en-US
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0
+LazyData: true

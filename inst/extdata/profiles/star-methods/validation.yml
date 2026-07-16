@@ -1,0 +1,3 @@
+# STAR Methods emphasizes a source and an identifier for every reagent/resource.
+overrides:
+  struct-missing-identifier: warning

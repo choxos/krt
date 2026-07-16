@@ -1,0 +1,4 @@
+Name: Open KRT Editor
+Description: Launch the interactive Key Resources Table editor.
+Binding: launch_krt
+Interactive: true

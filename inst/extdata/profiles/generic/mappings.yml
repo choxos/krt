@@ -1,0 +1,3 @@
+# The generic profile passes every core field through as its own column (the
+# wide view), so no explicit column mapping is needed.
+passthrough: true

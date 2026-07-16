@@ -1,0 +1,50 @@
+columns:
+  - RESOURCE TYPE
+  - RESOURCE NAME
+  - SOURCE
+  - IDENTIFIER
+  - NEW/REUSE
+  - ADDITIONAL INFORMATION
+mappings:
+  RESOURCE TYPE:
+    type: direct
+    field: [resource_type]
+  RESOURCE NAME:
+    type: direct
+    field: [display_name, canonical_name]
+  SOURCE:
+    type: direct
+    field: [source_name, vendor]
+  IDENTIFIER:
+    type: composed
+    compose: [catalog_number, rrid, doi, accession, pmid, pmcid, url]
+  NEW/REUSE:
+    type: direct
+    field: [new_or_reuse]
+  ADDITIONAL INFORMATION:
+    type: catchall
+    include:
+      - lot_number
+      - batch_number
+      - antibody_clone
+      - antibody_host
+      - antibody_clonality
+      - antibody_conjugate
+      - target
+      - organism
+      - taxon_id
+      - strain
+      - genotype
+      - cellosaurus_id
+      - authentication_method
+      - authentication_date
+      - mycoplasma_status
+      - version
+      - release_date
+      - commit_sha
+      - container_digest
+      - language
+      - license
+      - repository_url
+      - status
+      - notes

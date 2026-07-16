@@ -1,0 +1,14 @@
+name: star-methods
+version: "1.0.0"
+title: STAR Methods (Cell Press) interoperability profile
+description: >-
+  An interoperability profile that projects a table to the three-column STAR
+  Methods layout (REAGENT or RESOURCE, SOURCE, IDENTIFIER). This profile
+  contains only independently written mapping and validation rules. No Cell
+  Press or STAR Methods workbook, template, logo, or branded text is bundled;
+  to fill an official STAR template, supply your own copy via the `template`
+  argument. No endorsement by Cell Press is implied.
+license: GPL-3.0-only
+official: false
+source:
+  note: Interoperability target based on publicly documented STAR Methods fields.
