@@ -144,3 +144,21 @@ test_that("credentials are refused over non-HTTPS, non-loopback URLs", {
   expect_true(krt:::.credential_url_ok("http://localhost:11434/v1", TRUE))
   expect_true(krt:::.credential_url_ok("http://remote.example.org/api", FALSE))
 })
+
+test_that("CLI export without --out is a usage error (status 2)", {
+  f <- tempfile(fileext = ".json"); writeLines(write_krt_json(krt_example), f)
+  expect_identical(suppressMessages(krt_cli(c("export", f))), 2L)
+})
+
+test_that("CLI extract writes only JSON to stdout", {
+  mf <- tempfile(fileext = ".txt")
+  writeLines("We used anti-TH (RRID:AB_390204).", mf)
+  out <- suppressMessages(capture.output(krt_cli(c("extract", mf))))
+  expect_false(any(grepl("Extracted", out)))     # status line is on stderr, not stdout
+  expect_true(jsonlite::validate(trimws(paste(out, collapse = "\n"))))
+})
+
+test_that("the Shiny app source parses", {
+  app <- system.file("shiny-apps", "krt", "app.R", package = "krt")
+  expect_silent(parse(app))
+})

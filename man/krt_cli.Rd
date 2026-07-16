@@ -10,7 +10,9 @@ krt_cli(args = commandArgs(trailingOnly = TRUE))
 \item{args}{Command-line arguments (defaults to those passed to \code{Rscript}).}
 }
 \value{
-Invisibly an integer status code (0 success, 1 validation failure).
+Invisibly an integer status code (0 success, 1 validation failure or
+runtime error, 2 usage error such as an unknown command or a missing
+required \code{--out}).
 }
 \description{
 Dispatches a subcommand. Used by the \code{krt} shell script
