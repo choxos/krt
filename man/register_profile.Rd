@@ -4,7 +4,7 @@
 \alias{register_profile}
 \title{Register an output profile}
 \usage{
-register_profile(name = NULL, path = NULL, profile = NULL)
+register_profile(name = NULL, path = NULL, profile = NULL, replace = FALSE)
 }
 \arguments{
 \item{name}{Profile name. If omitted, taken from the profile's \code{schema.yml}
@@ -14,6 +14,10 @@ or the supplied object.}
 \code{mappings.yml} (loaded lazily), or \code{NULL}.}
 
 \item{profile}{A pre-built \code{krt_profile} object, or \code{NULL}.}
+
+\item{replace}{Overwrite a profile already registered under \code{name}? Defaults
+to \code{FALSE}, so a plugin cannot silently replace a built-in profile (such as
+\code{asap}); pass \code{TRUE} to deliberately override one.}
 }
 \value{
 Invisibly the profile name.

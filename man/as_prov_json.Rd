@@ -4,12 +4,16 @@
 \alias{as_prov_json}
 \title{Export the provenance graph as PROV-JSON}
 \usage{
-as_prov_json(x, path = NULL)
+as_prov_json(x, path = NULL, audience = c("author", "public"))
 }
 \arguments{
 \item{x}{A \link{krt_tbl}.}
 
 \item{path}{Output path, or \code{NULL} to return the JSON string.}
+
+\item{audience}{\code{"author"} (default) keeps provenance parameters;
+\code{"public"} redacts the table first, so recorded parameters that could echo
+sensitive input values are dropped.}
 }
 \value{
 The JSON string, or the path (invisibly).

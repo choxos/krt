@@ -8,7 +8,6 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21398444.svg)](https://doi.org/10.5281/zenodo.21398444)
-[![Archived on Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/choxos/krt/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/choxos/krt)
 <!-- badges: end -->
 
 **krt** is a toolkit for authoring, validating, enriching, rendering, and
@@ -68,8 +67,8 @@ cat(render_krt(k, format = "md"))
   reproducibility, and human-subject ethics/consent. These are minimal,
   honestly scoped checks, not full ICLAC or ARRIVE assessments. Severity is
   tunable per profile.
-- **Normalize and resolve** identifiers (RRID, DOI, ORCID, PubMed, ROR,
-  Cellosaurus), offline-first and degrading gracefully.
+- **Normalize** identifiers offline and **optionally resolve** them online (RRID,
+  DOI, ORCID, PubMed, ROR, Cellosaurus), degrading gracefully when offline.
 - **Import** from CSV, TSV, Excel, JSON, YAML, the ASAP six-column format, and
   Cell Press STAR three-column tables.
 - **Export and render** to JSON/YAML (lossless), CSV/Excel/ASAP, RIS/BibTeX
@@ -77,8 +76,8 @@ cat(render_krt(k, format = "md"))
 - **Profiles**: `generic`, `asap` (CC BY 4.0 assets), `star-methods`
   (interoperability), and your own; with programmatic license and attribution
   introspection (`krt_audit_licenses()`).
-- **Redact** ethics and consent metadata by default when exporting for a public
-  audience.
+- **Redact** ethics and consent metadata for public-audience exports and all
+  deposits (author exports are unredacted).
 - **Extract** resources from manuscripts (PDF, JATS, DOCX, text) with a
   deterministic regex engine or an optional LLM.
 - **Deposit** to Zenodo or Figshare, and connect to eLabFTW and protocols.io.

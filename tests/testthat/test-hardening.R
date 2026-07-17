@@ -197,7 +197,7 @@ test_that("krt_preflight passes a clean table and fails an invalid one", {
 test_that("BibTeX export escapes braces and newlines", {
   k <- add_resource(new_krt("D"), "Dataset", "Weird {title}\nsecond line",
                     doi = "10.5281/zenodo.1", new_or_reuse = "new")
-  bib <- export_citation(k, format = "bibtex")
+  bib <- suppressWarnings(export_citation(k, format = "bibtex"))
   expect_false(grepl("\n[^@}]* line", bib))          # no raw newline inside a field
   expect_true(grepl("\\\\\\{title\\\\\\}", bib))      # braces escaped
 })

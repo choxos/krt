@@ -36,8 +36,9 @@ The rendered text (md/html), or the path (invisibly) for docx.
 Produces a human-readable Key Resources Table. The \code{"star-methods"} profile
 projects the table to the three Cell Press columns (REAGENT or RESOURCE,
 SOURCE, IDENTIFIER) and groups resources under the twelve standard STAR
-Methods category headers, in the order the template uses; other profiles
-render the ASAP six-column layout.
+Methods category headers, in the order the template uses. The \code{"generic"}
+profile (the default) renders the ASAP six-column layout; any other named
+profile renders through its own declared columns.
 }
 \examples{
 cat(substr(render_krt(krt_example, profile = "star-methods"), 1, 80))

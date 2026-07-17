@@ -11,7 +11,8 @@ export_tabular(
   profile = NULL,
   view = NULL,
   audience = c("author", "public"),
-  redact = NULL
+  redact = NULL,
+  attribution = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ export_tabular(
 \item{audience}{\code{"author"} (full) or \code{"public"} (redacted).}
 
 \item{redact}{Redaction strength for public output, or \code{FALSE} to disable.}
+
+\item{attribution}{If \code{TRUE} (default), a \code{path} is given, and \code{profile}
+carries an attribution requirement, write it as a sidecar next to \code{path}.}
 }
 \value{
 The path (invisibly) when written, or the delimited text.

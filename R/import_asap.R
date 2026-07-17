@@ -58,7 +58,8 @@
 #' @param path A file path (csv/tsv/xlsx) or a data frame already read in.
 #' @param sheet Worksheet (for xlsx).
 #' @param title Optional title for the resulting table.
-#' @return A [krt_tbl] with profile `"asap"`.
+#' @return A [krt_tbl]; profile `"asap"` for a six-column ASAP sheet, or
+#'   `"star-methods"` for a Cell Press three-column table.
 #' @export
 #' @examples
 #' f <- tempfile(fileext = ".csv")
@@ -72,7 +73,7 @@ import_asap <- function(path, sheet = 1, title = NULL) {
   cellpress <- ("REAGENT_OR_RESOURCE" %in% cn) && !("RESOURCE_TYPE" %in% cn)
   getcol <- function(row, col) if (col %in% cn) as.character(row[[col]]) else ""
 
-  k <- new_krt(title = title, profile = "asap")
+  k <- new_krt(title = title, profile = if (cellpress) "star-methods" else "asap")
   current_type <- "Other"
   for (i in seq_len(nrow(raw))) {
     row <- raw[i, , drop = FALSE]
@@ -97,10 +98,10 @@ import_asap <- function(path, sheet = 1, title = NULL) {
 
     fields <- parse_compound_identifier(idc)
     other <- fields$other; fields$other <- NULL
-    notes <- paste(c(if (nzchar(addl)) addl, other), collapse = "; ")
-    if (length(fields) == 0L && is_pending_identifier(idc)) {
-      notes <- paste(c(notes, idc), collapse = "; ")
-    }
+    # A pending identifier that the parser did not type is preserved verbatim in
+    # notes; unique() keeps it from being recorded twice when it is also in other.
+    pending <- if (length(fields) == 0L && is_pending_identifier(idc)) idc
+    notes <- paste(unique(c(if (nzchar(addl)) addl, other, pending)), collapse = "; ")
 
     args <- c(list(rt, display_name = if (nzchar(name)) name else NULL), fields)
     if (nzchar(src)) args$source_name <- src

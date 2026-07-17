@@ -14,12 +14,18 @@ redaction_policy <- function() ref_data("redaction_policy")
 
 #' Default redaction strength for a profile's public exports
 #'
-#' @param profile A profile name or `krt_profile`.
-#' @return `"basic"` (the default public strip strength).
+#' @param profile A profile name or `krt_profile`. A profile may declare a
+#'   `redaction_default` in its `schema.yml`; otherwise the strength is `"basic"`.
+#' @return `"basic"` or `"strict"`.
 #' @export
 #' @examples
 #' redaction_default("asap")
-redaction_default <- function(profile = NULL) "basic"
+redaction_default <- function(profile = NULL) {
+  if (is.null(profile)) return("basic")
+  p <- tryCatch(get_profile(profile), error = function(e) NULL)
+  lvl <- p$redaction_default %||% "basic"
+  if (lvl %in% c("basic", "strict")) lvl else "basic"
+}
 
 #' @noRd
 .apply_redaction <- function(rec, rules) {
@@ -82,5 +88,8 @@ redact_krt <- function(x, level = c("basic", "strict"), policy = NULL) {
   # output (after recording the redaction step) while keeping the activity and
   # timestamp history.
   x$provenance <- lapply(x$provenance, function(e) { e$params <- NULL; e })
+  # Validation findings can quote a sensitive input value (a protocol or patient
+  # id inside a message); they are derived, so drop them from a public export.
+  x$validation <- list()
   x
 }

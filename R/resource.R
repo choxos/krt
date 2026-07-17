@@ -108,6 +108,10 @@ update_resource <- function(x, resource_id, ...) {
   }
   for (nm in names(updates)) {
     val <- updates[[nm]]
+    if (identical(nm, "resource_id")) {
+      stop("resource_id is immutable; it identifies the resource and cannot be changed by update_resource().",
+           call. = FALSE)
+    }
     if (identical(nm, "resource_type")) {
       m <- vocab_match(val, "resource_type", fuzzy = TRUE)
       if (!m$ok) {

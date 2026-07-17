@@ -62,8 +62,19 @@ validate_krt <- function(x, profile = NULL, layers = c("structural", "semantic")
   stopifnot(is_krt(x))
   profile <- profile %||% x$profile %||% "generic"
   layers <- match.arg(layers, c("structural", "semantic"), several.ok = TRUE)
-  overrides <- .profile_validation_overrides(profile)
+  # Fail closed on an unknown profile rather than silently validating as generic.
+  if (is.null(tryCatch(get_profile(profile), error = function(e) NULL))) {
+    stop(sprintf("Unknown profile '%s'. See krt_profiles().", profile), call. = FALSE)
+  }
   user_sev <- severity %||% list()
+  # Reject an unknown severity override so it cannot slip past the finding counts.
+  bad_sev <- setdiff(unlist(user_sev, use.names = FALSE), c(.krt_severities, "off"))
+  if (length(bad_sev)) {
+    stop(sprintf("Unknown severity value(s): %s. Use one of: %s.",
+                 paste(unique(bad_sev), collapse = ", "),
+                 paste(c(.krt_severities, "off"), collapse = ", ")), call. = FALSE)
+  }
+  overrides <- .profile_validation_overrides(profile)
   ctx <- list(resolve = isTRUE(resolve), profile = profile)
 
   findings <- list()

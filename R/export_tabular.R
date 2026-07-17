@@ -9,16 +9,21 @@
 #' @param view Optional explicit view name.
 #' @param audience `"author"` (full) or `"public"` (redacted).
 #' @param redact Redaction strength for public output, or `FALSE` to disable.
+#' @param attribution If `TRUE` (default), a `path` is given, and `profile`
+#'   carries an attribution requirement, write it as a sidecar next to `path`.
 #' @return The path (invisibly) when written, or the delimited text.
 #' @export
 #' @examples
 #' cat(substr(export_tabular(krt_example, format = "csv"), 1, 60))
 export_tabular <- function(x, path = NULL, format = c("csv", "tsv", "xlsx"),
                            profile = NULL, view = NULL,
-                           audience = c("author", "public"), redact = NULL) {
+                           audience = c("author", "public"), redact = NULL,
+                           attribution = TRUE) {
   stopifnot(is_krt(x))
   format <- match.arg(format)
   x <- .maybe_redact(x, match.arg(audience), redact)
+  .warn_lossy(x, format, profile)
+  if (!is.null(profile)) .attribution_sidecar(profile, path, attribution)
   df <- if (!is.null(view)) {
     as.data.frame(x, view = view)
   } else if (!is.null(profile) && !identical(profile, "generic")) {
@@ -102,6 +107,7 @@ export_citation <- function(x, path = NULL, format = c("ris", "bibtex"),
   # Defense in depth: a direct public export redacts too, not only via
   # export_krt() (which already redacts before dispatching here).
   x <- .maybe_redact(x, audience, redact)
+  .warn_lossy(x, format)
   citable <- Filter(function(r) {
     (r$resource_type %in% c("Dataset", "Software/code", "Protocol")) || !is.null(r$doi)
   }, x$resources)

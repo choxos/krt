@@ -15,9 +15,9 @@
 
 #' Scan free text for research identifiers
 #'
-#' Finds RRIDs, DOIs, catalog numbers, database accessions, ORCIDs, and PMIDs in
-#' a block of text and classifies each. Used by the regex extraction engine and
-#' available on its own.
+#' Finds RRIDs, DOIs, catalog numbers, database accessions, and PMIDs in a block
+#' of text and classifies each. Used by the regex extraction engine and available
+#' on its own.
 #'
 #' @param text A character vector of text.
 #' @return A data frame with columns `value`, `field`, `type` (an inferred
@@ -40,8 +40,10 @@ scan_identifiers <- function(text) {
     }
   }
   add(sub("[.,;)]+$", "", .scan(text, "RRID:\\s?([A-Za-z]+[_:][-.:A-Za-z0-9]+)")), "rrid")
+  # A bare DOI's resource type is unknown (dataset, article, software, ...); leave
+  # it NA rather than guessing "Dataset".
   add(sub("[.,;)]+$", "", .scan(text, "\\b(10\\.[0-9]{4,9}/[-._;()/:A-Za-z0-9]+)")),
-      "doi", "Dataset")
+      "doi")
   add(.scan(text, "Cat(?:alog)?(?:ue)?\\s*(?:no\\.?|number|#)\\s*:?\\s*([A-Za-z0-9][-A-Za-z0-9._/]{1,})",
             group = 1L), "catalog_number")
   add(.scan(text, "\\b(GSE[0-9]+|GSM[0-9]+|SR[RXPSA][0-9]+|ER[RXPSA][0-9]+|PRJ[A-Z]{2}[0-9]+|SAM[NED][A-Z]?[0-9]+)\\b",
@@ -69,8 +71,12 @@ scan_identifiers <- function(text) {
 extract_candidates <- function(text) {
   ids <- scan_identifiers(text)
   if (!nrow(ids)) return(list())
-  # Anchor a resource on each RRID, accession, and standalone DOI.
-  anchors <- ids[ids$field %in% c("rrid", "accession", "doi"), , drop = FALSE]
+  # Anchor a resource on each RRID, accession, standalone DOI, and catalog number
+  # so no harvested identifier is dropped. This engine is a high-precision id
+  # harvest; merging a catalog number with a co-located RRID is left to
+  # deduplication or the LLM engine, which have the surrounding context.
+  anchors <- ids[ids$field %in% c("rrid", "accession", "doi", "catalog_number"), ,
+                 drop = FALSE]
   resources <- list()
   seen <- character(0)
   for (i in seq_len(nrow(anchors))) {

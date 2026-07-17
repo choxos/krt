@@ -100,6 +100,32 @@
 }
 
 #' @noRd
+.sem_orcid_checksum <- function(x, ctx) {
+  issues <- list()
+  for (c in x$contributors %||% list()) {
+    orcid <- c$orcid %||% ""
+    if (!nzchar(orcid)) next
+    if (isFALSE(.orcid_checksum_ok(orcid))) {
+      issues <- c(issues, list(.issue(
+        sprintf("Contributor ORCID '%s' has an invalid check digit.", orcid),
+        field = "orcid")))
+    }
+  }
+  issues
+}
+
+#' @noRd
+.sem_missing_source <- function(x, ctx) {
+  src <- c("source_name", "vendor", "repository_url")
+  .for_resources(x, function(r, id) {
+    if (!any(vapply(src, function(f) .has_value(r, f), logical(1)))) {
+      list(.issue("Resource lists no source (vendor, source_name, or repository).",
+                  id, "source_name"))
+    }
+  })
+}
+
+#' @noRd
 .sem_duplicates <- function(x, ctx) {
   groups <- find_duplicates(x)
   lapply(groups, function(g) {
@@ -118,6 +144,8 @@
                      "semantic", "warning")
   register_validator("sem-software-rrid", .sem_software_rrid, "semantic", "note")
   register_validator("sem-duplicates", .sem_duplicates, "semantic", "warning")
+  register_validator("sem-orcid-checksum", .sem_orcid_checksum, "semantic", "warning")
+  register_validator("sem-missing-source", .sem_missing_source, "semantic", "note")
   register_validator("sem-id-exists", .sem_id_exists, "semantic", "note")
   invisible()
 }

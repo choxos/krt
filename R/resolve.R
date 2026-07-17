@@ -119,8 +119,6 @@ resolve_pubmed <- function(pmid, resolve = TRUE, timeout = 15) {
       url = paste0("https://pubmed.ncbi.nlm.nih.gov/", norm))
 }
 
-#' @rdname resolvers
-#' @export
 # The ROR display name: v2 responses carry names in names[] (the entry tagged
 # "ror_display"); v1 responses use a top-level `name`. Handle both.
 #' @noRd

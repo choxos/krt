@@ -16,9 +16,9 @@ schemes such as RRID/DOI/accession/PMID, \code{"medium"} for looser catalog-numb
 matches) so the results can be triaged before acceptance.
 }
 \description{
-Finds RRIDs, DOIs, catalog numbers, database accessions, ORCIDs, and PMIDs in
-a block of text and classifies each. Used by the regex extraction engine and
-available on its own.
+Finds RRIDs, DOIs, catalog numbers, database accessions, and PMIDs in a block
+of text and classifies each. Used by the regex extraction engine and available
+on its own.
 }
 \examples{
 scan_identifiers("We used anti-TH (RRID:AB_390204) and FIJI (RRID:SCR_002285).")

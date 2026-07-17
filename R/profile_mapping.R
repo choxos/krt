@@ -113,9 +113,10 @@ mapping_lossy_fields <- function(x, profile) {
       preserved <- c(preserved, as.character(spec$compose))
     }
   }
-  present <- setdiff(unique(unlist(lapply(x$resources, names))),
-                     c("resource_id", "resource_type"))
-  # resource_type is always carried by RESOURCE TYPE; exclude it from lossy.
+  present <- setdiff(unique(unlist(lapply(x$resources, names))), "resource_type")
+  # resource_type is always carried by the RESOURCE TYPE column, so it is never
+  # lost. resource_id, by contrast, has no column in a profile like ASAP, so it
+  # IS dropped and must be reported (a reimport cannot restore the same id).
   preserved <- unique(c(preserved, "resource_type"))
   setdiff(present, preserved)
 }

@@ -16,9 +16,13 @@
 resource_signature <- function(resource) {
   keys <- c("resource_type", "vendor", "catalog_number", "lot_number", "rrid",
             "doi", "accession")
+  # Normalize identifier fields first, so a bare DOI and its URL form (or an
+  # unprefixed and "RRID:"-prefixed RRID) produce the same signature.
+  normfn <- list(rrid = norm_rrid, doi = norm_doi)
   vals <- vapply(keys, function(k) {
     v <- resource[[k]]
     if (is.null(v) || !length(v)) return("")
+    if (!is.null(normfn[[k]])) v <- normfn[[k]](v)
     tolower(trimws(paste(as.character(v), collapse = "|")))
   }, character(1))
   # Join with a unit-separator delimiter (never present in identifiers) so field

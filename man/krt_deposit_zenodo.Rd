@@ -30,8 +30,9 @@ krt_deposit_zenodo(
 \item{timeout}{Request timeout in seconds.}
 }
 \value{
-A list with \code{deposit} (the API response), \code{doi}, and \code{x} (the table
-with the DOI recorded). On failure, \code{deposit} is \code{NULL}.
+A list with \code{deposit} (the API response), \code{doi}, \code{uploaded} and
+\code{published} (per-stage status), and \code{x} (the table, with the DOI recorded
+only when every stage succeeded). On failure, \code{deposit} is \code{NULL}.
 }
 \description{
 Creates a Zenodo deposition, uploads the table as JSON, sets metadata, and

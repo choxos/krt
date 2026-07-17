@@ -4,12 +4,14 @@
 \alias{as_rocrate}
 \title{Export a KRT as an RO-Crate 1.1 metadata document}
 \usage{
-as_rocrate(x, path = NULL)
+as_rocrate(x, path = NULL, audience = c("author", "public"))
 }
 \arguments{
 \item{x}{A \link{krt_tbl}.}
 
 \item{path}{Output path, or \code{NULL} to return the JSON-LD string.}
+
+\item{audience}{\code{"author"} (default) or \code{"public"} (redacts the table first).}
 }
 \value{
 The JSON-LD string, or the path (invisibly).

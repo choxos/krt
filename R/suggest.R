@@ -98,8 +98,10 @@ krt_suggest <- function(query, type = NULL, authority = "auto", n = 10,
   if (is.null(items) || !length(items)) return(.empty_suggest())
   rows <- lapply(utils::head(items, n), function(it) {
     id <- .dig(it, "id")
-    .suggest_row(.dig(it, "name") %||% id %||% "", sub("https://ror.org/", "", id %||% ""),
-                 "ror", uri = id)
+    # ROR API v2 items carry names in names[], not a top-level `name`; reuse the
+    # resolver's display-name picker so labels are organization names, not ids.
+    label <- .ror_display_name(it) %||% id %||% ""
+    .suggest_row(label, sub("https://ror.org/", "", id %||% ""), "ror", uri = id)
   })
   do.call(rbind, rows)
 }
@@ -124,8 +126,16 @@ krt_suggest <- function(query, type = NULL, authority = "auto", n = 10,
                                         retmax = n)))
   ids <- unlist(.dig(j, "esearchresult", "idlist"))
   if (is.null(ids) || !length(ids)) return(.empty_suggest())
-  rows <- lapply(ids, function(id) .suggest_row(query, id, "taxonomy",
-                 uri = paste0("https://www.ncbi.nlm.nih.gov/taxonomy/", id)))
+  # esearch returns only ids; follow up with esummary so each row is labeled with
+  # its scientific name rather than the query string.
+  s <- .resp_json(http_get(paste0(endpoint("ncbi_eutils"), "esummary.fcgi"),
+                           query = list(db = "taxonomy", id = paste(ids, collapse = ","),
+                                        retmode = "json")))
+  rows <- lapply(ids, function(id) {
+    nm <- .dig(s, "result", id, "scientificname") %||% query
+    .suggest_row(nm, id, "taxonomy",
+                 uri = paste0("https://www.ncbi.nlm.nih.gov/taxonomy/", id))
+  })
   do.call(rbind, rows)
 }
 

@@ -14,12 +14,16 @@
 #'
 #' @param x A [krt_tbl].
 #' @param path Output path, or `NULL` to return the JSON string.
+#' @param audience `"author"` (default) keeps provenance parameters;
+#'   `"public"` redacts the table first, so recorded parameters that could echo
+#'   sensitive input values are dropped.
 #' @return The JSON string, or the path (invisibly).
 #' @export
 #' @examples
 #' cat(substr(as_prov_json(normalize_ids(krt_example)), 1, 40))
-as_prov_json <- function(x, path = NULL) {
+as_prov_json <- function(x, path = NULL, audience = c("author", "public")) {
   stopifnot(is_krt(x))
+  if (identical(match.arg(audience), "public")) x <- redact_krt(x)
   ent_id <- paste0("krt:table/", x$table_id)
   entity <- stats::setNames(
     list(list(`prov:type` = .prov_qn("krt:KeyResourcesTable"),
@@ -80,12 +84,14 @@ as_prov_json <- function(x, path = NULL) {
 #'
 #' @param x A [krt_tbl].
 #' @param path Output path, or `NULL` to return the JSON-LD string.
+#' @param audience `"author"` (default) or `"public"` (redacts the table first).
 #' @return The JSON-LD string, or the path (invisibly).
 #' @export
 #' @examples
 #' cat(substr(as_rocrate(krt_example), 1, 40))
-as_rocrate <- function(x, path = NULL) {
+as_rocrate <- function(x, path = NULL, audience = c("author", "public")) {
   stopifnot(is_krt(x))
+  if (identical(match.arg(audience), "public")) x <- redact_krt(x)
   parts <- lapply(x$resources, function(r) list(`@id` = paste0("#", r$resource_id)))
   # Contributors become RO-Crate authors (Person entities), referenced from the
   # root Dataset.
@@ -147,13 +153,16 @@ as_rocrate <- function(x, path = NULL) {
 #' @param format `"jsonld"` (default) or `"turtle"` (requires the `rdflib`
 #'   package).
 #' @param path Output path, or `NULL` to return the text.
+#' @param audience `"author"` (default) or `"public"` (redacts the table first).
 #' @return The serialized RDF text, or the path (invisibly).
 #' @export
 #' @examples
 #' invisible(as_rdf(krt_example, format = "jsonld"))
-as_rdf <- function(x, format = c("jsonld", "turtle"), path = NULL) {
+as_rdf <- function(x, format = c("jsonld", "turtle"), path = NULL,
+                   audience = c("author", "public")) {
   stopifnot(is_krt(x))
   format <- match.arg(format)
+  if (identical(match.arg(audience), "public")) x <- redact_krt(x)
   jsonld <- as_rocrate(x)
   if (identical(format, "jsonld")) {
     if (is.null(path)) return(jsonld)

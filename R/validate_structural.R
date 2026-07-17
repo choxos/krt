@@ -149,7 +149,18 @@
 }
 
 #' @noRd
+.vs_duplicate_id <- function(x, ctx) {
+  ids <- vapply(x$resources, function(r) r$resource_id %||% NA_character_, character(1))
+  ids <- ids[!is.na(ids) & nzchar(ids)]
+  dups <- unique(ids[duplicated(ids)])
+  lapply(dups, function(d) .issue(
+    sprintf("Duplicate resource_id '%s'; identifiers must be unique.", d),
+    d, "resource_id"))
+}
+
+#' @noRd
 .register_structural_validators <- function() {
+  register_validator("struct-duplicate-id", .vs_duplicate_id, "structural", "error")
   register_validator("struct-missing-name", .vs_missing_name, "structural", "error")
   register_validator("struct-missing-new-reuse", .vs_missing_new_reuse, "structural", "error")
   register_validator("struct-new-reuse-vocab", .vs_new_reuse_vocab, "structural", "error")

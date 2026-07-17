@@ -14,7 +14,8 @@ import_asap(path, sheet = 1, title = NULL)
 \item{title}{Optional title for the resulting table.}
 }
 \value{
-A \link{krt_tbl} with profile \code{"asap"}.
+A \link{krt_tbl}; profile \code{"asap"} for a six-column ASAP sheet, or
+\code{"star-methods"} for a Cell Press three-column table.
 }
 \description{
 Import an ASAP or Cell Press Key Resources Table

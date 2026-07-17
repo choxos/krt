@@ -1,6 +1,7 @@
 test_that("character normalization canonicalizes by scheme", {
+  # DOIs are case-insensitive, so normalization lowercases them.
   expect_identical(normalize_ids("https://doi.org/10.1038/SDATA.2016.18"),
-                   "10.1038/SDATA.2016.18")
+                   "10.1038/sdata.2016.18")
   expect_identical(normalize_ids("doi:10.1/xyz"), "10.1/xyz")
   expect_identical(normalize_ids("https://orcid.org/0000-0002-1825-0097"),
                    "0000-0002-1825-0097")

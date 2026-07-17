@@ -2,6 +2,8 @@
 % Please edit documentation in R/llm_registry.R
 \name{krt_llm}
 \alias{krt_llm}
+\alias{format.krt_llm}
+\alias{print.krt_llm}
 \title{Configure an LLM for extraction}
 \usage{
 krt_llm(
@@ -12,6 +14,10 @@ krt_llm(
   temperature = 0,
   max_tokens = 4096
 )
+
+\method{format}{krt_llm}(x, ...)
+
+\method{print}{krt_llm}(x, ...)
 }
 \arguments{
 \item{provider}{One of the registered providers (\code{"openai"}, \code{"anthropic"},
@@ -24,6 +30,10 @@ krt_llm(
 \item{api_key}{API key; defaults to the provider's environment variable.}
 
 \item{temperature, max_tokens}{Generation parameters.}
+
+\item{x}{A \code{krt_llm} object.}
+
+\item{...}{Ignored.}
 }
 \value{
 A \code{krt_llm} configuration object.

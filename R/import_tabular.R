@@ -43,6 +43,15 @@ import_tabular <- function(path, mapping = NULL, sheet = 1, profile = "generic",
                            title = NULL) {
   raw <- if (is.data.frame(path)) path else .read_table_any(path, sheet)
   mapping <- mapping %||% .guess_mapping(names(raw))
+  # Warn once if several columns target the same core field; without this the
+  # later columns would be silently dropped (only the first value is kept).
+  tg <- unlist(mapping, use.names = FALSE)
+  tg <- tg[tg != "__identifier__"]
+  dup <- unique(tg[duplicated(tg)])
+  if (length(dup)) {
+    warning(sprintf("Multiple columns map to the same field(s): %s; keeping the first.",
+                    paste(dup, collapse = ", ")), call. = FALSE)
+  }
   k <- new_krt(title = title, profile = profile)
   for (i in seq_len(nrow(raw))) {
     row <- raw[i, , drop = FALSE]
@@ -59,12 +68,16 @@ import_tabular <- function(path, mapping = NULL, sheet = 1, profile = "generic",
         other <- parsed$other; parsed$other <- NULL
         for (fn in names(parsed)) args[[fn]] <- parsed[[fn]]
         if (length(other)) args$notes <- paste(c(args$notes, other), collapse = "; ")
-      } else {
+      } else if (is.null(args[[target]])) {
         args[[target]] <- val
       }
     }
-    rt <- args$resource_type %||% "Other"
-    m <- vocab_match(rt, "resource_type", fuzzy = TRUE)
+    rt_raw <- args$resource_type %||% "Other"
+    m <- vocab_match(rt_raw, "resource_type", fuzzy = TRUE)
+    if (!m$ok && nzchar(rt_raw) && !identical(rt_raw, "Other")) {
+      warning(sprintf("Row %d: unknown resource type '%s'; using 'Other'.", i, rt_raw),
+              call. = FALSE)
+    }
     rt <- if (m$ok) m$value else "Other"
     args$resource_type <- NULL
     dn <- args$display_name; args$display_name <- NULL

@@ -3,6 +3,22 @@
 # URL). Deposits default to the redacted public audience. Never run during CRAN
 # checks.
 
+# A bearer token must only be sent to the repository's own host. A deposit API
+# returns follow-up upload URLs; verify each is HTTPS and on the API's
+# registrable domain before attaching the token, so a malformed or tampered
+# response cannot redirect the credential elsewhere.
+#' @noRd
+.deposit_host_ok <- function(url, base) {
+  if (is.null(url) || !nzchar(url) || !grepl("^https://", url, ignore.case = TRUE)) {
+    return(FALSE)
+  }
+  host <- function(u) tolower(sub(":.*$", "", sub("^https?://([^/]+).*$", "\\1", u,
+                                                  ignore.case = TRUE)))
+  h <- host(url); bh <- host(base)
+  reg <- sub("^.*?([^.]+\\.[^.]+)$", "\\1", bh)  # registrable domain of the API host
+  h == bh || h == reg || endsWith(h, paste0(".", reg))
+}
+
 #' @noRd
 .deposit_metadata <- function(x, metadata) {
   metadata %||% list(
@@ -26,8 +42,9 @@
 #' @param publish Whether to publish immediately (default `FALSE`).
 #' @param audience `"public"` (redacted, the default) or `"author"` (full).
 #' @param timeout Request timeout in seconds.
-#' @return A list with `deposit` (the API response), `doi`, and `x` (the table
-#'   with the DOI recorded). On failure, `deposit` is `NULL`.
+#' @return A list with `deposit` (the API response), `doi`, `uploaded` and
+#'   `published` (per-stage status), and `x` (the table, with the DOI recorded
+#'   only when every stage succeeded). On failure, `deposit` is `NULL`.
 #' @export
 #' @examples
 #' \dontrun{
@@ -53,23 +70,44 @@ krt_deposit_zenodo <- function(x, token = Sys.getenv("ZENODO_TOKEN"),
   bucket <- .dig(j, "links", "bucket")
   doi <- .dig(j, "metadata", "prereserve_doi", "doi") %||% NA_character_
 
+  ok <- TRUE
   if (!is.null(bucket)) {
-    http_put_bytes(paste0(bucket, "/key-resources-table.json"),
+    if (!.deposit_host_ok(bucket, base)) {
+      ok <- FALSE
+      warning("Zenodo returned an upload URL on an unexpected host; not sending the token.",
+              call. = FALSE)
+    } else if (is.null(http_put_bytes(paste0(bucket, "/key-resources-table.json"),
                    data = write_krt_json(x), type = "application/json",
-                   token = token, timeout = timeout)
+                   token = token, timeout = timeout))) {
+      ok <- FALSE
+      warning("Zenodo file upload failed.", call. = FALSE)
+    }
   }
-  http_put_json(paste0(base, "deposit/depositions/", dep_id),
+  if (is.null(http_put_json(paste0(base, "deposit/depositions/", dep_id),
                 body = list(metadata = .deposit_metadata(x, metadata)),
-                token = token, timeout = timeout)
-  if (isTRUE(publish)) {
-    http_post_json(paste0(base, "deposit/depositions/", dep_id, "/actions/publish"),
-                   body = stats::setNames(list(), character(0)), token = token,
-                   timeout = timeout)
+                token = token, timeout = timeout))) {
+    ok <- FALSE
+    warning("Zenodo metadata update failed.", call. = FALSE)
   }
-  x <- append_provenance(x, "deposit", params = list(repository = "zenodo",
-                                                     doi = doi, sandbox = sandbox))
-  if (!is.na(doi)) x$table_id <- doi
-  list(deposit = j, doi = doi, x = x)
+  published <- FALSE
+  if (isTRUE(publish)) {
+    if (is.null(http_post_json(paste0(base, "deposit/depositions/", dep_id, "/actions/publish"),
+                   body = stats::setNames(list(), character(0)), token = token,
+                   timeout = timeout))) {
+      ok <- FALSE
+      warning("Zenodo publish failed.", call. = FALSE)
+    } else {
+      published <- TRUE
+    }
+  }
+  # Only record the deposit as done (and adopt the DOI) when every stage succeeded.
+  if (isTRUE(ok)) {
+    x <- append_provenance(x, "deposit", params = list(repository = "zenodo",
+                                                       doi = doi, sandbox = sandbox,
+                                                       published = published))
+    if (!is.na(doi)) x$table_id <- doi
+  }
+  list(deposit = j, doi = doi, uploaded = ok, published = published, x = x)
 }
 
 #' @noRd
@@ -82,24 +120,25 @@ krt_deposit_zenodo <- function(x, token = Sys.getenv("ZENODO_TOKEN"),
     body = list(name = "key-resources-table.json", md5 = md5, size = size),
     headers = hdr, timeout = timeout))
   loc <- .dig(f, "location")
-  if (is.null(loc)) return(FALSE)
+  if (is.null(loc) || !.deposit_host_ok(loc, base)) return(FALSE)
   # 2. get the upload URL and part layout
   info <- .resp_json(http_get(loc, headers = hdr, timeout = timeout))
   up <- .dig(info, "upload_url")
-  if (is.null(up)) return(FALSE)
+  if (is.null(up) || !.deposit_host_ok(up, base)) return(FALSE)
   parts <- .dig(.resp_json(http_get(up, headers = hdr, timeout = timeout)), "parts")
-  # 3. upload each part (a single small part in practice)
+  # 3. upload each part (a single small part in practice); a failed part aborts.
   raw <- charToRaw(data)
   for (p in parts %||% list(list(partNo = 1L, startOffset = 0L, endOffset = size - 1L))) {
     s <- (.dig(p, "startOffset") %||% 0L) + 1L
     e <- (.dig(p, "endOffset") %||% (size - 1L)) + 1L
-    http_put_bytes(sprintf("%s/%s", up, .dig(p, "partNo") %||% 1L),
-                   data = rawToChar(raw[s:e]), headers = hdr, timeout = timeout)
+    if (is.null(http_put_bytes(sprintf("%s/%s", up, .dig(p, "partNo") %||% 1L),
+                   data = rawToChar(raw[s:e]), headers = hdr, timeout = timeout))) {
+      return(FALSE)
+    }
   }
-  # 4. complete
-  http_post_json(loc, body = stats::setNames(list(), character(0)),
-                 headers = hdr, timeout = timeout)
-  TRUE
+  # 4. complete (report failure rather than a false success)
+  !is.null(http_post_json(loc, body = stats::setNames(list(), character(0)),
+                          headers = hdr, timeout = timeout))
 }
 
 #' Deposit a KRT to Figshare

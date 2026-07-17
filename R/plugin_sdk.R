@@ -50,7 +50,7 @@ validate_plugin_contract <- function(kind, obj) {
                             "suggest_source"))
   has_args <- function(fn, min) is.function(fn) && length(formals(fn)) >= min
   ok <- switch(kind,
-    validator = has_args(obj, 1L),
+    validator = has_args(obj, 2L),  # the engine calls fn(x, ctx)
     resolver = has_args(obj, 1L),   # first argument is the identifier, any name
     llm_provider = has_args(obj, 2L),
     suggest_source = has_args(obj, 2L),

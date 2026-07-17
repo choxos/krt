@@ -14,14 +14,19 @@
 #' @param format `"csv"` or `"xlsx"`; inferred from `path`/`template`.
 #' @param audience `"author"` (full) or `"public"` (redacted).
 #' @param redact Redaction strength for public output, or `FALSE` to disable.
+#' @param attribution If `TRUE` (default) and a `path` is given, write the ASAP
+#'   CC BY 4.0 attribution block as a sidecar next to it.
 #' @return The path (invisibly) when written, or CSV text.
 #' @export
 #' @examples
 #' cat(substr(export_asap(krt_example), 1, 60))
 export_asap <- function(x, path = NULL, template = NULL, format = NULL,
-                        audience = c("author", "public"), redact = NULL) {
+                        audience = c("author", "public"), redact = NULL,
+                        attribution = TRUE) {
   stopifnot(is_krt(x))
   x <- .maybe_redact(x, match.arg(audience), redact)
+  .warn_lossy(x, "asap")
+  .attribution_sidecar("asap", path, attribution)
   df <- project_profile(x, "asap")
   format <- format %||% .fmt_from_path(path) %||% (if (!is.null(template)) "xlsx" else "csv")
 
