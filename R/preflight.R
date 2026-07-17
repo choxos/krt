@@ -32,16 +32,25 @@ krt_preflight <- function(x, profile = NULL) {
   rows <- list()
   add <- function(...) rows[[length(rows) + 1L]] <<- .pf_check(...)
 
-  rep <- validate_krt(x, profile = profile)
+  # An unknown profile (or any validation-engine failure) is a blocking failure,
+  # not a silently skipped check.
+  rep <- tryCatch(validate_krt(x, profile = profile), error = function(e) e)
+  if (inherits(rep, "condition")) {
+    add("validation", "fail", conditionMessage(rep))
+    df <- do.call(rbind, rows)
+    return(structure(list(profile = profile, ok = FALSE, checks = df),
+                     class = "krt_preflight"))
+  }
   n_err <- sum(as.data.frame(rep)$severity == "error")
   add("validation", if (n_err == 0L) "pass" else "fail",
       sprintf("%d error(s) under profile '%s'", n_err, profile))
 
-  rt_ok <- tryCatch(
-    identical(read_krt_json(write_krt_json(x))$resources, x$resources),
-    error = function(e) FALSE)
+  # Compare the whole object, not only resources: provenance and validation are
+  # part of the canonical form and now round-trip too.
+  rt_ok <- tryCatch(identical(read_krt_json(write_krt_json(x)), x),
+                    error = function(e) FALSE)
   add("round_trip", if (rt_ok) "pass" else "warn",
-      if (rt_ok) "JSON round-trip preserves every resource"
+      if (rt_ok) "JSON round-trip reproduces the whole table"
       else "JSON round-trip is not byte-for-byte identical")
 
   # Public export must succeed and must not leak a field the policy drops.
@@ -62,11 +71,16 @@ krt_preflight <- function(x, profile = NULL) {
       if (nzchar(attr_txt)) "Attribution text is available"
       else "No attribution text for this profile (fine for 'generic')")
 
-  lossy <- tryCatch(mapping_lossy_fields(x, profile), error = function(e) character(0))
-  add("lossy_projection", if (!length(lossy)) "pass" else "warn",
-      if (!length(lossy)) sprintf("The '%s' projection drops no fields", profile)
-      else sprintf("The '%s' projection drops: %s", profile,
-                   paste(lossy, collapse = ", ")))
+  lossy <- tryCatch(mapping_lossy_fields(x, profile), error = function(e) e)
+  if (inherits(lossy, "condition")) {
+    add("lossy_projection", "warn",
+        sprintf("Could not compute projection loss: %s", conditionMessage(lossy)))
+  } else {
+    add("lossy_projection", if (!length(lossy)) "pass" else "warn",
+        if (!length(lossy)) sprintf("The '%s' projection drops no fields", profile)
+        else sprintf("The '%s' projection drops: %s", profile,
+                     paste(lossy, collapse = ", ")))
+  }
 
   df <- do.call(rbind, rows)
   structure(list(profile = profile, ok = !any(df$status == "fail"), checks = df),

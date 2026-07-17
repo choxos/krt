@@ -37,8 +37,8 @@ First release.
 
 ## Sharing
 
-- Redaction of ethics and consent metadata by default for public exports, on
-  every export and render path.
+- Redaction of ethics and consent metadata for public-audience output, applied
+  by every export, render, deposit, and provenance-graph path.
 - Manuscript extraction (regex and optional LLM) from PDF, JATS, DOCX, and text.
 - Provenance recording with PROV-JSON and RO-Crate 1.1 export.
 - Deposit to Zenodo and Figshare; connectors for eLabFTW and protocols.io.

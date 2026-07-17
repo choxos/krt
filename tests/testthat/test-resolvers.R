@@ -10,7 +10,7 @@ test_that("offline resolution returns a normalized, unresolved result", {
   expect_identical(r$type, "Antibody")
 
   expect_identical(resolve_doi("https://doi.org/10.1038/X", resolve = FALSE)$normalized,
-                   "10.1038/X")
+                   "10.1038/x")
   expect_identical(resolve_orcid("https://orcid.org/0000-0002-1825-0097",
                                  resolve = FALSE)$normalized, "0000-0002-1825-0097")
   expect_identical(resolve_ror("https://ror.org/05xpvk416", resolve = FALSE)$normalized,

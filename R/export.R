@@ -17,6 +17,18 @@
   redact_krt(x, level = level)
 }
 
+# Write a profile's attribution block next to `path`, when the profile carries
+# one (e.g. the CC BY 4.0 ASAP assets). Shared by the leaf exporters.
+#' @noRd
+.attribution_sidecar <- function(profile, path, enabled = TRUE) {
+  if (!isTRUE(enabled) || is.null(path)) return(invisible())
+  p <- tryCatch(get_profile(profile), error = function(e) NULL)
+  if (!is.null(p) && !is.null(p$attribution)) {
+    krt_write_attribution(profile, paste0(path, ".attribution.md"))
+  }
+  invisible()
+}
+
 #' @noRd
 .fmt_from_path <- function(path) {
   if (is.null(path)) return(NULL)
@@ -33,6 +45,22 @@
   utils::write.table(df, con, sep = sep, row.names = FALSE, na = "",
                      qmethod = "double")
   paste(get("buf"), collapse = "\n")
+}
+
+#' Warn that an export format is a lower-fidelity view, naming dropped fields.
+#' Emitted by every lossy exporter (the dispatcher and each leaf), so a direct
+#' `export_asap()`/`export_tabular()`/`export_citation()` call warns too.
+#' @noRd
+.warn_lossy <- function(x, format, profile = NULL) {
+  lossy <- .lossy_fields_for(x, format, profile %||% x$profile %||% "generic")
+  msg <- if (length(lossy)) {
+    sprintf("lossy-export: %d field(s) are not preserved as columns in '%s': %s.",
+            length(lossy), format, paste(utils::head(lossy, 10), collapse = ", "))
+  } else {
+    sprintf("lossy-export: '%s' is a lower-fidelity view; use 'json' or 'yaml' for a lossless copy.",
+            format)
+  }
+  warning(msg, call. = FALSE)
 }
 
 #' @noRd
@@ -88,36 +116,20 @@ export_krt <- function(x, path = NULL,
 
   x <- .maybe_redact(x, audience, redact)
 
-  lossy_formats <- c("csv", "tsv", "xlsx", "asap", "ris", "bibtex")
-  if (format %in% lossy_formats) {
-    lossy <- .lossy_fields_for(x, format, profile)
-    msg <- if (length(lossy)) {
-      sprintf("lossy-export: %d field(s) are not preserved as columns in '%s': %s.",
-              length(lossy), format, paste(utils::head(lossy, 10), collapse = ", "))
-    } else {
-      sprintf("lossy-export: '%s' is a lower-fidelity view; use 'json' or 'yaml' for a lossless copy.",
-              format)
-    }
-    warning(msg, call. = FALSE)
-  }
-
-  out <- switch(format,
+  # The leaf exporters below emit the lossy-export warning and the attribution
+  # sidecar, so a direct call to any of them behaves identically to this path.
+  switch(format,
     json = write_krt_json(x, path),
     yaml = write_krt_yaml(x, path),
-    asap = export_asap(x, path, template = template),
-    csv  = export_tabular(x, path, format = "csv", profile = profile, view = view),
-    tsv  = export_tabular(x, path, format = "tsv", profile = profile, view = view),
-    xlsx = export_tabular(x, path, format = "xlsx", profile = profile, view = view),
+    asap = export_asap(x, path, template = template, attribution = attribution),
+    csv  = export_tabular(x, path, format = "csv", profile = profile, view = view,
+                          attribution = attribution),
+    tsv  = export_tabular(x, path, format = "tsv", profile = profile, view = view,
+                          attribution = attribution),
+    xlsx = export_tabular(x, path, format = "xlsx", profile = profile, view = view,
+                          attribution = attribution),
     ris  = export_citation(x, path, format = "ris"),
     bibtex = export_citation(x, path, format = "bibtex"))
-
-  if (isTRUE(attribution) && !is.null(path)) {
-    p <- tryCatch(get_profile(profile), error = function(e) NULL)
-    if (!is.null(p) && !is.null(p$attribution)) {
-      krt_write_attribution(profile, paste0(path, ".attribution.md"))
-    }
-  }
-  out
 }
 
 #' @rdname export_krt

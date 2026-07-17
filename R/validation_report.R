@@ -94,6 +94,9 @@ summary.krt_validation_report <- function(object, ...) {
                       stringsAsFactors = FALSE))
   }
   df <- as.data.frame(object)
+  # aggregate() drops rows whose grouping value is NA, so label the (common)
+  # findings with no reporting standard rather than silently omitting them.
+  df$standard[is.na(df$standard)] <- "(none)"
   agg <- stats::aggregate(list(n = seq_len(nrow(df))),
                           by = list(severity = df$severity, layer = df$layer,
                                     standard = df$standard),

@@ -52,7 +52,9 @@ res$existing_krt
 
 The LLM engine is opt-in and requires a provider and API key. It is
 non-deterministic, so it is never the default, and its output is funneled
-through the same normalize + validate pipeline as every other import path.
+through the same normalize and validate steps the regex engine uses before you
+see a candidate table. (Direct importers such as `import_krt()` only read and
+structure the file; normalize and validate them yourself when you need to.)
 
 ```{r, eval = FALSE}
 cfg <- krt_llm("openai", model = "gpt-4o-mini")   # reads OPENAI_API_KEY

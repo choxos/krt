@@ -54,7 +54,9 @@
     "primate", "pig", "sus scrofa", "porcine", "dog", "canis", "cat", "felis",
     "chicken", "gallus", "sheep", "ovis", "cattle", "bovine", "guinea pig",
     "hamster", "ferret", "gerbil", "marmoset")
-  any(vapply(animal_terms, function(t) grepl(t, org, fixed = TRUE), logical(1)))
+  # Word-bounded match so an incidental substring (e.g. "rat" inside "Serratia")
+  # does not misclassify a microbe or plant as a regulated animal.
+  any(vapply(animal_terms, function(t) grepl(paste0("\\b", t, "\\b"), org), logical(1)))
 }
 
 #' @noRd

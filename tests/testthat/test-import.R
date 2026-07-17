@@ -1,6 +1,6 @@
 test_that("ASAP round-trip recovers typed identifiers", {
   f <- tempfile(fileext = ".csv")
-  export_asap(krt_example, f)
+  suppressWarnings(export_asap(krt_example, f))
   k <- import_krt(f)
   expect_identical(length(k$resources), length(krt_example$resources))
   ab <- k$resources[[1]]

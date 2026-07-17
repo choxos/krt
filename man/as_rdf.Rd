@@ -4,7 +4,12 @@
 \alias{as_rdf}
 \title{Export a KRT as RDF (JSON-LD or Turtle)}
 \usage{
-as_rdf(x, format = c("jsonld", "turtle"), path = NULL)
+as_rdf(
+  x,
+  format = c("jsonld", "turtle"),
+  path = NULL,
+  audience = c("author", "public")
+)
 }
 \arguments{
 \item{x}{A \link{krt_tbl}.}
@@ -13,6 +18,8 @@ as_rdf(x, format = c("jsonld", "turtle"), path = NULL)
 package).}
 
 \item{path}{Output path, or \code{NULL} to return the text.}
+
+\item{audience}{\code{"author"} (default) or \code{"public"} (redacts the table first).}
 }
 \value{
 The serialized RDF text, or the path (invisibly).

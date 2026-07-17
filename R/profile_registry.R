@@ -12,18 +12,31 @@
 #' @param path Path to a profile directory containing `schema.yml` and
 #'   `mappings.yml` (loaded lazily), or `NULL`.
 #' @param profile A pre-built `krt_profile` object, or `NULL`.
+#' @param replace Overwrite a profile already registered under `name`? Defaults
+#'   to `FALSE`, so a plugin cannot silently replace a built-in profile (such as
+#'   `asap`); pass `TRUE` to deliberately override one.
 #' @return Invisibly the profile name.
 #' @export
 #' @examples
 #' krt_profiles()
-register_profile <- function(name = NULL, path = NULL, profile = NULL) {
+register_profile <- function(name = NULL, path = NULL, profile = NULL,
+                             replace = FALSE) {
+  taken <- function(nm) !is.null(.profile_registry[[nm]]) || !is.null(.profile_cache[[nm]])
   if (!is.null(profile)) {
     name <- name %||% profile$name
+    if (!isTRUE(replace) && taken(name)) {
+      stop(sprintf("A profile '%s' is already registered; pass replace = TRUE to override.",
+                   name), call. = FALSE)
+    }
     .profile_cache[[name]] <- profile
   } else if (!is.null(path)) {
     if (is.null(name)) {
       schema <- yaml::read_yaml(file.path(path, "schema.yml"))
       name <- schema$name
+    }
+    if (!isTRUE(replace) && taken(name)) {
+      stop(sprintf("A profile '%s' is already registered; pass replace = TRUE to override.",
+                   name), call. = FALSE)
     }
     .profile_registry[[name]] <- list(path = path)
   } else {

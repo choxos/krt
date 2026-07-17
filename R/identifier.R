@@ -52,12 +52,15 @@ id_parse <- function(idstring) {
   }
 
   # Pattern-based classification (order matters: specific before generic URL).
+  # PDB is deliberately absent: its pattern ("^[0-9][A-Za-z0-9]{3}$") matches any
+  # four-character token, so auto-classifying it here would mis-type more values
+  # than it would help. UniProt's pattern is specific and safe to dispatch.
   tests <- list(
     doi = "doi", orcid = "orcid", pmcid = "pmcid",
     geo_series = "accession", geo_sample = "accession", sra = "accession",
     ena = "accession", bioproject = "accession", biosample = "accession",
-    ensembl = "accession", chebi = "accession", cellosaurus = "cellosaurus_id",
-    ror = "affiliation_ror"
+    uniprot = "accession", ensembl = "accession", chebi = "accession",
+    cellosaurus = "cellosaurus_id", ror = "affiliation_ror"
   )
   for (nm in names(tests)) {
     if (grepl(p[[nm]], x, perl = TRUE)) {
@@ -69,7 +72,11 @@ id_parse <- function(idstring) {
   # already handled above as `cellosaurus_id`.
   if (grepl("^[A-Za-z]+[_:][-.:A-Za-z0-9]+$", x)) {
     token <- sub("[_:].*$", "", x)
-    if (token %in% ref_data("rrid_prefix_map")$token) {
+    local <- sub("^[A-Za-z]+[_:]", "", x)
+    # Require a local id of at least four characters, so a short catalog-like
+    # token ("AB_152") is not misread as an RRID (real ones are AB_390204,
+    # CVCL_0063, SCR_002285, ...).
+    if (token %in% ref_data("rrid_prefix_map")$token && nchar(local) >= 4L) {
       return(list(scheme = "rrid", value = paste0("RRID:", x), field = "rrid"))
     }
   }
@@ -113,6 +120,24 @@ rrid_type <- function(rrid) {
   i <- match(token, map$token)
   if (is.na(i)) return(NA_character_)
   map$resource_type[i]
+}
+
+# ORCID check-digit test (ISO 7064 MOD 11-2 over the 16 base digits). Returns
+# NA when the input is not a full 16-character ORCID (nothing to judge), TRUE
+# when the trailing check digit is correct, FALSE otherwise.
+#' @noRd
+.orcid_checksum_ok <- function(orcid) {
+  d <- gsub("[^0-9X]", "", toupper(as.character(orcid)))
+  if (nchar(d) != 16L) return(NA)
+  chars <- substring(d, 1:16, 1:16)
+  total <- 0L
+  for (i in 1:15) {
+    if (!grepl("^[0-9]$", chars[i])) return(FALSE)
+    total <- (total + as.integer(chars[i])) * 2L
+  }
+  result <- (12L - (total %% 11L)) %% 11L
+  check <- if (result == 10L) "X" else as.character(result)
+  identical(check, chars[16])
 }
 
 #' Parse a compound identifier string into typed fields

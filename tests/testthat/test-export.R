@@ -21,11 +21,11 @@ test_that("format is inferred from the path extension", {
 })
 
 test_that("citation export emits only citable resources", {
-  bib <- export_citation(krt_example, format = "bibtex")
+  bib <- suppressWarnings(export_citation(krt_example, format = "bibtex"))
   expect_match(bib, "@misc")
   expect_match(bib, "Fiji")             # software is citable
   expect_false(grepl("Anti-TH", bib))   # an antibody is not a citation
-  ris <- export_citation(krt_example, format = "ris")
+  ris <- suppressWarnings(export_citation(krt_example, format = "ris"))
   expect_match(ris, "TY  - ")
 })
 

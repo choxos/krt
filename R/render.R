@@ -111,8 +111,9 @@
 #' Produces a human-readable Key Resources Table. The `"star-methods"` profile
 #' projects the table to the three Cell Press columns (REAGENT or RESOURCE,
 #' SOURCE, IDENTIFIER) and groups resources under the twelve standard STAR
-#' Methods category headers, in the order the template uses; other profiles
-#' render the ASAP six-column layout.
+#' Methods category headers, in the order the template uses. The `"generic"`
+#' profile (the default) renders the ASAP six-column layout; any other named
+#' profile renders through its own declared columns.
 #'
 #' @param x A [krt_tbl].
 #' @param path Output path, or `NULL` to return the text (md/html).
@@ -133,7 +134,12 @@ render_krt <- function(x, path = NULL, format = c("md", "html", "docx"),
   x <- .maybe_redact(x, match.arg(audience), redact)
   profile <- profile %||% x$profile %||% "generic"
   star <- identical(profile, "star-methods")
-  df <- project_profile(x, if (star) "star-methods" else "asap")
+  # Render through the selected profile's own columns. The generic profile is the
+  # full core view with no compact layout of its own, so it falls back to the
+  # ASAP columns; any other named profile (asap, star-methods, or a plugin) uses
+  # its declared mappings.
+  render_profile <- if (identical(profile, "generic")) "asap" else profile
+  df <- project_profile(x, render_profile)
   groups <- .render_groups(x$resources, profile, grouped = star)
 
   if (identical(format, "docx")) {

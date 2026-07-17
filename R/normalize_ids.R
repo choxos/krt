@@ -74,7 +74,9 @@ normalize_ids.krt_tbl <- function(x, ...) {
 #' @noRd
 norm_doi <- function(x) {
   if (is.null(x)) return(NULL)
-  vapply(x, function(v) trimws(.strip_doi(v)), character(1), USE.NAMES = FALSE)
+  # DOIs are case-insensitive over the ASCII range (DOI Handbook), so lowercase
+  # for a single canonical form.
+  vapply(x, function(v) tolower(trimws(.strip_doi(v))), character(1), USE.NAMES = FALSE)
 }
 
 #' @noRd
@@ -101,8 +103,13 @@ norm_ror <- function(x) {
 #' @noRd
 norm_pmid <- function(x) {
   if (is.null(x)) return(NULL)
-  vapply(x, function(v) gsub("[^0-9]", "", sub("^pmid:?\\s*", "", trimws(v), ignore.case = TRUE)),
-         character(1), USE.NAMES = FALSE)
+  vapply(x, function(v) {
+    # Strip only the prefix and surrounding whitespace. Do not delete interior
+    # non-digits, so a malformed "12abc34" is left intact for validation to flag
+    # rather than being silently turned into a plausible "1234".
+    v <- sub("^pmid:?\\s*", "", trimws(v), ignore.case = TRUE)
+    if (grepl("^[0-9]+$", v)) v else trimws(v)
+  }, character(1), USE.NAMES = FALSE)
 }
 
 #' @noRd
@@ -119,7 +126,12 @@ norm_rrid <- function(x) {
   if (is.null(x)) return(NULL)
   vapply(x, function(v) {
     v <- trimws(v)
-    if (grepl("^RRID:", v, ignore.case = TRUE)) sub("^rrid:", "RRID:", v, ignore.case = TRUE)
-    else paste0("RRID:", v)
+    # Collapse any number of leading "RRID:" prefixes to one, then uppercase the
+    # authority token (AB, SCR, CVCL, ...) while leaving the local id untouched.
+    body <- sub("^(\\s*rrid:\\s*)+", "", v, ignore.case = TRUE)
+    if (!nzchar(body)) return(v)
+    m <- regmatches(body, regexec("^([A-Za-z]+)([_:].*)$", body))[[1]]
+    if (length(m) == 3L) body <- paste0(toupper(m[2]), m[3])
+    paste0("RRID:", body)
   }, character(1), USE.NAMES = FALSE)
 }

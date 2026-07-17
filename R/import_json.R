@@ -11,13 +11,28 @@
     }
   } else {
     for (nm in names(r)) if (is.list(r[[nm]]) && length(r[[nm]])) {
-      # flatten simple JSON arrays of scalars back to atomic vectors
-      if (all(vapply(r[[nm]], function(v) is.atomic(v) && length(v) == 1L, logical(1)))) {
+      # Flatten a simple JSON array of scalars back to an atomic vector, but keep
+      # named objects (such as provenance `params`) as named lists so the whole
+      # object round-trips losslessly.
+      if (is.null(names(r[[nm]])) &&
+          all(vapply(r[[nm]], function(v) is.atomic(v) && length(v) == 1L, logical(1)))) {
         r[[nm]] <- unlist(r[[nm]], use.names = FALSE)
       }
     }
   }
   structure(compact(r), class = class)
+}
+
+# Rebuild a validation finding to its canonical shape. JSON has no NA, so an
+# absent optional field (standard, suggestion) reads back dropped; new_finding
+# restores the full record so validation round-trips losslessly.
+#' @noRd
+.finding_from_list <- function(f) {
+  f <- as.list(f)
+  keep <- intersect(names(f), names(formals(new_finding)))
+  vals <- lapply(f[keep], function(v) if (is.list(v)) unlist(v, use.names = FALSE) else v)
+  vals <- vals[!vapply(vals, function(v) is.null(v) || !length(v), logical(1))]
+  do.call(new_finding, vals)
 }
 
 #' Reconstruct a krt_tbl from a parsed list
@@ -35,8 +50,7 @@
                            function(a) .record_from_list(a, "krt_approval", coerce = FALSE))
   x$contributors <- lapply(lst$contributors %||% list(),
                            function(c) .record_from_list(c, "krt_contributor", coerce = FALSE))
-  x$validation   <- lapply(lst$validation %||% list(),
-                           function(f) .record_from_list(f, "krt_finding", coerce = FALSE))
+  x$validation   <- lapply(lst$validation %||% list(), .finding_from_list)
   x$provenance   <- lapply(lst$provenance %||% list(),
                            function(p) .record_from_list(p, "krt_prov_entry", coerce = FALSE))
   x

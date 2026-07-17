@@ -71,6 +71,27 @@ krt_llm <- function(provider = c("openai", "anthropic", "gemini", "openai_compat
             class = "krt_llm")
 }
 
+#' @param x A `krt_llm` object.
+#' @param ... Ignored.
+#' @rdname krt_llm
+#' @export
+format.krt_llm <- function(x, ...) {
+  key <- x$api_key %||% ""
+  c("<krt_llm>",
+    paste0("  provider: ", x$provider),
+    paste0("  model:    ", x$model %||% "<default>"),
+    paste0("  base_url: ",
+           if (is.null(x$base_url) || !nzchar(x$base_url)) "<default>" else x$base_url),
+    paste0("  api_key:  ", if (nzchar(key)) "<hidden>" else "<none>"))
+}
+
+#' @rdname krt_llm
+#' @export
+print.krt_llm <- function(x, ...) {
+  cat(format(x, ...), sep = "\n")
+  invisible(x)
+}
+
 #' @noRd
 .register_builtin_llm_providers <- function() {
   register_llm_provider("openai", llm_openai)

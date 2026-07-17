@@ -7,10 +7,11 @@
 redaction_default(profile = NULL)
 }
 \arguments{
-\item{profile}{A profile name or \code{krt_profile}.}
+\item{profile}{A profile name or \code{krt_profile}. A profile may declare a
+\code{redaction_default} in its \code{schema.yml}; otherwise the strength is \code{"basic"}.}
 }
 \value{
-\code{"basic"} (the default public strip strength).
+\code{"basic"} or \code{"strict"}.
 }
 \description{
 Default redaction strength for a profile's public exports

@@ -10,7 +10,8 @@ export_asap(
   template = NULL,
   format = NULL,
   audience = c("author", "public"),
-  redact = NULL
+  redact = NULL,
+  attribution = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ export_asap(
 \item{audience}{\code{"author"} (full) or \code{"public"} (redacted).}
 
 \item{redact}{Redaction strength for public output, or \code{FALSE} to disable.}
+
+\item{attribution}{If \code{TRUE} (default) and a \code{path} is given, write the ASAP
+CC BY 4.0 attribution block as a sidecar next to it.}
 }
 \value{
 The path (invisibly) when written, or CSV text.

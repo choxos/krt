@@ -36,6 +36,7 @@ load_profile <- function(path) {
       mappings    = mappings$mappings,
       sections    = mappings$sections,
       validation_overrides = val$overrides %||% list(),
+      redaction_default = schema$redaction_default %||% "basic",
       template_path = if (file.exists(template)) template else NULL,
       attribution = attribution,
       provenance  = prov,
