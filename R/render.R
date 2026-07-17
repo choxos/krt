@@ -63,8 +63,11 @@
   th <- paste0("<th>", .esc_html(cols), "</th>", collapse = "")
   row_html <- function(i) paste0("<tr>", paste0("<td>", .esc_html(as.character(df[i, ])),
                                                 "</td>", collapse = ""), "</tr>")
-  header_html <- function(h) sprintf("<tr><td colspan=\"%d\"><strong>%s</strong></td></tr>",
-                                     length(cols), .esc_html(h))
+  # A STAR-style category header spans every column; the class lets a host (the
+  # Shiny editor, a pkgdown page) style the section rows.
+  header_html <- function(h) sprintf(
+    "<tr class=\"krt-section\"><td colspan=\"%d\"><strong>%s</strong></td></tr>",
+    length(cols), .esc_html(h))
   rows <- character(0)
   if (is.null(groups)) {
     for (i in seq_len(nrow(df))) rows <- c(rows, row_html(i))
@@ -75,7 +78,7 @@
     }
   }
   paste0(if (!is.null(title)) sprintf("<h2>%s</h2>\n", .esc_html(title)) else "",
-         "<table>\n<thead><tr>", th, "</tr></thead>\n<tbody>\n",
+         "<table class=\"krt-table\">\n<thead><tr>", th, "</tr></thead>\n<tbody>\n",
          paste(rows, collapse = "\n"), "\n</tbody>\n</table>")
 }
 
