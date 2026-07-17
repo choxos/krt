@@ -134,11 +134,11 @@ those fields on the way in.</p>
 reported:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/mapping_lossy_fields.html">mapping_lossy_fields</a></span><span class="op">(</span><span class="va">krt_example</span>, <span class="st">"asap"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "antibody_host"         "antibody_clonality"    "target"               </span></span>
-<span><span class="co">#&gt;  [4] "notes"                 "cellosaurus_id"        "authentication_method"</span></span>
-<span><span class="co">#&gt;  [7] "authentication_date"   "mycoplasma_status"     "organism"             </span></span>
-<span><span class="co">#&gt; [10] "taxon_id"              "version"               "language"             </span></span>
-<span><span class="co">#&gt; [13] "strain"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "resource_id"           "antibody_host"         "antibody_clonality"   </span></span>
+<span><span class="co">#&gt;  [4] "target"                "notes"                 "cellosaurus_id"       </span></span>
+<span><span class="co">#&gt;  [7] "authentication_method" "authentication_date"   "mycoplasma_status"    </span></span>
+<span><span class="co">#&gt; [10] "organism"              "taxon_id"              "version"              </span></span>
+<span><span class="co">#&gt; [13] "language"              "strain"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="licensing-and-attribution">Licensing and attribution<a class="anchor" aria-label="anchor" href="#licensing-and-attribution"></a>
@@ -178,6 +178,9 @@ an official ASAP product.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/export_asap.html">export_asap</a></span><span class="op">(</span><span class="va">krt_example</span>, <span class="va">f</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: lossy-export: 14 field(s) are not preserved as columns in 'asap':</span></span>
+<span><span class="co">#&gt; resource_id, antibody_host, antibody_clonality, target, notes, cellosaurus_id,</span></span>
+<span><span class="co">#&gt; authentication_method, authentication_date, mycoplasma_status, organism.</span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/import_krt.html">import_krt</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">k</span><span class="op">$</span><span class="va">resources</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">krt_example</span><span class="op">$</span><span class="va">resources</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>

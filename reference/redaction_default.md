@@ -12,11 +12,13 @@ redaction_default(profile = NULL)
 
 - profile:
 
-  A profile name or `krt_profile`.
+  A profile name or `krt_profile`. A profile may declare a
+  `redaction_default` in its `schema.yml`; otherwise the strength is
+  `"basic"`.
 
 ## Value
 
-`"basic"` (the default public strip strength).
+`"basic"` or `"strict"`.
 
 ## Examples
 

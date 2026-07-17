@@ -5,7 +5,7 @@ Register an output profile
 ## Usage
 
 ``` r
-register_profile(name = NULL, path = NULL, profile = NULL)
+register_profile(name = NULL, path = NULL, profile = NULL, replace = FALSE)
 ```
 
 ## Arguments
@@ -23,6 +23,12 @@ register_profile(name = NULL, path = NULL, profile = NULL)
 - profile:
 
   A pre-built `krt_profile` object, or `NULL`.
+
+- replace:
+
+  Overwrite a profile already registered under `name`? Defaults to
+  `FALSE`, so a plugin cannot silently replace a built-in profile (such
+  as `asap`); pass `TRUE` to deliberately override one.
 
 ## Value
 

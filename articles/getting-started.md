@@ -59,8 +59,10 @@ profile.
 ``` r
 
 validate_krt(k, profile = "generic")
-#> <krt_validation_report> profile: generic | VALID | 0 findings
-#>   errors: 0  warnings: 0  notes: 0  info: 0
+#> <krt_validation_report> profile: generic | VALID | 2 findings
+#>   errors: 0  warnings: 0  notes: 2  info: 0
+#>   NOTE    sem-missing-source [res-51c17ebad6$source_name]: Resource lists no source (vendor, source_name, or repository).
+#>   NOTE    sem-missing-source [res-ff3840dd4e$source_name]: Resource lists no source (vendor, source_name, or repository).
 ```
 
 Under the stricter ASAP profile, a missing identifier becomes an error:
@@ -68,8 +70,8 @@ Under the stricter ASAP profile, a missing identifier becomes an error:
 ``` r
 
 summary(validate_krt(k, profile = "asap"))
-#> [1] severity layer    standard n       
-#> <0 rows> (or 0-length row.names)
+#>   severity    layer standard n
+#> 1     note semantic   (none) 2
 ```
 
 ## Normalize and export
@@ -83,7 +85,7 @@ cat(substr(write_krt_json(k), 1, 120))
 #> {
 #>   "schema_version": "1.0.0",
 #>   "profile": "generic",
-#>   "table_id": "krt-f523b351c7",
+#>   "table_id": "krt-ee8dfc3d08",
 #>   "title": "Dopaminergic neuron s
 ```
 

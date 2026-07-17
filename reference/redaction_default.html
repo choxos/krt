@@ -53,12 +53,13 @@
 
 
 <dl><dt id="arg-profile">profile<a class="anchor" aria-label="anchor" href="#arg-profile"></a></dt>
-<dd><p>A profile name or <code>krt_profile</code>.</p></dd>
+<dd><p>A profile name or <code>krt_profile</code>. A profile may declare a
+<code>redaction_default</code> in its <code>schema.yml</code>; otherwise the strength is <code>"basic"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>"basic"</code> (the default public strip strength).</p>
+    <p><code>"basic"</code> or <code>"strict"</code>.</p>
     </div>
 
     <div class="section level2">

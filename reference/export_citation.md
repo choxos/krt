@@ -48,6 +48,7 @@ The path (invisibly) when written, or the citation text.
 
 ``` r
 cat(export_citation(krt_example, format = "bibtex"))
+#> Warning: lossy-export: 17 field(s) are not preserved as columns in 'bibtex': vendor, source_name, catalog_number, rrid, antibody_host, antibody_clonality, target, new_or_reuse, notes, cellosaurus_id.
 #> @misc{res-51c17ebad6,
 #>   title = {Fiji},
 #>   url = {https://imagej.net/software/fiji/},

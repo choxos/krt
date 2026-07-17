@@ -34,7 +34,8 @@ as.data.frame(res$krt)[, c("resource_type", "display_name", "rrid")]
 #>   resource_type display_name            rrid
 #> 1      Antibody    AB_390204  RRID:AB_390204
 #> 2 Software/code   SCR_002285 RRID:SCR_002285
-#> 3       Dataset     GSE12345            <NA>
+#> 3         Other        AB152            <NA>
+#> 4       Dataset     GSE12345            <NA>
 ```
 
 The result is a normalized, validated `krt_tbl` plus a validation
@@ -62,8 +63,11 @@ res$existing_krt
 
 The LLM engine is opt-in and requires a provider and API key. It is
 non-deterministic, so it is never the default, and its output is
-funneled through the same normalize + validate pipeline as every other
-import path.
+funneled through the same normalize and validate steps the regex engine
+uses before you see a candidate table. (Direct importers such as
+[`import_krt()`](https://choxos.github.io/krt/reference/import_krt.md)
+only read and structure the file; normalize and validate them yourself
+when you need to.)
 
 ``` r
 

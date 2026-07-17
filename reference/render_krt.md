@@ -3,8 +3,10 @@
 Produces a human-readable Key Resources Table. The `"star-methods"`
 profile projects the table to the three Cell Press columns (REAGENT or
 RESOURCE, SOURCE, IDENTIFIER) and groups resources under the twelve
-standard STAR Methods category headers, in the order the template uses;
-other profiles render the ASAP six-column layout.
+standard STAR Methods category headers, in the order the template uses.
+The `"generic"` profile (the default) renders the ASAP six-column
+layout; any other named profile renders through its own declared
+columns.
 
 ## Usage
 

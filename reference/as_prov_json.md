@@ -7,7 +7,7 @@ with the `krt` software agent and generating the table.
 ## Usage
 
 ``` r
-as_prov_json(x, path = NULL)
+as_prov_json(x, path = NULL, audience = c("author", "public"))
 ```
 
 ## Arguments
@@ -19,6 +19,12 @@ as_prov_json(x, path = NULL)
 - path:
 
   Output path, or `NULL` to return the JSON string.
+
+- audience:
+
+  `"author"` (default) keeps provenance parameters; `"public"` redacts
+  the table first, so recorded parameters that could echo sensitive
+  input values are dropped.
 
 ## Value
 

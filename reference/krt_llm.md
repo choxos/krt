@@ -13,6 +13,12 @@ krt_llm(
   temperature = 0,
   max_tokens = 4096
 )
+
+# S3 method for class 'krt_llm'
+format(x, ...)
+
+# S3 method for class 'krt_llm'
+print(x, ...)
 ```
 
 ## Arguments
@@ -37,6 +43,14 @@ krt_llm(
 - temperature, max_tokens:
 
   Generation parameters.
+
+- x:
+
+  A `krt_llm` object.
+
+- ...:
+
+  Ignored.
 
 ## Value
 

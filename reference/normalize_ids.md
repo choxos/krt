@@ -30,7 +30,7 @@ An object of the same type as `x`, with identifiers normalized.
 
 ``` r
 normalize_ids("https://doi.org/10.1038/SDATA.2016.18")
-#> [1] "10.1038/SDATA.2016.18"
+#> [1] "10.1038/sdata.2016.18"
 r <- new_resource("Software/code", "Fiji", rrid = "SCR_002285",
                   new_or_reuse = "reuse")
 normalize_ids(r)$rrid

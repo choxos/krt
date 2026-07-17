@@ -65,11 +65,11 @@ reported:
 ``` r
 
 mapping_lossy_fields(krt_example, "asap")
-#>  [1] "antibody_host"         "antibody_clonality"    "target"               
-#>  [4] "notes"                 "cellosaurus_id"        "authentication_method"
-#>  [7] "authentication_date"   "mycoplasma_status"     "organism"             
-#> [10] "taxon_id"              "version"               "language"             
-#> [13] "strain"
+#>  [1] "resource_id"           "antibody_host"         "antibody_clonality"   
+#>  [4] "target"                "notes"                 "cellosaurus_id"       
+#>  [7] "authentication_method" "authentication_date"   "mycoplasma_status"    
+#> [10] "organism"              "taxon_id"              "version"              
+#> [13] "language"              "strain"
 ```
 
 ## Licensing and attribution
@@ -116,6 +116,9 @@ product.
 
 f <- tempfile(fileext = ".csv")
 export_asap(krt_example, f)
+#> Warning: lossy-export: 14 field(s) are not preserved as columns in 'asap':
+#> resource_id, antibody_host, antibody_clonality, target, notes, cellosaurus_id,
+#> authentication_method, authentication_date, mycoplasma_status, organism.
 k <- import_krt(f)
 identical(length(k$resources), length(krt_example$resources))
 #> [1] TRUE

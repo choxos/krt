@@ -12,7 +12,8 @@ export_tabular(
   profile = NULL,
   view = NULL,
   audience = c("author", "public"),
-  redact = NULL
+  redact = NULL,
+  attribution = TRUE
 )
 ```
 
@@ -46,6 +47,11 @@ export_tabular(
 
   Redaction strength for public output, or `FALSE` to disable.
 
+- attribution:
+
+  If `TRUE` (default), a `path` is given, and `profile` carries an
+  attribution requirement, write it as a sidecar next to `path`.
+
 ## Value
 
 The path (invisibly) when written, or the delimited text.
@@ -54,5 +60,6 @@ The path (invisibly) when written, or the delimited text.
 
 ``` r
 cat(substr(export_tabular(krt_example, format = "csv"), 1, 60))
+#> Warning: lossy-export: 'csv' is a lower-fidelity view; use 'json' or 'yaml' for a lossless copy.
 #> "resource_id","resource_type","display_name","source_name","
 ```

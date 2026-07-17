@@ -96,6 +96,7 @@ managers, not as an archival copy.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu">export_citation</span><span class="op">(</span><span class="va">krt_example</span>, format <span class="op">=</span> <span class="st">"bibtex"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>lossy-export: 17 field(s) are not preserved as columns in 'bibtex': vendor, source_name, catalog_number, rrid, antibody_host, antibody_clonality, target, new_or_reuse, notes, cellosaurus_id.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> @misc{res-51c17ebad6,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   title = {Fiji},</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   url = {https://imagej.net/software/fiji/},</span>

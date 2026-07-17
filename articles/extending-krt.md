@@ -86,5 +86,10 @@ register_suggest_source("mysource", function(query, n) {
 })
 ```
 
-Registered plugins run inside the same error isolation as the built-ins,
-so a faulty plugin cannot corrupt a core operation.
+Registered plugins run inside the same error isolation as the built-ins:
+a rule or resolver that throws is caught, so a faulty plugin cannot
+abort a validation or resolution run. Plugins are still trusted code. A
+plugin registered with `replace = TRUE` deliberately overrides a
+built-in, and a validator whose predicate or body errors is downgraded
+to a warning rather than failing the run, so a plugin can change
+validation and output behavior.

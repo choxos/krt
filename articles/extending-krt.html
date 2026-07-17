@@ -142,7 +142,12 @@ issues. Here is one that flags datasets lacking a license.</p>
 <span>             score <span class="op">=</span> <span class="fl">1</span>, uri <span class="op">=</span> <span class="cn">NA_character_</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Registered plugins run inside the same error isolation as the
-built-ins, so a faulty plugin cannot corrupt a core operation.</p>
+built-ins: a rule or resolver that throws is caught, so a faulty plugin
+cannot abort a validation or resolution run. Plugins are still trusted
+code. A plugin registered with <code>replace = TRUE</code> deliberately
+overrides a built-in, and a validator whose predicate or body errors is
+downgraded to a warning rather than failing the run, so a plugin can
+change validation and output behavior.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

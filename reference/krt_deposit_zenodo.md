@@ -51,8 +51,10 @@ krt_deposit_zenodo(
 
 ## Value
 
-A list with `deposit` (the API response), `doi`, and `x` (the table with
-the DOI recorded). On failure, `deposit` is `NULL`.
+A list with `deposit` (the API response), `doi`, `uploaded` and
+`published` (per-stage status), and `x` (the table, with the DOI
+recorded only when every stage succeeded). On failure, `deposit` is
+`NULL`.
 
 ## Examples
 

@@ -1,8 +1,8 @@
 # Scan free text for research identifiers
 
-Finds RRIDs, DOIs, catalog numbers, database accessions, ORCIDs, and
-PMIDs in a block of text and classifies each. Used by the regex
-extraction engine and available on its own.
+Finds RRIDs, DOIs, catalog numbers, database accessions, and PMIDs in a
+block of text and classifies each. Used by the regex extraction engine
+and available on its own.
 
 ## Usage
 

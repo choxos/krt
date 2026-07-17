@@ -14,7 +14,8 @@ export_asap(
   template = NULL,
   format = NULL,
   audience = c("author", "public"),
-  redact = NULL
+  redact = NULL,
+  attribution = TRUE
 )
 ```
 
@@ -44,6 +45,11 @@ export_asap(
 
   Redaction strength for public output, or `FALSE` to disable.
 
+- attribution:
+
+  If `TRUE` (default) and a `path` is given, write the ASAP CC BY 4.0
+  attribution block as a sidecar next to it.
+
 ## Value
 
 The path (invisibly) when written, or CSV text.
@@ -52,5 +58,6 @@ The path (invisibly) when written, or CSV text.
 
 ``` r
 cat(substr(export_asap(krt_example), 1, 60))
+#> Warning: lossy-export: 14 field(s) are not preserved as columns in 'asap': resource_id, antibody_host, antibody_clonality, target, notes, cellosaurus_id, authentication_method, authentication_date, mycoplasma_status, organism.
 #> "RESOURCE TYPE","RESOURCE NAME","SOURCE","IDENTIFIER","NEW/R
 ```

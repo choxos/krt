@@ -60,8 +60,9 @@ cat(render_krt(k, format = "md"))
   software reproducibility, and human-subject ethics/consent. These are
   minimal, honestly scoped checks, not full ICLAC or ARRIVE assessments.
   Severity is tunable per profile.
-- **Normalize and resolve** identifiers (RRID, DOI, ORCID, PubMed, ROR,
-  Cellosaurus), offline-first and degrading gracefully.
+- **Normalize** identifiers offline and **optionally resolve** them
+  online (RRID, DOI, ORCID, PubMed, ROR, Cellosaurus), degrading
+  gracefully when offline.
 - **Import** from CSV, TSV, Excel, JSON, YAML, the ASAP six-column
   format, and Cell Press STAR three-column tables.
 - **Export and render** to JSON/YAML (lossless), CSV/Excel/ASAP,
@@ -71,8 +72,8 @@ cat(render_krt(k, format = "md"))
   (interoperability), and your own; with programmatic license and
   attribution introspection
   ([`krt_audit_licenses()`](https://choxos.github.io/krt/reference/krt_audit_licenses.md)).
-- **Redact** ethics and consent metadata by default when exporting for a
-  public audience.
+- **Redact** ethics and consent metadata for public-audience exports and
+  all deposits (author exports are unredacted).
 - **Extract** resources from manuscripts (PDF, JATS, DOCX, text) with a
   deterministic regex engine or an optional LLM.
 - **Deposit** to Zenodo or Figshare, and connect to eLabFTW and

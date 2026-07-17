@@ -121,14 +121,16 @@ that fire only for the relevant resource types. Severity depends on the
 profile.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/validate_krt.html">validate_krt</a></span><span class="op">(</span><span class="va">k</span>, profile <span class="op">=</span> <span class="st">"generic"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;krt_validation_report&gt; profile: generic | VALID | 0 findings</span></span>
-<span><span class="co">#&gt;   errors: 0  warnings: 0  notes: 0  info: 0</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;krt_validation_report&gt; profile: generic | VALID | 2 findings</span></span>
+<span><span class="co">#&gt;   errors: 0  warnings: 0  notes: 2  info: 0</span></span>
+<span><span class="co">#&gt;   NOTE    sem-missing-source [res-51c17ebad6$source_name]: Resource lists no source (vendor, source_name, or repository).</span></span>
+<span><span class="co">#&gt;   NOTE    sem-missing-source [res-ff3840dd4e$source_name]: Resource lists no source (vendor, source_name, or repository).</span></span></code></pre></div>
 <p>Under the stricter ASAP profile, a missing identifier becomes an
 error:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/validate_krt.html">validate_krt</a></span><span class="op">(</span><span class="va">k</span>, profile <span class="op">=</span> <span class="st">"asap"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] severity layer    standard n       </span></span>
-<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre></div>
+<span><span class="co">#&gt;   severity    layer standard n</span></span>
+<span><span class="co">#&gt; 1     note semantic   (none) 2</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="normalize-and-export">Normalize and export<a class="anchor" aria-label="anchor" href="#normalize-and-export"></a>
@@ -141,7 +143,7 @@ error:</p>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "schema_version": "1.0.0",</span></span>
 <span><span class="co">#&gt;   "profile": "generic",</span></span>
-<span><span class="co">#&gt;   "table_id": "krt-f523b351c7",</span></span>
+<span><span class="co">#&gt;   "table_id": "krt-ee8dfc3d08",</span></span>
 <span><span class="co">#&gt;   "title": "Dopaminergic neuron s</span></span></code></pre></div>
 <p>Tabular and profile exports are lossy views and warn about it:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">

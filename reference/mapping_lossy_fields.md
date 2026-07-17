@@ -29,9 +29,9 @@ A character vector of field names (empty for a lossless profile).
 
 ``` r
 mapping_lossy_fields(krt_example, "asap")
-#>  [1] "antibody_host"         "antibody_clonality"    "target"               
-#>  [4] "notes"                 "cellosaurus_id"        "authentication_method"
-#>  [7] "authentication_date"   "mycoplasma_status"     "organism"             
-#> [10] "taxon_id"              "version"               "language"             
-#> [13] "strain"               
+#>  [1] "resource_id"           "antibody_host"         "antibody_clonality"   
+#>  [4] "target"                "notes"                 "cellosaurus_id"       
+#>  [7] "authentication_method" "authentication_date"   "mycoplasma_status"    
+#> [10] "organism"              "taxon_id"              "version"              
+#> [13] "language"              "strain"               
 ```

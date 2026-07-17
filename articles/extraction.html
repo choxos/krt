@@ -101,7 +101,8 @@ optional LLM.</p>
 <span><span class="co">#&gt;   resource_type display_name            rrid</span></span>
 <span><span class="co">#&gt; 1      Antibody    AB_390204  RRID:AB_390204</span></span>
 <span><span class="co">#&gt; 2 Software/code   SCR_002285 RRID:SCR_002285</span></span>
-<span><span class="co">#&gt; 3       Dataset     GSE12345            &lt;NA&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 3         Other        AB152            &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 4       Dataset     GSE12345            &lt;NA&gt;</span></span></code></pre></div>
 <p>The result is a normalized, validated <code>krt_tbl</code> plus a
 validation report; every extraction is provenance-stamped with the
 engine used.</p>
@@ -126,8 +127,10 @@ Resources Table already present in the document.</p>
 </h2>
 <p>The LLM engine is opt-in and requires a provider and API key. It is
 non-deterministic, so it is never the default, and its output is
-funneled through the same normalize + validate pipeline as every other
-import path.</p>
+funneled through the same normalize and validate steps the regex engine
+uses before you see a candidate table. (Direct importers such as
+<code><a href="../reference/import_krt.html">import_krt()</a></code> only read and structure the file; normalize
+and validate them yourself when you need to.)</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cfg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/krt_llm.html">krt_llm</a></span><span class="op">(</span><span class="st">"openai"</span>, model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span><span class="op">)</span>   <span class="co"># reads OPENAI_API_KEY</span></span>
 <span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_krt.html">extract_krt</a></span><span class="op">(</span><span class="st">"path/to/manuscript.pdf"</span>, engine <span class="op">=</span> <span class="st">"llm"</span>, llm <span class="op">=</span> <span class="va">cfg</span><span class="op">)</span></span></code></pre></div>

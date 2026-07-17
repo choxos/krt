@@ -6,7 +6,7 @@ resources, each carrying its name, type, and identifiers.
 ## Usage
 
 ``` r
-as_rocrate(x, path = NULL)
+as_rocrate(x, path = NULL, audience = c("author", "public"))
 ```
 
 ## Arguments
@@ -18,6 +18,10 @@ as_rocrate(x, path = NULL)
 - path:
 
   Output path, or `NULL` to return the JSON-LD string.
+
+- audience:
+
+  `"author"` (default) or `"public"` (redacts the table first).
 
 ## Value
 

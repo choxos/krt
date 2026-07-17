@@ -202,8 +202,10 @@ The field registry and controlled vocabularies.
   : Detect and parse a Key Resources Table embedded in a document
 - [`extract_llm()`](https://choxos.github.io/krt/reference/extract_llm.md)
   : Extract resources from text with an LLM
-- [`krt_llm()`](https://choxos.github.io/krt/reference/krt_llm.md) :
-  Configure an LLM for extraction
+- [`krt_llm()`](https://choxos.github.io/krt/reference/krt_llm.md)
+  [`format(`*`<krt_llm>`*`)`](https://choxos.github.io/krt/reference/krt_llm.md)
+  [`print(`*`<krt_llm>`*`)`](https://choxos.github.io/krt/reference/krt_llm.md)
+  : Configure an LLM for extraction
 - [`register_llm_provider()`](https://choxos.github.io/krt/reference/register_llm_provider.md)
   : Register an LLM provider
 - [`list_llm_providers()`](https://choxos.github.io/krt/reference/list_llm_providers.md)
