@@ -6,8 +6,18 @@ library(krt)
 
 profiles <- tryCatch(krt_profiles()$name, error = function(e) c("generic", "asap"))
 
+star_css <- "
+.krt-render { overflow-x: auto; }
+.krt-render table.krt-table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+.krt-render table.krt-table th, .krt-render table.krt-table td {
+  border: 1px solid #dee2e6; padding: 6px 10px; vertical-align: top; text-align: left; }
+.krt-render table.krt-table thead th { background: #f1f3f5; font-weight: 600; }
+.krt-render table.krt-table tr.krt-section td { background: #e7eef7; font-weight: 600; }
+"
+
 ui <- page_sidebar(
   title = "krt · Key Resources Table editor",
+  tags$head(tags$style(HTML(star_css))),
   sidebar = sidebar(
     width = 320,
     fileInput("file", "Import KRT or manuscript",
@@ -29,7 +39,7 @@ ui <- page_sidebar(
     downloadButton("dl_md", "Markdown")
   ),
   navset_card_tab(
-    nav_panel("Resources", DTOutput("tbl")),
+    nav_panel("Resources", uiOutput("resources_ui")),
     nav_panel("Validation", verbatimTextOutput("report")),
     nav_panel("Provenance", tableOutput("prov")),
     nav_panel("Attribution", verbatimTextOutput("attrib"))
@@ -65,11 +75,31 @@ server <- function(input, output, session) {
     if (!is.null(k)) set_table(k)
   })
 
-  is_wide <- reactive(!(input$profile %in% c("asap", "star-methods")))
+  # The generic profile is the editable wide view; every other profile is a
+  # read-only projection. A profile that declares STAR-style section grouping is
+  # rendered exactly as render_krt() and the exports produce it, so the app and
+  # the package never disagree; a flat projection (ASAP) stays a searchable table.
+  is_wide <- reactive(identical(input$profile, "generic"))
+  is_grouped <- reactive({
+    s <- tryCatch(get_profile(input$profile)$sections, error = function(e) NULL)
+    !is.null(s) && !is.null(s$order)
+  })
 
   view_df <- reactive({
     v <- if (is_wide()) "wide" else input$profile
     as.data.frame(rv$k, view = v)
+  })
+
+  output$resources_ui <- renderUI({
+    if (is_grouped()) {
+      html <- tryCatch(
+        render_krt(rv$k, format = "html", profile = input$profile),
+        error = function(e) sprintf("<p>Could not render this profile: %s</p>",
+                                    conditionMessage(e)))
+      div(class = "krt-render", HTML(html))
+    } else {
+      DTOutput("tbl")
+    }
   })
 
   output$tbl <- renderDT(

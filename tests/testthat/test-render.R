@@ -33,7 +33,7 @@ test_that("STAR sections follow the template order and map the 14 types onto 12"
 
 test_that("HTML render is well-formed and escapes content", {
   html <- render_krt(krt_example, format = "html")
-  expect_match(html, "<table>")
+  expect_match(html, "<table class=\"krt-table\">")
   expect_match(html, "<th>RESOURCE TYPE</th>")
 })
 
