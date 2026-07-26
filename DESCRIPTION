@@ -13,16 +13,20 @@ Description: A toolkit for creating, importing, validating, enriching,
     rendering, and depositing Key Resources Tables (KRTs). A KRT lists the
     resources used and generated in a study (antibodies, cell lines, organisms,
     chemicals, software, datasets, protocols, and more), each paired with a
-    persistent identifier such as a Research Resource Identifier (RRID), 'DOI',
-    accession, or catalog number, so that resources are unambiguously
-    identifiable and machine-actionable. The package models resources as typed,
-    validated records around a neutral core schema and maps them to
-    journal or funder output profiles, following the FAIR principles of
-    Wilkinson et al. (2016) <doi:10.1038/sdata.2016.18>. It normalizes and
-    optionally resolves identifiers against public registries, extracts
-    resources from manuscripts, and renders tables in the STAR Methods and ASAP
-    styles, with an emphasis on transparency, reproducibility, and correct
-    per-component licensing.
+    persistent identifier such as a Research Resource Identifier (RRID), a
+    Digital Object Identifier (DOI), a repository accession, or a catalog
+    number, so that resources are unambiguously identifiable and
+    machine-actionable. The package models resources as typed, validated
+    records around a neutral core schema and maps them to journal or funder
+    output profiles, following the FAIR (Findable, Accessible, Interoperable,
+    Reusable) principles of Wilkinson et al. (2016)
+    <doi:10.1038/sdata.2016.18>. It normalizes and optionally resolves
+    identifiers against public registries, extracts resources from
+    manuscripts, and renders tables both in the STAR (Structured, Transparent,
+    Accessible Reporting) Methods style used by Cell Press journals and in the
+    style required by ASAP (Aligning Science Across Parkinson's), with an
+    emphasis on transparency, reproducibility, and correct per-component
+    licensing.
 License: GPL-3
 URL: https://github.com/choxos/krt, https://choxos.github.io/krt/
 BugReports: https://github.com/choxos/krt/issues

@@ -43,8 +43,9 @@ gracefully: offline or on error, \code{resolved} is \code{FALSE}.
 # Offline: normalize only (no network).
 resolve_rrid("RRID:AB_390204", resolve = FALSE)
 resolve_doi("10.1038/sdata.2016.18", resolve = FALSE)$normalized
-\dontrun{
-# Live lookup (contacts the registry; requires resolve = TRUE).
-resolve_doi("10.1038/sdata.2016.18", resolve = TRUE)
+\donttest{
+# Live lookup. This contacts Crossref; offline it simply returns the
+# normalized identifier with `resolved = FALSE` instead of failing.
+resolve_doi("10.1038/sdata.2016.18", resolve = TRUE)$resolved
 }
 }

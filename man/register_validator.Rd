@@ -44,8 +44,11 @@ internal issue helper); the engine attaches the rule id, layer, standard, and
 resolved severity.
 }
 \examples{
-# A rule flags resources whose display name is very long.
-long_name_rule <- function(x, ctx) list()
-# register_validator("demo-long-name", long_name_rule, severity = "note")
-head(list_validators(), 3)
+# A rule inspects the table and returns a list of issues. This demonstration
+# rule reports nothing, so registering it leaves validation results unchanged.
+demo_rule <- function(x, ctx) list()
+register_validator("demo-no-op", demo_rule, layer = "semantic",
+                   severity = "note", replace = TRUE)
+"demo-no-op" \%in\% list_validators()$rule_id
+validate_krt(krt_example)$valid
 }

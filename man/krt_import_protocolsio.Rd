@@ -24,7 +24,10 @@ A \link{krt_tbl} with a single Protocol resource.
 Fetches a protocol and records it as a Protocol resource.
 }
 \examples{
-\dontrun{
-krt_import_protocolsio("kxygx3w")
+\donttest{
+# Contacts the public protocols.io API. Offline, this warns and returns an
+# empty table rather than failing.
+k <- suppressWarnings(krt_import_protocolsio("kxygx3w"))
+length(k$resources)
 }
 }

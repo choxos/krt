@@ -42,6 +42,8 @@ audience, since a deposit is a shared artifact.
 }
 \examples{
 \dontrun{
+# Not executable without a Zenodo (sandbox) account and access token, so
+# this example cannot be run during a check.
 res <- krt_deposit_zenodo(krt_example, sandbox = TRUE)
 res$doi
 }

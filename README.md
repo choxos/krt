@@ -52,7 +52,7 @@ validate_krt(k, profile = "asap")
 
 # Normalize identifiers, then export to the ASAP six-column CSV
 k <- normalize_ids(k)
-export_krt(k, "resources.csv", format = "asap")
+export_krt(k, file.path(tempdir(), "resources.csv"), format = "asap")
 
 # Or render a Markdown resource table for a manuscript
 cat(render_krt(k, format = "md"))
