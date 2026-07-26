@@ -16,6 +16,8 @@
 #' @export
 #' @examples
 #' \dontrun{
+#' # Not executable without an eLabFTW instance and an API token, so this
+#' # example cannot be run during a check.
 #' krt_import_elabftw("https://elab.example.org", experiment_id = 42)
 #' }
 krt_import_elabftw <- function(base_url, experiment_id,
@@ -47,8 +49,11 @@ krt_import_elabftw <- function(base_url, experiment_id,
 #' @return A [krt_tbl] with a single Protocol resource.
 #' @export
 #' @examples
-#' \dontrun{
-#' krt_import_protocolsio("kxygx3w")
+#' \donttest{
+#' # Contacts the public protocols.io API. Offline, this warns and returns an
+#' # empty table rather than failing.
+#' k <- suppressWarnings(krt_import_protocolsio("kxygx3w"))
+#' length(k$resources)
 #' }
 krt_import_protocolsio <- function(id, token = Sys.getenv("PROTOCOLSIO_TOKEN"),
                                    timeout = 30) {

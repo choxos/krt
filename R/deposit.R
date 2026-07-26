@@ -48,6 +48,8 @@
 #' @export
 #' @examples
 #' \dontrun{
+#' # Not executable without a Zenodo (sandbox) account and access token, so
+#' # this example cannot be run during a check.
 #' res <- krt_deposit_zenodo(krt_example, sandbox = TRUE)
 #' res$doi
 #' }
@@ -158,6 +160,8 @@ krt_deposit_zenodo <- function(x, token = Sys.getenv("ZENODO_TOKEN"),
 #' @export
 #' @examples
 #' \dontrun{
+#' # Not executable without a Figshare (sandbox) account and access token, so
+#' # this example cannot be run during a check.
 #' krt_deposit_figshare(krt_example)
 #' }
 krt_deposit_figshare <- function(x, token = Sys.getenv("FIGSHARE_TOKEN"),

@@ -22,8 +22,10 @@ feeding into \code{\link[=extract_krt]{extract_krt()}}. Returns \code{NULL} offl
 openly available.
 }
 \examples{
-\dontrun{
-# Contacts Europe PMC / bioRxiv; not run on CRAN.
+\donttest{
+# Contacts Europe PMC. Offline, or when the text is not openly available,
+# this returns NULL rather than failing.
 txt <- fetch_fulltext("PMC5334499")
+is.null(txt) || nchar(txt) > 0
 }
 }
