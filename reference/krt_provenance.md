@@ -31,5 +31,5 @@ A `krt_provenance` object.
 ``` r
 krt_provenance(normalize_ids(krt_example))
 #> <krt_provenance> 1 step
-#>   2026-07-17T13:17:04Z  normalize_ids
+#>   2026-07-26T12:03:49Z  normalize_ids
 ```

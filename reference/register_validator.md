@@ -61,12 +61,13 @@ Invisibly `NULL`; called for its side effect.
 ## Examples
 
 ``` r
-# A rule flags resources whose display name is very long.
-long_name_rule <- function(x, ctx) list()
-# register_validator("demo-long-name", long_name_rule, severity = "note")
-head(list_validators(), 3)
-#>                     rule_id    layer severity                  standard
-#> cond-cellline cond-cellline semantic  warning    cell-line-auth-minimum
-#> cond-ethics     cond-ethics semantic  warning                    ethics
-#> cond-organism cond-organism semantic  warning minimal-organism-metadata
+# A rule inspects the table and returns a list of issues. This demonstration
+# rule reports nothing, so registering it leaves validation results unchanged.
+demo_rule <- function(x, ctx) list()
+register_validator("demo-no-op", demo_rule, layer = "semantic",
+                   severity = "note", replace = TRUE)
+"demo-no-op" %in% list_validators()$rule_id
+#> [1] TRUE
+validate_krt(krt_example)$valid
+#> [1] TRUE
 ```

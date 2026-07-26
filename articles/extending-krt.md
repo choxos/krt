@@ -69,7 +69,7 @@ it by path:
 ``` r
 
 register_profile(name = "my-institute", path = "path/to/profile/dir")
-export_krt(k, "out.csv", profile = "my-institute")
+export_krt(k, file.path(tempdir(), "out.csv"), profile = "my-institute")
 ```
 
 ## A custom resolver or suggest source

@@ -41,6 +41,8 @@ extracted resources.
 
 ``` r
 if (FALSE) { # \dontrun{
+# Not executable without an eLabFTW instance and an API token, so this
+# example cannot be run during a check.
 krt_import_elabftw("https://elab.example.org", experiment_id = 42)
 } # }
 ```

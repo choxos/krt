@@ -60,6 +60,8 @@ recorded only when every stage succeeded). On failure, `deposit` is
 
 ``` r
 if (FALSE) { # \dontrun{
+# Not executable without a Zenodo (sandbox) account and access token, so
+# this example cannot be run during a check.
 res <- krt_deposit_zenodo(krt_example, sandbox = TRUE)
 res$doi
 } # }

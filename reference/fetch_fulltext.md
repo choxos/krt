@@ -32,8 +32,11 @@ A character string of the full text or abstract, or `NULL`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-# Contacts Europe PMC / bioRxiv; not run on CRAN.
+# \donttest{
+# Contacts Europe PMC. Offline, or when the text is not openly available,
+# this returns NULL rather than failing.
 txt <- fetch_fulltext("PMC5334499")
-} # }
+is.null(txt) || nchar(txt) > 0
+#> [1] TRUE
+# }
 ```

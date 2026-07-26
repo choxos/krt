@@ -52,6 +52,8 @@ and `x`.
 
 ``` r
 if (FALSE) { # \dontrun{
+# Not executable without a Figshare (sandbox) account and access token, so
+# this example cannot be run during a check.
 krt_deposit_figshare(krt_example)
 } # }
 ```

@@ -34,7 +34,11 @@ single Protocol resource.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-krt_import_protocolsio("kxygx3w")
-} # }
+# \donttest{
+# Contacts the public protocols.io API. Offline, this warns and returns an
+# empty table rather than failing.
+k <- suppressWarnings(krt_import_protocolsio("kxygx3w"))
+length(k$resources)
+#> [1] 0
+# }
 ```
